@@ -13,17 +13,17 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Trip extends CommentableEntity {
+public class Comment extends DomainEntity {
 
 	private String	title;
-	private String	description;
 	private Date	moment;
-	private Place	origin;
-	private Place	destination;
+	private String	text;
+	private int		stars;
 	private boolean	banned;
 
 
@@ -38,16 +38,6 @@ public class Trip extends CommentableEntity {
 	}
 
 	@NotNull
-	@NotBlank
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(final String description) {
-		this.description = description;
-	}
-
-	@NotNull
 	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	@Temporal(TemporalType.TIMESTAMP)
 	public Date getMoment() {
@@ -59,48 +49,59 @@ public class Trip extends CommentableEntity {
 	}
 
 	@NotNull
-	@Valid
-	public Place getOrigin() {
-		return this.origin;
+	@NotBlank
+	public String getText() {
+		return this.text;
 	}
 
-	public void setOrigin(final Place origin) {
-		this.origin = origin;
+	public void setText(final String text) {
+		this.text = text;
 	}
 
-	@NotNull
-	@Valid
-	public Place getDestination() {
-		return this.destination;
+	@Range(min = 0, max = 5)
+	public int getStars() {
+		return this.stars;
 	}
 
-	public void setDestination(final Place destination) {
-		this.destination = destination;
+	public void setStars(final int stars) {
+		this.stars = stars;
 	}
 
 	public boolean isBanned() {
 		return this.banned;
 	}
 
-	public void setBanned(final Boolean banned) {
+	public void setBanned(final boolean banned) {
 		this.banned = banned;
 	}
 
 
-	// Relationships -----------------------------------
+	// Relationships ----------------------------------------------
 
-	private Customer	customer;
+	private CommentableEntity	commentableEntity;
+	private Actor				actor;
 
 
 	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
-	public Customer getCustomer() {
-		return this.customer;
+	public CommentableEntity getCommentableEntity() {
+		return this.commentableEntity;
 	}
 
-	public void setCustomer(final Customer customer) {
-		this.customer = customer;
+	public void setCommentableEntity(final CommentableEntity commentableEntity) {
+		this.commentableEntity = commentableEntity;
+	}
+
+	@NotNull
+	@Valid
+	@ManyToOne(optional = false)
+	public Actor getActor() {
+		return this.actor;
+	}
+
+	public void setActor(final Actor actor) {
+		this.actor = actor;
 	}
 
 }
