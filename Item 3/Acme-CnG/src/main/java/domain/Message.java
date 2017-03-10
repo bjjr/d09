@@ -1,10 +1,12 @@
 
 package domain;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -13,15 +15,17 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
 public class Message extends DomainEntity {
 
-	private Date	moment;
-	private String	title;
-	private String	text;
+	private Date				moment;
+	private String				title;
+	private String				text;
+	private Collection<String>	attachments;
 
 
 	@NotNull
@@ -53,6 +57,17 @@ public class Message extends DomainEntity {
 
 	public void setText(final String text) {
 		this.text = text;
+	}
+
+	@NotNull
+	@ElementCollection
+	@URL
+	public Collection<String> getAttachments() {
+		return this.attachments;
+	}
+
+	public void setAttachments(final Collection<String> attachments) {
+		this.attachments = attachments;
 	}
 
 
