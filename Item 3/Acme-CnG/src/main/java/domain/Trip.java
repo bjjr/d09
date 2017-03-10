@@ -5,6 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -60,6 +63,9 @@ public class Trip extends CommentableEntity {
 
 	@NotNull
 	@Valid
+	@AttributeOverrides({
+		@AttributeOverride(name = "address", column = @Column(name = "origin_address")), @AttributeOverride(name = "coordinates", column = @Column(name = "origin_coordinates"))
+	})
 	public Place getOrigin() {
 		return this.origin;
 	}
@@ -70,6 +76,9 @@ public class Trip extends CommentableEntity {
 
 	@NotNull
 	@Valid
+	@AttributeOverrides({
+		@AttributeOverride(name = "address", column = @Column(name = "destination_address")), @AttributeOverride(name = "coordinates", column = @Column(name = "destination_coordinates"))
+	})
 	public Place getDestination() {
 		return this.destination;
 	}
