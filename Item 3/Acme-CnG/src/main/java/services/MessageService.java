@@ -97,4 +97,93 @@ public class MessageService {
 
 	// Other business methods ---------------------------------
 
+	public Collection<Message> findSentMessages() {
+		Collection<Message> res;
+		Actor sender;
+
+		sender = this.actorService.findByPrincipal();
+
+		res = this.messageRepository.findMessagesBySender(sender.getId());
+
+		return res;
+	}
+
+	public Collection<Message> findReceivedMessages() {
+		Collection<Message> res;
+		Actor recipient;
+
+		recipient = this.actorService.findByPrincipal();
+
+		res = this.messageRepository.findMessagesByRecipient(recipient.getId());
+
+		return res;
+	}
+
+	public Integer findMinNumSntMsgPerActor() {
+		Integer res;
+
+		res = this.messageRepository.findMinNumSntMsgPerActor().get(0);
+
+		return res;
+	}
+
+	// TODO: Check this method
+
+	public Double findAvgNumSntMsgPerActor() {
+		Double res;
+
+		res = this.messageRepository.findAvgNumSntMsgPerActor();
+
+		return res;
+	}
+
+	public Integer findMaxNumSntMsgPerActor() {
+		Integer res;
+
+		res = this.messageRepository.findMinNumSntMsgPerActor().get(0);
+
+		return res;
+	}
+
+	public Integer findMinNumRecMsgPerActor() {
+		Integer res;
+
+		res = this.messageRepository.findMinNumRecMsgPerActor().get(0);
+
+		return res;
+	}
+
+	// TODO: Check this method
+
+	public Double findAvgNumRecMsgPerActor() {
+		Double res;
+
+		res = this.messageRepository.findAvgNumRecMsgPerActor();
+
+		return res;
+	}
+
+	public Integer findMaxNumRecMsgPerActor() {
+		Integer res;
+
+		res = this.messageRepository.findMaxNumRecMsgPerActor().get(0);
+
+		return res;
+	}
+
+	public Collection<Actor> findActorsWithMoreSentMessages() {
+		Collection<Actor> res;
+
+		res = this.messageRepository.findActorsWithMoreSentMessages();
+
+		return res;
+	}
+
+	public Collection<Actor> findActorsWithMoreReceivedMessages() {
+		Collection<Actor> res;
+
+		res = this.messageRepository.findActorsWithMoreReceivedMessages();
+
+		return res;
+	}
 }
