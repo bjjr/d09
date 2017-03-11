@@ -58,7 +58,7 @@ public class Actor extends CommentableEntity {
 
 	@NotNull
 	@NotBlank
-	@Pattern(regexp = "^(\\+\\d{1,4})?[\\(\\)-\\d\\sABCDEFGHIJKLMNOPQRSTUVWXYZ]+$")
+	@Pattern(regexp = "^(\\+\\d{1,4})?[\\(\\)\\-\\d\\sA-Z]+$")
 	public String getPhone() {
 		return this.phone;
 	}
