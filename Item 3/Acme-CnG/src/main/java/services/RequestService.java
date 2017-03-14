@@ -27,6 +27,9 @@ public class RequestService {
 	@Autowired
 	private ApplicationService	applicationService;
 
+	@Autowired
+	private ActorService		actorService;
+
 
 	// Constructors -----------------------------------------------------
 
@@ -37,6 +40,8 @@ public class RequestService {
 	// Simple CRUD methods ----------------------------------------------------
 
 	public Request create() {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
+
 		Request result;
 		Date moment;
 		Boolean banned;
@@ -79,6 +84,7 @@ public class RequestService {
 	// Other business methods ----------------------------------------------------
 
 	public Collection<Request> findByKeyword(final String keyword) {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 		Assert.notNull(keyword);
 
 		Collection<Request> result;
@@ -91,6 +97,8 @@ public class RequestService {
 	}
 
 	public Double findAvgRequestCustomer() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMINISTRATOR"));
+
 		Double result;
 
 		result = this.requestRepository.findAvgRequestCustomer();
@@ -109,6 +117,7 @@ public class RequestService {
 	}
 
 	public void accept(final Application application) {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 		Assert.notNull(application);
 		Assert.isTrue(application.getStatus() == "PENDING");
 
@@ -117,6 +126,7 @@ public class RequestService {
 	}
 
 	public void deny(final Application application) {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 		Assert.notNull(application);
 		Assert.isTrue(application.getStatus() == "PENDING");
 
@@ -125,6 +135,7 @@ public class RequestService {
 	}
 
 	public void ban(final Request request) {
+		Assert.isTrue(this.actorService.checkAuthority("ADMINISTRATOR"));
 		Assert.notNull(request);
 
 		Collection<Application> applications;

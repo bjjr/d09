@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ApplicationRepository;
+import domain.Actor;
 import domain.Application;
+import domain.Customer;
 
 @Service
 @Transactional
@@ -20,8 +22,14 @@ public class ApplicationService {
 	@Autowired
 	private ApplicationRepository	applicationRepository;
 
-
 	// Supporting services -----------------------------------------------------
+
+	@Autowired
+	private ActorService			actorService;
+
+	@Autowired
+	private CustomerService			customerService;
+
 
 	// Constructors -----------------------------------------------------
 
@@ -32,6 +40,8 @@ public class ApplicationService {
 	// Simple CRUD methods ----------------------------------------------------
 
 	public Application create() {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
+
 		Application result;
 
 		result = new Application();
@@ -41,11 +51,18 @@ public class ApplicationService {
 	}
 
 	public Application save(final Application application) {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 		Assert.notNull(application);
 
-		final Application result;
+		Application result;
+		Actor actor;
+		Customer principal;
 
 		result = this.applicationRepository.save(application);
+		actor = this.actorService.findByPrincipal();
+		principal = this.customerService.findOne(actor.getId());
+
+		result.setCustomer(principal);
 
 		return result;
 
@@ -61,12 +78,17 @@ public class ApplicationService {
 	}
 
 	public void delete(final Application application) {
+		Assert.isTrue(this.actorService.checkAuthority("ADMINISTRATOR"));
 		Assert.notNull(application);
 		Assert.isTrue(application.getId() != 0);
 		Assert.isTrue(this.applicationRepository.exists(application.getId()));
 
 		this.applicationRepository.delete(application);
 
+	}
+
+	public void flush() {
+		this.applicationRepository.flush();
 	}
 
 	// Other business methods ----------------------------------------------------
