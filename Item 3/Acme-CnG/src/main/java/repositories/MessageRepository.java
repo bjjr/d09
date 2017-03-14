@@ -20,24 +20,24 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 	@Query("select m from Message m where m.recipient.id = ?1")
 	Collection<Message> findMessagesByRecipient(int recipientId);
 
-	@Query("select count(m) from Message m group by m.sender order by desc")
+	@Query("select count(m) from Message m group by m.sender order by count(m) desc")
 	List<Integer> findMinNumSntMsgPerActor();
 
 	// TODO: Check this query
 	@Query("select count(m)/(select count(a) from Actor a) from Message m")
 	Double findAvgNumSntMsgPerActor();
 
-	@Query("select count(m) from Message m group by m.sender order by asc")
+	@Query("select count(m) from Message m group by m.sender order by count(m) asc")
 	List<Integer> findMaxNumSntMsgPerActor();
 
-	@Query("select count(m) from Message m group by m.recipient order by desc")
+	@Query("select count(m) from Message m group by m.recipient order by count(m) desc")
 	List<Integer> findMinNumRecMsgPerActor();
 
 	// TODO: Check this query
 	@Query("select count(m)/(select count(a) from Actor a) from Message m")
 	Double findAvgNumRecMsgPerActor();
 
-	@Query("select count(m) from Message m group by m.recipient order by asc")
+	@Query("select count(m) from Message m group by m.recipient order by count(m) asc")
 	List<Integer> findMaxNumRecMsgPerActor();
 
 	@Query("select m.sender from Message m group by m.sender order by count(m) desc")
