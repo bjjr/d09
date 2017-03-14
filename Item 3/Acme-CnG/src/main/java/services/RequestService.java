@@ -2,7 +2,6 @@
 package services;
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,14 +42,11 @@ public class RequestService {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
 		Request result;
-		Date moment;
 		Boolean banned;
 
 		result = new Request();
-		moment = new Date(System.currentTimeMillis() - 1000);
 		banned = false;
 
-		result.setMoment(moment);
 		result.setBanned(banned);
 
 		return result;
