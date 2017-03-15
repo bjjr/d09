@@ -18,7 +18,7 @@
 	
 	<!-- User accounts -->
 
-	<bean id="userAccount1" class="security.UserAccount">
+	<bean id="userAccountA1" class="security.UserAccount">
 		<property name="username" value="admin" />
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
 		<property name="authorities">
@@ -30,33 +30,6 @@
 		</property>
 	</bean>
 
-	<bean id="userAccount2" class="security.UserAccount">
-		<property name="username" value="customer" />
-		<property name="password" value="91ec1f9324753048c0096d036a694f86" />
-		<property name="authorities">
-			<list>
-				<bean class="security.Authority">
-					<property name="authority" value="CUSTOMER" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean id="userAccount3" class="security.UserAccount">
-		<property name="username" value="super" />
-		<property name="password" value="1b3231655cebb7a1f783eddf27d254ca" />
-		<property name="authorities">
-			<list>
-				<bean class="security.Authority">
-					<property name="authority" value="ADMIN" />
-				</bean>
-				<bean class="security.Authority">
-					<property name="authority" value="CUSTOMER" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-	
 	<bean id="userAccountC1" class="security.UserAccount">
 		<property name="username" value="customer1" />
 		<property name="password" value="ffbc4675f864e0e9aab8bdf7a0437010" />
@@ -166,6 +139,16 @@
 	</bean>
 	
 	<!-- Other domain beans come here -->
+	
+	<!-- ADMIN -->
+	
+	<bean id="admin" class="domain.Administrator">
+		<property name="name" value="Admin" />
+		<property name="surname" value="Admin" />
+		<property name="email" value="admin@email.com" />
+		<property name="phone" value="+34000000000" />
+		<property name="userAccount" ref="userAccountA1" />
+	</bean>
 	
 	<!-- BANNER -->
 	
@@ -739,7 +722,7 @@
 		<property name="stars" value="0" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer2" />
-		<property name="commentableentity" ref="admin" />
+		<property name="commentableEntity" ref="admin" />
 	</bean>
 	
 	<bean id="comment2" class="domain.Comment">
@@ -749,7 +732,7 @@
 		<property name="stars" value="1" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="customer2" />
+		<property name="commentableEntity" ref="customer2" />
 	</bean>
 	
 	<bean id="comment3" class="domain.Comment">
@@ -759,7 +742,7 @@
 		<property name="stars" value="2" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="customer4" />
+		<property name="commentableEntity" ref="customer4" />
 	</bean>
 	
 	<bean id="comment4" class="domain.Comment">
@@ -769,7 +752,7 @@
 		<property name="stars" value="3" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="customer5" />
+		<property name="commentableEntity" ref="customer5" />
 	</bean>
 	
 	<bean id="comment5" class="domain.Comment">
@@ -779,7 +762,7 @@
 		<property name="stars" value="4" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="customer6" />
+		<property name="commentableEntity" ref="customer6" />
 	</bean>
 	
 	<bean id="comment6" class="domain.Comment">
@@ -789,7 +772,7 @@
 		<property name="stars" value="5" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="customer7" />
+		<property name="commentableEntity" ref="customer7" />
 	</bean>
 	
 	<bean id="comment7" class="domain.Comment">
@@ -799,7 +782,7 @@
 		<property name="stars" value="2" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="request3" />
+		<property name="commentableEntity" ref="request3" />
 	</bean>
 	
 	<bean id="comment8" class="domain.Comment">
@@ -809,7 +792,7 @@
 		<property name="stars" value="3" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="request3" />
+		<property name="commentableEntity" ref="request3" />
 	</bean>
 	
 	<bean id="comment9" class="domain.Comment">
@@ -819,47 +802,47 @@
 		<property name="stars" value="4" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="request3" />
+		<property name="commentableEntity" ref="request3" />
 	</bean>
 	
 	<bean id="comment10" class="domain.Comment">
 		<property name="title" value="Title comment 10" />
-		<property name="moment" value="customer9" />
+		<property name="moment" value="03/02/2018 12:30" />
 		<property name="text" value="Text comment 10" />
 		<property name="stars" value="5" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="request3" />
+		<property name="commentableEntity" ref="request3" />
 	</bean>
 	
 	<bean id="comment11" class="domain.Comment">
 		<property name="title" value="Title comment 11" />
-		<property name="moment" value="customer9" />
+		<property name="moment" value="04/02/2018 12:30" />
 		<property name="text" value="Text comment 11" />
 		<property name="stars" value="1" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="request3" />
+		<property name="commentableEntity" ref="request3" />
 	</bean>
 	
 	<bean id="comment12" class="domain.Comment">
 		<property name="title" value="Title comment 12" />
-		<property name="moment" value="customer9" />
+		<property name="moment" value="05/02/2018 12:30" />
 		<property name="text" value="Text comment 12" />
 		<property name="stars" value="0" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="request3" />
+		<property name="commentableEntity" ref="request3" />
 	</bean>
 	
 	<bean id="comment13" class="domain.Comment">
 		<property name="title" value="Title comment 13" />
-		<property name="moment" value="customer9" />
+		<property name="moment" value="02/27/2018 12:30" />
 		<property name="text" value="Text comment 13" />
 		<property name="stars" value="3" />
 		<property name="banned" value="false" />
 		<property name="actor" ref="customer3" />
-		<property name="commentableentity" ref="offer3" />
+		<property name="commentableEntity" ref="offer3" />
 	</bean>
 	
 </beans>
