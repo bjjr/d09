@@ -34,7 +34,7 @@ public class PlaceService {
 		Assert.notNull(place);
 		Place res;
 
-		res = this.placeRepository.saveAndFlush(place);
+		res = this.placeRepository.save(place);
 		return res;
 	}
 
