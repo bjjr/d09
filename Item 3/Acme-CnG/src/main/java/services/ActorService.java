@@ -34,19 +34,21 @@ public class ActorService {
 
 	// Simple CRUD methods -------------------------------------
 
-	public Actor create() {
-		Assert.isTrue(!this.checkAuthority("ADMIN") && !this.checkAuthority("CUSTOMER"));
-		Actor res;
-
-		res = new Actor();
-
-		res.setName("");
-		res.setSurname("");
-		res.setPhone("");
-		res.setEmail("");
-
-		return res;
-	}
+	/*
+	 * public Actor create() {
+	 * Assert.isTrue(!this.checkAuthority("ADMIN") && !this.checkAuthority("CUSTOMER"));
+	 * Actor res;
+	 * 
+	 * res = new Actor();
+	 * 
+	 * res.setName("");
+	 * res.setSurname("");
+	 * res.setPhone("");
+	 * res.setEmail("");
+	 * 
+	 * return res;
+	 * }
+	 */
 
 	public Actor findOne(final int actorId) {
 		Actor res;
