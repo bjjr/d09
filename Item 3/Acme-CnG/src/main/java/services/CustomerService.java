@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.CustomerRepository;
+import security.LoginService;
+import security.UserAccount;
 import domain.Customer;
 
 @Service
@@ -33,7 +35,10 @@ public class CustomerService {
 	// Simple CRUD methods ---------------------------------
 
 	public Customer create() {
-		final Customer res = new Customer();
+		Customer res;
+		Assert.isTrue(!this.actorService.checkAuthority("ADMIN") && !this.actorService.checkAuthority("CUSTOMER"));
+
+		res = new Customer();
 
 		res.setName("");
 		res.setSurname("");
@@ -65,5 +70,27 @@ public class CustomerService {
 	}
 
 	// Other business methods ------------------------------
+
+	public Customer findByPrincipal() {
+		Customer result = null;
+		UserAccount userAccount;
+
+		userAccount = LoginService.getPrincipal();
+		Assert.notNull(userAccount);
+		result = this.findByUserAccount(userAccount);
+
+		return result;
+	}
+
+	public Customer findByUserAccount(final UserAccount userAccount) {
+		Assert.notNull(userAccount);
+		Customer res;
+
+		res = this.customerRepository.findByUserAccountId(userAccount.getId());
+
+		Assert.notNull(res);
+
+		return res;
+	}
 
 }
