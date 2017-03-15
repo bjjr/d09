@@ -51,12 +51,12 @@ public class MessageServiceTest extends AbstractTest {
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.RegistrationTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
+			this.registrationTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
 	}
 
 	// Ancillary methods ------------------------------------------------------
 
-	protected void RegistrationTemplate(final String username, final Class<?> expected) {
+	protected void registrationTemplate(final String username, final Class<?> expected) {
 		Class<?> caught;
 
 		caught = null;
