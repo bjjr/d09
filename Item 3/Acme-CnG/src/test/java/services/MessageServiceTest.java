@@ -57,19 +57,6 @@ public class MessageServiceTest extends AbstractTest {
 	// Ancillary methods ------------------------------------------------------
 
 	protected void registrationTemplate(final String username, final Class<?> expected) {
-		Class<?> caught;
-
-		caught = null;
-
-		try {
-			this.authenticate(username);
-			this.actorService.create();
-			this.unauthenticate();
-		} catch (final Throwable th) {
-			caught = th.getClass();
-		}
-
-		this.checkExceptions(expected, caught);
 	}
 
 }

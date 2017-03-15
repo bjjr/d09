@@ -34,8 +34,14 @@ public class CustomerService {
 
 	public Customer create() {
 		Customer res;
+		Assert.isTrue(!this.actorService.checkAuthority("ADMIN") && !this.actorService.checkAuthority("CUSTOMER"));
 
-		res = (Customer) this.actorService.create();
+		res = new Customer();
+
+		res.setName("");
+		res.setSurname("");
+		res.setPhone("");
+		res.setEmail("");
 
 		return res;
 	}

@@ -25,12 +25,12 @@ import utilities.AbstractTest;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class ActorServiceTest extends AbstractTest {
+public class CustomerServiceTest extends AbstractTest {
 
 	// System under test ------------------------------------------------------
 
 	@Autowired
-	private ActorService	actorService;
+	private CustomerService	customerService;
 
 
 	// Tests ------------------------------------------------------------------
@@ -47,6 +47,8 @@ public class ActorServiceTest extends AbstractTest {
 				null, null
 			}, {
 				"customer1", IllegalArgumentException.class
+			}, {
+				"admin", IllegalArgumentException.class
 			}
 		};
 
@@ -63,7 +65,7 @@ public class ActorServiceTest extends AbstractTest {
 
 		try {
 			this.authenticate(username);
-			this.actorService.create();
+			this.customerService.create();
 			this.unauthenticate();
 		} catch (final Throwable th) {
 			caught = th.getClass();
