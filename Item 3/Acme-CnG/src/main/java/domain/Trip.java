@@ -20,7 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Trip extends CommentableEntity {
+public abstract class Trip extends CommentableEntity {
 
 	private String	title;
 	private String	description;
