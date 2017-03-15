@@ -17,7 +17,7 @@ import security.UserAccount;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Actor extends CommentableEntity {
+public abstract class Actor extends CommentableEntity {
 
 	private String	name;
 	private String	surname;
