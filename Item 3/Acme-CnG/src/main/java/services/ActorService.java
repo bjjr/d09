@@ -35,6 +35,7 @@ public class ActorService {
 	// Simple CRUD methods -------------------------------------
 
 	public Actor create() {
+		Assert.isTrue(!this.checkAuthority("ADMIN") && !this.checkAuthority("CUSTOMER"));
 		Actor res;
 
 		res = new Actor();

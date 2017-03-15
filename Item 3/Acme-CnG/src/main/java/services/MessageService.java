@@ -38,6 +38,8 @@ public class MessageService {
 	// Simple CRUD methods ------------------------------------
 
 	public Message create(final int recipientId) {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
+
 		Message res;
 		Collection<String> attachments;
 		Date now;
@@ -58,9 +60,9 @@ public class MessageService {
 
 		return res;
 	}
-
 	public Message save(final Message message) {
 		Assert.notNull(message);
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
 		Message res;
 
 		res = this.messageRepository.save(message);
@@ -74,6 +76,7 @@ public class MessageService {
 
 	public void delete(final Message message) {
 		Assert.notNull(message);
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
 		Assert.isTrue(message.getSender().equals(this.actorService.findByPrincipal()));
 
 		this.messageRepository.delete(message);
