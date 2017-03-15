@@ -50,8 +50,27 @@ public class ApplicationService {
 		return result;
 	}
 
+	public Application findOne(final int applicationId) {
+		Application result;
+
+		result = this.applicationRepository.findOne(applicationId);
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<Application> findAll() {
+		Collection<Application> result;
+
+		result = this.applicationRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	public Application save(final Application application) {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
+
 		Assert.notNull(application);
 
 		Application result;
@@ -68,17 +87,9 @@ public class ApplicationService {
 
 	}
 
-	public Collection<Application> findAll() {
-		Collection<Application> result;
-
-		result = this.applicationRepository.findAll();
-		Assert.notNull(result);
-
-		return result;
-	}
-
 	public void delete(final Application application) {
-		Assert.isTrue(this.actorService.checkAuthority("ADMINISTRATOR"));
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
 		Assert.notNull(application);
 		Assert.isTrue(application.getId() != 0);
 		Assert.isTrue(this.applicationRepository.exists(application.getId()));
@@ -112,6 +123,28 @@ public class ApplicationService {
 		Collection<Application> result;
 
 		result = this.applicationRepository.findApplicationsByTrip(tripId);
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Double findAvgApplicationsPerOffer() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.applicationRepository.findAvgApplicationsPerOffer();
+		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Double findAvgApplicationsPerRequest() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.applicationRepository.findAvgApplicationsPerRequest();
 		Assert.notNull(result);
 
 		return result;
