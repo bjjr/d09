@@ -105,7 +105,73 @@
 		</property>
 	</bean>
 	
+	<bean id="userAccountC5" class="security.UserAccount">
+		<property name="username" value="customer5" />
+		<property name="password" value="9e8486cdd435beda9a60806dd334d964" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CUSTOMER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="userAccountC6" class="security.UserAccount">
+		<property name="username" value="customer6" />
+		<property name="password" value="dbaa8bd25e06cc641f5406027c026e8b" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CUSTOMER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="userAccountC7" class="security.UserAccount">
+		<property name="username" value="customer7" />
+		<property name="password" value="81162e1ef3d93f96b36d3712ca52bca5" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CUSTOMER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="userAccountC8" class="security.UserAccount">
+		<property name="username" value="customer8" />
+		<property name="password" value="3079e3991f94d1b3b21b894f329d369d" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CUSTOMER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="userAccountC9" class="security.UserAccount">
+		<property name="username" value="customer9" />
+		<property name="password" value="2f72319caec5d639aead26fc77b5ef67" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CUSTOMER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
 	<!-- Other domain beans come here -->
+	
+	<!-- BANNER -->
+	
+	<bean id="banner1" class="domain.Banner">
+		<property name="path" value="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Test-Logo.svg/783px-Test-Logo.svg.png" />
+	</bean>
 	
 	<!-- CUSTOMERS -->
 	
@@ -141,6 +207,46 @@
 		<property name="userAccount" ref="userAccountC4" />
 	</bean>
 	
+	<bean id="customer5" class="domain.Customer">
+		<property name="name" value="Susana" />
+		<property name="surname" value="López" />
+		<property name="email" value="customer5@email.com" />
+		<property name="phone" value="+34000000000" />
+		<property name="userAccount" ref="userAccountC5" />
+	</bean>
+	
+	<bean id="customer6" class="domain.Customer">
+		<property name="name" value="Cristina" />
+		<property name="surname" value="Hernández" />
+		<property name="email" value="customer6@email.com" />
+		<property name="phone" value="+34000000000" />
+		<property name="userAccount" ref="userAccountC6" />
+	</bean>
+	
+	<bean id="customer7" class="domain.Customer">
+		<property name="name" value="Ana" />
+		<property name="surname" value="García" />
+		<property name="email" value="customer7@email.com" />
+		<property name="phone" value="+34000000000" />
+		<property name="userAccount" ref="userAccountC7" />
+	</bean>
+	
+	<bean id="customer8" class="domain.Customer">
+		<property name="name" value="Patricia" />
+		<property name="surname" value="Jiménez" />
+		<property name="email" value="customer8@email.com" />
+		<property name="phone" value="+34000000000" />
+		<property name="userAccount" ref="userAccountC8" />
+	</bean>
+	
+	<bean id="customer9" class="domain.Customer">
+		<property name="name" value="Alicia" />
+		<property name="surname" value="Marcos" />
+		<property name="email" value="customer9@email.com" />
+		<property name="phone" value="+34000000000" />
+		<property name="userAccount" ref="userAccountC9" />
+	</bean>
+	
 	<!-- MESSAGES -->
 	
 	<bean id="message1" class="domain.Message">
@@ -159,7 +265,9 @@
 		<property name="title" value="Title message 2" />
 		<property name="text" value="Text message 2" />
 		<property name="attachments">
-			<list></list>
+			<list>
+				<value>http://attachment1.com</value>
+			</list>
 		</property>
 		<property name="sender" ref="customer3" />
 		<property name="recipient" ref="customer4" />
@@ -170,7 +278,10 @@
 		<property name="title" value="Title message 3" />
 		<property name="text" value="Text message 3" />
 		<property name="attachments">
-			<list></list>
+			<list>
+				<value>http://attachment2.com</value>
+				<value>http://attachment3.com</value>
+			</list>
 		</property>
 		<property name="sender" ref="customer3" />
 		<property name="recipient" ref="customer4" />
@@ -181,10 +292,574 @@
 		<property name="title" value="Title message 4" />
 		<property name="text" value="Text message 4" />
 		<property name="attachments">
+			<list>
+				<value>http://attachment4.com</value>
+				<value>http://attachment5.com</value>
+				<value>http://attachment6.com</value>
+				<value>http://attachment7.com</value>
+			</list>
+		</property>
+		<property name="sender" ref="customer3" />
+		<property name="recipient" ref="customer4" />
+	</bean>
+	
+	<bean id="message5" class="domain.Message">
+		<property name="moment" value="12/21/2015 15:45" />
+		<property name="title" value="Title message 5" />
+		<property name="text" value="Text message 5" />
+		<property name="attachments">
 			<list></list>
 		</property>
 		<property name="sender" ref="customer3" />
 		<property name="recipient" ref="customer4" />
+	</bean>
+	
+	<bean id="message6" class="domain.Message">
+		<property name="moment" value="06/12/2015 17:25" />
+		<property name="title" value="Title message 6" />
+		<property name="text" value="Text message 6" />
+		<property name="attachments">
+			<list></list>
+		</property>
+		<property name="sender" ref="customer3" />
+		<property name="recipient" ref="customer4" />
+	</bean>
+	
+	<bean id="message7" class="domain.Message">
+		<property name="moment" value="03/27/2015 16:57" />
+		<property name="title" value="Title message 7" />
+		<property name="text" value="Text message 7" />
+		<property name="attachments">
+			<list></list>
+		</property>
+		<property name="sender" ref="customer3" />
+		<property name="recipient" ref="customer4" />
+	</bean>
+	
+	<!-- PLACES -->
+	
+	<bean id="place1" class="domain.Place">
+		<property name="address" value="C/Place1Address" />
+	</bean>
+	
+	<bean id="place2" class="domain.Place">
+		<property name="address" value="C/Place2Address" />
+	</bean>
+	
+	<bean id="place3" class="domain.Place">
+		<property name="address" value="C/Place3Address" />
+	</bean>
+	
+	<bean id="place4" class="domain.Place">
+		<property name="address" value="C/Place4Address" />
+		<property name="coordinates" value="37.358273, -5.986367" />
+	</bean>
+	
+	<bean id="place5" class="domain.Place">
+		<property name="address" value="C/Place5Address" />
+		<property name="coordinates" value="21.358273, 120.986367" />
+	</bean>
+	
+	<bean id="place6" class="domain.Place">
+		<property name="address" value="C/Place6Address" />
+		<property name="coordinates" value="0, 0" />
+	</bean>
+	
+	<bean id="place7" class="domain.Place">
+		<property name="address" value="C/Place7Address" />
+		<property name="coordinates" value="90, -180" />
+	</bean>
+	
+	<!-- OFFERS -->
+	
+	<bean id="offer1" class="domain.Offer">
+		<property name="title" value="Title offer 1" />
+		<property name="description" value="Description offer 1" />
+		<property name="moment" value="02/02/2018 12:30" />
+		<property name="origin" ref="place1" />
+		<property name="destination" ref="place2" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer2" />
+	</bean>
+	
+	<bean id="offer2" class="domain.Offer">
+		<property name="title" value="Title offer 2" />
+		<property name="description" value="Description offer 2" />
+		<property name="moment" value="02/04/2018 16:30" />
+		<property name="origin" ref="place3" />
+		<property name="destination" ref="place4" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer3" />
+	</bean>
+	
+	<bean id="offer3" class="domain.Offer">
+		<property name="title" value="Title offer 3" />
+		<property name="description" value="Description offer 3" />
+		<property name="moment" value="06/07/2018 10:15" />
+		<property name="origin" ref="place4" />
+		<property name="destination" ref="place5" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer3" />
+	</bean>
+	
+	<bean id="offer4" class="domain.Offer">
+		<property name="title" value="Title offer 4" />
+		<property name="description" value="Description offer 4" />
+		<property name="moment" value="02/09/2018 16:45" />
+		<property name="origin" ref="place6" />
+		<property name="destination" ref="place7" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer4" />
+	</bean>
+	
+	<bean id="offer5" class="domain.Offer">
+		<property name="title" value="Title offer 5" />
+		<property name="description" value="Description offer 5" />
+		<property name="moment" value="12/10/2018 17:00" />
+		<property name="origin" ref="place7" />
+		<property name="destination" ref="place6" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer4" />
+	</bean>
+	
+	<bean id="offer6" class="domain.Offer">
+		<property name="title" value="Title offer 6" />
+		<property name="description" value="Description offer 6" />
+		<property name="moment" value="01/10/2018 20:30" />
+		<property name="origin" ref="place3" />
+		<property name="destination" ref="place7" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer4" />
+	</bean>
+	
+	<bean id="offer7" class="domain.Offer">
+		<property name="title" value="Title offer 7" />
+		<property name="description" value="Description offer 7" />
+		<property name="moment" value="17/03/2018 21:30" />
+		<property name="origin" ref="place2" />
+		<property name="destination" ref="place6" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer4" />
+	</bean>
+	
+	<bean id="offer8" class="domain.Offer">
+		<property name="title" value="Title offer 8" />
+		<property name="description" value="Description offer 8" />
+		<property name="moment" value="19/01/2018 18:00" />
+		<property name="origin" ref="place1" />
+		<property name="destination" ref="place5" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer4" />
+	</bean>
+	
+	<bean id="offer9" class="domain.Offer">
+		<property name="title" value="Title offer 9" />
+		<property name="description" value="Description offer 9" />
+		<property name="moment" value="02/05/2018 19:00" />
+		<property name="origin" ref="place7" />
+		<property name="destination" ref="place3" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer4" />
+	</bean>
+	
+	<bean id="offer10" class="domain.Offer">
+		<property name="title" value="Title offer 10" />
+		<property name="description" value="Description offer 10" />
+		<property name="moment" value="02/22/2018 19:00" />
+		<property name="origin" ref="place1" />
+		<property name="destination" ref="place2" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer4" />
+	</bean>
+	
+	<bean id="offer11" class="domain.Offer">
+		<property name="title" value="Title offer 11" />
+		<property name="description" value="Description offer 11" />
+		<property name="moment" value="04/15/2018 19:30" />
+		<property name="origin" ref="place2" />
+		<property name="destination" ref="place3" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer4" />
+	</bean>
+	
+	<bean id="offer12" class="domain.Offer">
+		<property name="title" value="Title offer 12" />
+		<property name="description" value="Description offer 12" />
+		<property name="moment" value="10/04/2018 11:15" />
+		<property name="origin" ref="place4" />
+		<property name="destination" ref="place3" />
+		<property name="banned" value="true" />
+		<property name="customer" ref="customer4" />
+	</bean>
+	
+	<!-- REQUESTS -->
+	
+	<bean id="request1" class="domain.Request">
+		<property name="title" value="Title request 1" />
+		<property name="description" value="Description request 1" />
+		<property name="moment" value="12/12/2018 11:35" />
+		<property name="origin" ref="place3" />
+		<property name="destination" ref="place5" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer6" />
+	</bean>
+	
+	<bean id="request2" class="domain.Request">
+		<property name="title" value="Title request 2" />
+		<property name="description" value="Description request 2" />
+		<property name="moment" value="12/11/2018 13:35" />
+		<property name="origin" ref="place5" />
+		<property name="destination" ref="place1" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer7" />
+	</bean>
+	
+	<bean id="request3" class="domain.Request">
+		<property name="title" value="Title request 3" />
+		<property name="description" value="Description request 3" />
+		<property name="moment" value="12/21/2018 17:35" />
+		<property name="origin" ref="place6" />
+		<property name="destination" ref="place2" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer7" />
+	</bean>
+	
+	<bean id="request4" class="domain.Request">
+		<property name="title" value="Title request 4" />
+		<property name="description" value="Description request 4" />
+		<property name="moment" value="12/16/2018 18:21" />
+		<property name="origin" ref="place7" />
+		<property name="destination" ref="place4" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer8" />
+	</bean>
+	
+	<bean id="request5" class="domain.Request">
+		<property name="title" value="Title request 5" />
+		<property name="description" value="Description request 5" />
+		<property name="moment" value="09/25/2018 19:45" />
+		<property name="origin" ref="place5" />
+		<property name="destination" ref="place3" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer8" />
+	</bean>
+	
+	<bean id="request6" class="domain.Request">
+		<property name="title" value="Title request 6" />
+		<property name="description" value="Description request 6" />
+		<property name="moment" value="07/12/2018 21:18" />
+		<property name="origin" ref="place3" />
+		<property name="destination" ref="place7" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer8" />
+	</bean>
+	
+	<bean id="request7" class="domain.Request">
+		<property name="title" value="Title request 7" />
+		<property name="description" value="Description request 7" />
+		<property name="moment" value="03/19/2018 13:45" />
+		<property name="origin" ref="place1" />
+		<property name="destination" ref="place2" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer8" />
+	</bean>
+	
+	<bean id="request8" class="domain.Request">
+		<property name="title" value="Title request 8" />
+		<property name="description" value="Description request 8" />
+		<property name="moment" value="08/23/2018 18:35" />
+		<property name="origin" ref="place5" />
+		<property name="destination" ref="place6" />
+		<property name="banned" value="false" />
+		<property name="customer" ref="customer8" />
+	</bean>
+	
+	<bean id="request9" class="domain.Request">
+		<property name="title" value="Title request 9" />
+		<property name="description" value="Description request 9" />
+		<property name="moment" value="12/31/2018 19:00" />
+		<property name="origin" ref="place7" />
+		<property name="destination" ref="place6" />
+		<property name="banned" value="true" />
+		<property name="customer" ref="customer8" />
+	</bean>
+	
+	<!-- APPLICATIONS -->
+	
+	<bean id="application1" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer2" />
+		<property name="trip" ref="offer2" />
+	</bean>
+	
+	<bean id="application2" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="offer5" />
+	</bean>
+	
+	<bean id="application3" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="offer6" />
+	</bean>
+	
+	<bean id="application4" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="offer7" />
+	</bean>
+	
+	<bean id="application5" class="domain.Application">
+		<property name="status" value="ACCEPTED" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="offer8" />
+	</bean>
+	
+	<bean id="application6" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="offer9" />
+	</bean>
+	
+	<bean id="application7" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="offer10" />
+	</bean>
+	
+	<bean id="application8" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer4" />
+		<property name="trip" ref="offer11" />
+	</bean>
+	
+	<bean id="application9" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer5" />
+		<property name="trip" ref="offer11" />
+	</bean>
+	
+	<bean id="application10" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer6" />
+		<property name="trip" ref="offer11" />
+	</bean>
+	
+	<bean id="application11" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer7" />
+		<property name="trip" ref="offer11" />
+	</bean>
+	
+	<bean id="application12" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer8" />
+		<property name="trip" ref="offer11" />
+	</bean>
+	
+	<bean id="application13" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer2" />
+		<property name="trip" ref="request2" />
+	</bean>
+	
+	<bean id="application14" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="request3" />
+	</bean>
+	
+	<bean id="application15" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="request4" />
+	</bean>
+	
+	<bean id="application16" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="request5" />
+	</bean>
+	
+	<bean id="application17" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="request6" />
+	</bean>
+	
+	<bean id="application18" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="request7" />
+	</bean>
+	
+	<bean id="application19" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer3" />
+		<property name="trip" ref="request8" />
+	</bean>
+	
+	<bean id="application20" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer4" />
+		<property name="trip" ref="request8" />
+	</bean>
+	
+	<bean id="application21" class="domain.Application">
+		<property name="status" value="PENDING" />
+		<property name="customer" ref="customer5" />
+		<property name="trip" ref="request8" />
+	</bean>
+	
+	<bean id="application22" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer6" />
+		<property name="trip" ref="request8" />
+	</bean>
+	
+	<bean id="application23" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer7" />
+		<property name="trip" ref="request8" />
+	</bean>
+	
+	<bean id="application24" class="domain.Application">
+		<property name="status" value="DENIED" />
+		<property name="customer" ref="customer9" />
+		<property name="trip" ref="request8" />
+	</bean>
+	
+	<!-- COMMENTS -->
+	
+	<bean id="comment1" class="domain.Comment">
+		<property name="title" value="Title comment 1" />
+		<property name="moment" value="02/04/2018 16:30" />
+		<property name="text" value="Text comment 1" />
+		<property name="stars" value="0" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer2" />
+		<property name="commentableentity" ref="admin" />
+	</bean>
+	
+	<bean id="comment2" class="domain.Comment">
+		<property name="title" value="Title comment 2" />
+		<property name="moment" value="06/07/2018 10:15" />
+		<property name="text" value="Text comment 2" />
+		<property name="stars" value="1" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="customer2" />
+	</bean>
+	
+	<bean id="comment3" class="domain.Comment">
+		<property name="title" value="Title comment 3" />
+		<property name="moment" value="02/09/2018 16:45" />
+		<property name="text" value="Text comment 3" />
+		<property name="stars" value="2" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="customer4" />
+	</bean>
+	
+	<bean id="comment4" class="domain.Comment">
+		<property name="title" value="Title comment 4" />
+		<property name="moment" value="12/10/2018 17:00" />
+		<property name="text" value="Text comment 4" />
+		<property name="stars" value="3" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="customer5" />
+	</bean>
+	
+	<bean id="comment5" class="domain.Comment">
+		<property name="title" value="Title comment 5" />
+		<property name="moment" value="01/10/2018 20:30" />
+		<property name="text" value="Text comment 5" />
+		<property name="stars" value="4" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="customer6" />
+	</bean>
+	
+	<bean id="comment6" class="domain.Comment">
+		<property name="title" value="Title comment 6" />
+		<property name="moment" value="17/03/2018 21:30" />
+		<property name="text" value="Text comment 6" />
+		<property name="stars" value="5" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="customer7" />
+	</bean>
+	
+	<bean id="comment7" class="domain.Comment">
+		<property name="title" value="Title comment 7" />
+		<property name="moment" value="19/01/2018 18:00" />
+		<property name="text" value="Text comment 7" />
+		<property name="stars" value="2" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="request3" />
+	</bean>
+	
+	<bean id="comment8" class="domain.Comment">
+		<property name="title" value="Title comment 8" />
+		<property name="moment" value="02/05/2018 19:00" />
+		<property name="text" value="Text comment 8" />
+		<property name="stars" value="3" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="request3" />
+	</bean>
+	
+	<bean id="comment9" class="domain.Comment">
+		<property name="title" value="Title comment 9" />
+		<property name="moment" value="02/02/2018 12:30" />
+		<property name="text" value="Text comment 9" />
+		<property name="stars" value="4" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="request3" />
+	</bean>
+	
+	<bean id="comment10" class="domain.Comment">
+		<property name="title" value="Title comment 10" />
+		<property name="moment" value="customer9" />
+		<property name="text" value="Text comment 10" />
+		<property name="stars" value="5" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="request3" />
+	</bean>
+	
+	<bean id="comment11" class="domain.Comment">
+		<property name="title" value="Title comment 11" />
+		<property name="moment" value="customer9" />
+		<property name="text" value="Text comment 11" />
+		<property name="stars" value="1" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="request3" />
+	</bean>
+	
+	<bean id="comment12" class="domain.Comment">
+		<property name="title" value="Title comment 12" />
+		<property name="moment" value="customer9" />
+		<property name="text" value="Text comment 12" />
+		<property name="stars" value="0" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="request3" />
+	</bean>
+	
+	<bean id="comment13" class="domain.Comment">
+		<property name="title" value="Title comment 13" />
+		<property name="moment" value="customer9" />
+		<property name="text" value="Text comment 13" />
+		<property name="stars" value="3" />
+		<property name="banned" value="false" />
+		<property name="actor" ref="customer3" />
+		<property name="commentableentity" ref="offer3" />
 	</bean>
 	
 </beans>
