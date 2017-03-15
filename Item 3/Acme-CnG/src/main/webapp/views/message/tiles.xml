@@ -16,9 +16,14 @@
        
 <tiles-definitions>
 
-	<definition name="actor/edit" extends="master.page">	
-		<put-attribute name="title" value="Edit actor" />
-		<put-attribute name="body" value="/views/actor/edit.jsp" />
+	<definition name="message/send" extends="master.page">	
+		<put-attribute name="title" value="Send  message" />
+		<put-attribute name="body" value="/views/message/send.jsp" />
 	</definition>
-
+	
+	<definition name="message/list" extends="master.page">	
+		<put-attribute name="title" value="List messages" />
+		<put-attribute name="body" value="/views/message/list.jsp" />
+	</definition>
+	
 </tiles-definitions>
