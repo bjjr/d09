@@ -1,16 +1,21 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.RequestRepository;
 import domain.Application;
+import domain.Customer;
 import domain.Request;
+import domain.Trip;
 
 @Service
 @Transactional
@@ -24,10 +29,18 @@ public class RequestService {
 	// Supporting services -----------------------------------------------------
 
 	@Autowired
-	private ApplicationService	applicationService;
+	private ActorService		actorService;
 
 	@Autowired
-	private ActorService		actorService;
+	private TripService			tripService;
+
+	@Autowired
+	private CustomerService		customerService;
+
+	// Validator --------------------------------------------
+
+	@Autowired
+	private Validator			validator;
 
 
 	// Constructors -----------------------------------------------------
@@ -53,9 +66,6 @@ public class RequestService {
 	}
 
 	public Request findOne(final int requestId) {
-		Assert.notNull(requestId);
-		Assert.isTrue(requestId != 0);
-
 		Request result;
 
 		result = this.requestRepository.findOne(requestId);
@@ -73,76 +83,123 @@ public class RequestService {
 		return result;
 	}
 
+	public Request save(final Request request) {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
+
+		Assert.notNull(request);
+
+		Request result;
+		Customer customer;
+		Collection<Request> requestsByCustomer;
+
+		customer = this.customerService.findByPrincipal();
+
+		request.setCustomer(customer);
+		request.setBanned(false);
+
+		requestsByCustomer = this.findRequestsByCustomer(customer.getId());
+		requestsByCustomer.add(request);
+		this.customerService.save(customer);
+
+		result = this.requestRepository.save(request);
+
+		return result;
+	}
+
 	public void flush() {
 		this.requestRepository.flush();
 	}
 
 	// Other business methods ----------------------------------------------------
 
-	public Collection<Request> findByKeyword(final String keyword) {
-		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
-		Assert.notNull(keyword);
-
-		Collection<Request> result;
-
-		result = this.requestRepository.findByKeyword(keyword);
-		Assert.notNull(result);
-
-		return result;
-
+	public void accept(final Application application) {
+		this.tripService.accept(application);
 	}
 
-	public Double findAvgRequestCustomer() {
-		Assert.isTrue(this.actorService.checkAuthority("ADMINISTRATOR"));
+	public void deny(final Application application) {
+		this.tripService.deny(application);
+	}
 
-		Double result;
+	public void ban(final Request request) {
+		this.tripService.ban(request);
+	}
 
-		result = this.requestRepository.findAvgRequestCustomer();
-		Assert.notNull(result);
+	public Collection<Request> findByKeyword(final String keyword) {
+		final Collection<Request> result;
+		Collection<Trip> trips;
+
+		result = new ArrayList<Request>();
+		trips = this.tripService.findByKeyword(keyword);
+
+		for (final Trip t : trips)
+			if (t instanceof Request)
+				result.add((Request) t);
 
 		return result;
+
 	}
 
 	public Collection<Request> findAllNotBanned() {
 		Collection<Request> result;
+		Collection<Trip> trips;
 
-		result = this.requestRepository.findAllNotBanned();
+		result = new ArrayList<Request>();
+		trips = this.tripService.findAllNotBanned();
+
+		for (final Trip t : trips)
+			if (t instanceof Request)
+				result.add((Request) t);
+
+		return result;
+	}
+
+	public Collection<Request> findRequestsByCustomer(final int customerId) {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
+
+		final Collection<Request> result;
+		Collection<Trip> trips;
+
+		trips = this.tripService.findTripsByCustomer(customerId);
+
+		result = new ArrayList<Request>();
+		trips = this.tripService.findAllNotBanned();
+
+		for (final Trip t : trips)
+			if (t instanceof Request)
+				result.add((Request) t);
+
+		return result;
+	}
+
+	public Double findAvgRequestPerCustomer() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.requestRepository.findAvgRequestPerCustomer();
 		Assert.notNull(result);
 
 		return result;
 	}
 
-	public void accept(final Application application) {
-		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
-		Assert.notNull(application);
-		Assert.isTrue(application.getStatus() == "PENDING");
+	public Request reconstruct(final Request request, final BindingResult binding) {
+		Request result;
+		Customer customer;
 
-		application.setStatus("ACCEPTED");
+		if (request.getId() == 0) {
+			customer = this.customerService.findByPrincipal();
+			result = request;
+			result.setCustomer(customer);
+		} else {
+			Request aux;
+			aux = this.findOne(request.getId());
+			result = request;
+			result.setCustomer(aux.getCustomer());
+		}
 
-	}
+		this.validator.validate(result, binding);
 
-	public void deny(final Application application) {
-		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
-		Assert.notNull(application);
-		Assert.isTrue(application.getStatus() == "PENDING");
-
-		application.setStatus("DENIED");
-
-	}
-
-	public void ban(final Request request) {
-		Assert.isTrue(this.actorService.checkAuthority("ADMINISTRATOR"));
-		Assert.notNull(request);
-
-		Collection<Application> applications;
-
-		applications = this.applicationService.findApplicationsByTrip(request.getId());
-
-		request.setBanned(true);
-
-		for (final Application ap : applications)
-			this.applicationService.delete(ap);
-
+		return result;
 	}
 
 }
