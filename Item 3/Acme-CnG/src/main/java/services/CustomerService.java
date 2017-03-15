@@ -33,9 +33,12 @@ public class CustomerService {
 	// Simple CRUD methods ---------------------------------
 
 	public Customer create() {
-		Customer res;
+		final Customer res = new Customer();
 
-		res = (Customer) this.actorService.create();
+		res.setName("");
+		res.setSurname("");
+		res.setPhone("");
+		res.setEmail("");
 
 		return res;
 	}

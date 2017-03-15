@@ -30,7 +30,7 @@ public class MessageServiceTest extends AbstractTest {
 	// System under test ------------------------------------------------------
 
 	@Autowired
-	private ActorService	actorService;
+	private CustomerService	customerService;
 
 
 	// Tests ------------------------------------------------------------------
@@ -63,7 +63,7 @@ public class MessageServiceTest extends AbstractTest {
 
 		try {
 			this.authenticate(username);
-			this.actorService.create();
+			this.customerService.create();
 			this.unauthenticate();
 		} catch (final Throwable th) {
 			caught = th.getClass();
