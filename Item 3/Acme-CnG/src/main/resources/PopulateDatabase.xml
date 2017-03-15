@@ -105,7 +105,9 @@
 		</property>
 	</bean>
 	
-	<!-- Other domain beans come here -->	
+	<!-- Other domain beans come here -->
+	
+	<!-- CUSTOMERS -->
 	
 	<bean id="customer1" class="domain.Customer">
 		<property name="name" value="Pepe" />
@@ -137,6 +139,52 @@
 		<property name="email" value="customer4@email.com" />
 		<property name="phone" value="+34000000000" />
 		<property name="userAccount" ref="userAccountC4" />
+	</bean>
+	
+	<!-- MESSAGES -->
+	
+	<bean id="message1" class="domain.Message">
+		<property name="moment" value="01/01/2015 00:00" />
+		<property name="title" value="Title message 1" />
+		<property name="text" value="Text message 1" />
+		<property name="attachments">
+			<list></list>
+		</property>
+		<property name="sender" ref="customer2" />
+		<property name="recipient" ref="customer3" />
+	</bean>
+	
+	<bean id="message2" class="domain.Message">
+		<property name="moment" value="03/04/2015 00:00" />
+		<property name="title" value="Title message 2" />
+		<property name="text" value="Text message 2" />
+		<property name="attachments">
+			<list></list>
+		</property>
+		<property name="sender" ref="customer3" />
+		<property name="recipient" ref="customer4" />
+	</bean>
+	
+	<bean id="message3" class="domain.Message">
+		<property name="moment" value="05/06/2015 00:00" />
+		<property name="title" value="Title message 3" />
+		<property name="text" value="Text message 3" />
+		<property name="attachments">
+			<list></list>
+		</property>
+		<property name="sender" ref="customer3" />
+		<property name="recipient" ref="customer4" />
+	</bean>
+	
+	<bean id="message4" class="domain.Message">
+		<property name="moment" value="09/08/2015 00:00" />
+		<property name="title" value="Title message 4" />
+		<property name="text" value="Text message 4" />
+		<property name="attachments">
+			<list></list>
+		</property>
+		<property name="sender" ref="customer3" />
+		<property name="recipient" ref="customer4" />
 	</bean>
 	
 </beans>
