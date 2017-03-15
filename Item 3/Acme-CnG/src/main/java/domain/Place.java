@@ -27,8 +27,6 @@ public class Place {
 		this.address = address;
 	}
 
-	@NotNull
-	@NotBlank
 	@Pattern(regexp = "^[-+]?([1-8]?\\d(\\.\\d{1,6})?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d{1,6})?)$")
 	public String getCoordinates() {
 		return this.coordinates;
