@@ -127,13 +127,16 @@ public class RequestService {
 	public Collection<Request> findByKeyword(final String keyword) {
 		final Collection<Request> result;
 		Collection<Trip> trips;
+		Customer customer;
 
 		result = new ArrayList<Request>();
 		trips = this.tripService.findByKeyword(keyword);
+		customer = this.customerService.findByPrincipal();
 
 		for (final Trip t : trips)
 			if (t instanceof Request)
-				result.add((Request) t);
+				if (!t.getCustomer().equals(customer))
+					result.add((Request) t);
 
 		return result;
 
@@ -142,27 +145,28 @@ public class RequestService {
 	public Collection<Request> findAllNotBanned() {
 		Collection<Request> result;
 		Collection<Trip> trips;
+		Customer customer;
 
 		result = new ArrayList<Request>();
 		trips = this.tripService.findAllNotBanned();
+		customer = this.customerService.findByPrincipal();
 
 		for (final Trip t : trips)
 			if (t instanceof Request)
-				result.add((Request) t);
+				if (!t.getCustomer().equals(customer))
+					result.add((Request) t);
 
 		return result;
 	}
 
 	public Collection<Request> findRequestsByCustomer(final int customerId) {
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
 		final Collection<Request> result;
 		Collection<Trip> trips;
 
 		trips = this.tripService.findTripsByCustomer(customerId);
-
 		result = new ArrayList<Request>();
-		trips = this.tripService.findAllNotBanned();
 
 		for (final Trip t : trips)
 			if (t instanceof Request)

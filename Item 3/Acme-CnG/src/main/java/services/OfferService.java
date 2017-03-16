@@ -126,41 +126,44 @@ public class OfferService {
 	public Collection<Offer> findByKeyword(final String keyword) {
 		final Collection<Offer> result;
 		Collection<Trip> trips;
+		Customer customer;
 
 		result = new ArrayList<Offer>();
 		trips = this.tripService.findByKeyword(keyword);
+		customer = this.customerService.findByPrincipal();
 
 		for (final Trip t : trips)
 			if (t instanceof Offer)
-				result.add((Offer) t);
+				if (!t.getCustomer().equals(customer))
+					result.add((Offer) t);
 
 		return result;
 	}
-
 	public Collection<Offer> findAllNotBanned() {
 		Collection<Offer> result;
 		Collection<Trip> trips;
+		Customer customer;
 
 		result = new ArrayList<Offer>();
 		trips = this.tripService.findAllNotBanned();
+		customer = this.customerService.findByPrincipal();
 
 		for (final Trip t : trips)
 			if (t instanceof Offer)
-				result.add((Offer) t);
+				if (!t.getCustomer().equals(customer))
+					result.add((Offer) t);
 
 		return result;
 	}
 
 	public Collection<Offer> findOffersByCustomer(final int customerId) {
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
 		final Collection<Offer> result;
 		Collection<Trip> trips;
 
 		trips = this.tripService.findTripsByCustomer(customerId);
-
 		result = new ArrayList<Offer>();
-		trips = this.tripService.findAllNotBanned();
 
 		for (final Trip t : trips)
 			if (t instanceof Offer)

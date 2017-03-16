@@ -56,7 +56,6 @@ public class TripService {
 		Assert.isTrue(application.getStatus() == "PENDING");
 
 		application.setStatus("ACCEPTED");
-
 	}
 
 	public void deny(final Application application) {
@@ -66,7 +65,6 @@ public class TripService {
 		Assert.isTrue(application.getStatus() == "PENDING");
 
 		application.setStatus("DENIED");
-
 	}
 
 	public void ban(final Trip trip) {
@@ -102,6 +100,8 @@ public class TripService {
 	}
 
 	public Collection<Trip> findAllNotBanned() {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
+
 		Collection<Trip> result;
 
 		result = this.tripRepository.findAllNotBanned();
@@ -111,6 +111,8 @@ public class TripService {
 	}
 
 	public Collection<Trip> findTripsByCustomer(final int customerId) {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
+
 		Collection<Trip> result;
 
 		result = this.tripRepository.findTripsByCustomer(customerId);
