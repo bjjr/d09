@@ -88,10 +88,8 @@ public class TripService {
 
 		Collection<Trip> result;
 
-		if (keyword == "" || keyword.equals(null))
-			result = this.findAll();
-		else
-			result = this.tripRepository.findByKeyword(keyword);
+		result = this.tripRepository.findByKeyword(keyword);
+		result.retainAll(this.findAllNotBanned());
 
 		Assert.notNull(result);
 

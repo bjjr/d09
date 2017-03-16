@@ -124,7 +124,7 @@ public class OfferService {
 	}
 
 	public Collection<Offer> findByKeyword(final String keyword) {
-		final Collection<Offer> result;
+		Collection<Offer> result;
 		Collection<Trip> trips;
 		Customer customer;
 
@@ -132,10 +132,13 @@ public class OfferService {
 		trips = this.tripService.findByKeyword(keyword);
 		customer = this.customerService.findByPrincipal();
 
-		for (final Trip t : trips)
-			if (t instanceof Offer)
-				if (!t.getCustomer().equals(customer))
-					result.add((Offer) t);
+		if (keyword == "" || keyword.equals(null))
+			result = this.findAllNotBanned();
+		else
+			for (final Trip t : trips)
+				if (t instanceof Offer)
+					if (!t.getCustomer().equals(customer))
+						result.add((Offer) t);
 
 		return result;
 	}
