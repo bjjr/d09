@@ -60,6 +60,7 @@ public class MessageService {
 
 		return res;
 	}
+
 	public Message save(final Message message) {
 		Assert.notNull(message);
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
@@ -99,6 +100,21 @@ public class MessageService {
 	}
 
 	// Other business methods ---------------------------------
+
+	public void forwardMessage(final Message message, final int recipientId) {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
+		Assert.notNull(message);
+
+		Message forwarded;
+
+		forwarded = this.create(recipientId);
+
+		forwarded.setTitle("FW: " + message.getTitle());
+		forwarded.setText(message.getText());
+		forwarded.setAttachments(message.getAttachments());
+
+		this.save(message);
+	}
 
 	public Collection<Message> findSentMessages() {
 		Collection<Message> res;

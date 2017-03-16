@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -59,9 +58,12 @@ public class Message extends DomainEntity {
 		this.text = text;
 	}
 
+	/*
+	 * MessageService must check if the strings are URLs
+	 */
+
 	@NotNull
 	@ElementCollection
-	@URL
 	public Collection<String> getAttachments() {
 		return this.attachments;
 	}
