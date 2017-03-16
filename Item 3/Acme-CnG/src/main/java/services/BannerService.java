@@ -27,9 +27,11 @@ public class BannerService {
 	}
 
 	public Banner save(final Banner banner) {
-		Assert.notNull(banner, "BannerService.save: banner cannot be null");
 
-		return this.bannerRepository.save(banner);
+		final Banner res = this.bannerRepository.save(banner);
+		Assert.notNull(res);
+
+		return res;
 	}
 
 }
