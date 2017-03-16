@@ -16,7 +16,7 @@ grant select, insert, update, delete, create, drop, references, index, alter,
     on `Acme-CnG`.* to 'acme-manager'@'%';
 
 create database if not exists `Acme-CnG`;
-use `Acme-CnG`
+use `Acme-CnG`;
 
 set names utf8;
 
