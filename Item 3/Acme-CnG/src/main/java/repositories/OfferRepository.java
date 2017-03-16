@@ -10,7 +10,7 @@ import domain.Offer;
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Integer> {
 
-	@Query("select count(o)/(selec count(c) from Customer c) from Offer o")
+	@Query("select count(o)/(select count(c) from Customer c) from Offer o")
 	Double findAvgOfferPerCostumer();
 
 }
