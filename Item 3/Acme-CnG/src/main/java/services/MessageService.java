@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.MessageRepository;
 import domain.Actor;
-import domain.Customer;
 import domain.Message;
 
 @Service
@@ -32,6 +32,9 @@ public class MessageService {
 
 	@Autowired
 	private CustomerService		customerService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	// Constructor --------------------------------------------
@@ -106,31 +109,30 @@ public class MessageService {
 		return res;
 	}
 
-	public Message reconstruct(final Message property, final BindingResult bindingResult) {
+	public Message reconstruct(final Message message, final BindingResult bindingResult) {
 		Message result;
 
-		if (property.getId() == 0) {
-			Customer customer;
+		if (message.getId() == 0) {
+			Actor actor;
 
-			result = property;
-			customer = this.customerService.findByPrincipal();
+			result = message;
+			actor = this.actorService.findByPrincipal();
 
-			result.setLessor(customer);
-			result.setAudits(audits);
-			result.setBooks(books);
+			result.setSender(actor);
 
 		} else {
 			Message aux;
-			aux = propertyRepository.findOne(property.getId());
+			aux = this.messageRepository.findOne(message.getId());
 
-			result = property;
+			result = message;
 
-			result.setAudits(aux.getAudits());
-			result.setBooks(aux.getBooks());
-			result.setLessor(aux.getLessor());
+			result.setTitle(aux.getTitle());
+			result.setText(aux.getText());
+			result.setAttachments(aux.getAttachments());
+			result.setRecipient(aux.getRecipient());
 
 		}
-		validator.validate(result, bindingResult);
+		this.validator.validate(result, bindingResult);
 
 		return result;
 

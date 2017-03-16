@@ -7,7 +7,6 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.MessageService;
@@ -25,8 +24,8 @@ public class MessageController {
 		super();
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int messageId) {
+	@RequestMapping(value = "/send", method = RequestMethod.GET)
+	public ModelAndView edit() {
 		ModelAndView result;
 		Message message;
 
@@ -37,7 +36,7 @@ public class MessageController {
 		return result;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/send", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(final Message message, final BindingResult binding) {
 		ModelAndView result;
 		Message save;
@@ -48,7 +47,7 @@ public class MessageController {
 		else
 			try {
 				this.messageService.save(save);
-				result = new ModelAndView("redirect:/message/ownList.do");
+				result = new ModelAndView("redirect:/message/list.do");
 				result.addObject("message", "message.commit.ok");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(message, "message.commit.error");
