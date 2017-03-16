@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 
 import repositories.MessageRepository;
 import domain.Actor;
+import domain.Customer;
 import domain.Message;
 
 @Service
@@ -28,6 +30,9 @@ public class MessageService {
 	@Autowired
 	private ActorService		actorService;
 
+	@Autowired
+	private CustomerService		customerService;
+
 
 	// Constructor --------------------------------------------
 
@@ -38,20 +43,17 @@ public class MessageService {
 	// Simple CRUD methods ------------------------------------
 
 	public Message create(final int recipientId) {
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 
 		Message res;
 		Collection<String> attachments;
-		Date now;
 		Actor sender, recipient;
 
 		attachments = new ArrayList<String>();
-		now = new Date(System.currentTimeMillis() - 1000);
 		sender = this.actorService.findByPrincipal();
 		recipient = this.actorService.findOne(recipientId);
 		res = new Message();
 
-		res.setMoment(now);
 		res.setText("");
 		res.setTitle("");
 		res.setAttachments(attachments);
@@ -62,8 +64,13 @@ public class MessageService {
 	}
 	public Message save(final Message message) {
 		Assert.notNull(message);
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 		Message res;
+		Date now;
+
+		now = new Date(System.currentTimeMillis() - 1000);
+
+		message.setMoment(now);
 
 		res = this.messageRepository.save(message);
 
@@ -76,7 +83,7 @@ public class MessageService {
 
 	public void delete(final Message message) {
 		Assert.notNull(message);
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 		Assert.isTrue(message.getSender().equals(this.actorService.findByPrincipal()));
 
 		this.messageRepository.delete(message);
@@ -96,6 +103,36 @@ public class MessageService {
 		Assert.isTrue(res.getSender().equals(this.actorService.findByPrincipal()) || res.getRecipient().equals(this.actorService.findByPrincipal()));
 
 		return res;
+	}
+
+	public Message reconstruct(final Message property, final BindingResult bindingResult) {
+		Message result;
+
+		if (property.getId() == 0) {
+			Customer customer;
+
+			result = property;
+			customer = this.customerService.findByPrincipal();
+
+			result.setLessor(customer);
+			result.setAudits(audits);
+			result.setBooks(books);
+
+		} else {
+			Message aux;
+			aux = propertyRepository.findOne(property.getId());
+
+			result = property;
+
+			result.setAudits(aux.getAudits());
+			result.setBooks(aux.getBooks());
+			result.setLessor(aux.getLessor());
+
+		}
+		validator.validate(result, bindingResult);
+
+		return result;
+
 	}
 
 	// Other business methods ---------------------------------
