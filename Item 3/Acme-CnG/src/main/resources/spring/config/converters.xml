@@ -50,9 +50,6 @@
 		<bean class="converters.OfferToStringConverter" />
 		<bean class="converters.StringToOfferConverter" />
 		
-		<bean class="converters.PlaceToStringConverter" />
-		<bean class="converters.StringToPlaceConverter" />
-		
 		<bean class="converters.RequestToStringConverter" />
 		<bean class="converters.StringToRequestConverter" />
 		
