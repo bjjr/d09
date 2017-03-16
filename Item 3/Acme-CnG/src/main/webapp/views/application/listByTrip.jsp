@@ -24,10 +24,10 @@
 
 	<jstl:if test="${row.status=='PENDING'}">
 		<acme:link
-			href="customer/application/accept.do?applicationId=${row.id }"
+			href="application/customer/accept.do?applicationId=${row.id }"
 			code="application.accept" />
 		<acme:link
-			href="customer/application/deny.do?applicationId=${row.id }"
+			href="application/customer/deny.do?applicationId=${row.id }"
 			code="application.deny" />
 	</jstl:if>
 

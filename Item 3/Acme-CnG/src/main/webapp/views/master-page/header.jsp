@@ -34,7 +34,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.customer" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="customer/application/list.do"><spring:message code="master.page.customer.application.list" /></a></li>
+					<li><a href="application/customer/list.do"><spring:message code="master.page.customer.application.list" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
