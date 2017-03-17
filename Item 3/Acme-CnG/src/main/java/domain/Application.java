@@ -37,7 +37,7 @@ public class Application extends DomainEntity {
 
 	//Relationships
 	private Customer	customer;
-	private Trip		Trip;
+	private Trip		trip;
 
 
 	@NotNull
@@ -55,11 +55,11 @@ public class Application extends DomainEntity {
 	@Valid
 	@ManyToOne(optional = false)
 	public Trip getTrip() {
-		return this.Trip;
+		return this.trip;
 	}
 
 	public void setTrip(final Trip trip) {
-		this.Trip = trip;
+		this.trip = trip;
 	}
 
 }
