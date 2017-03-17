@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import repositories.ApplicationRepository;
 import domain.Actor;
 import domain.Application;
 import domain.Customer;
+import domain.Trip;
 
 @Service
 @Transactional
@@ -29,6 +31,9 @@ public class ApplicationService {
 
 	@Autowired
 	private CustomerService			customerService;
+
+	@Autowired
+	private TripService				tripService;
 
 
 	// Constructors -----------------------------------------------------
@@ -164,6 +169,21 @@ public class ApplicationService {
 
 		result = this.applicationRepository.findAvgApplicationsPerRequest();
 		Assert.notNull(result);
+
+		return result;
+	}
+
+	public Collection<Application> findApplicationsAllTripsOfCustomer(final Customer customer) {
+		Assert.notNull(customer);
+
+		final Collection<Application> result;
+		Collection<Trip> trips;
+
+		trips = this.tripService.findTripsByCustomer(customer.getId());
+		result = new ArrayList<Application>();
+
+		for (final Trip t : trips)
+			result.addAll(this.findApplicationsByTrip(t.getId()));
 
 		return result;
 	}

@@ -29,6 +29,7 @@
 		<value>/views/message/messages</value>
 		<value>/views/offer/messages</value>
 		<value>/views/request/messages</value>
+		<value>/views/application/messages</value>
 		
 	</util:list>
 
