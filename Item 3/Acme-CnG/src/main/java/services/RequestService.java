@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.RequestRepository;
-import domain.Application;
 import domain.Customer;
 import domain.Request;
 import domain.Trip;
@@ -111,14 +110,6 @@ public class RequestService {
 	}
 
 	// Other business methods ----------------------------------------------------
-
-	public void accept(final Application application) {
-		this.tripService.accept(application);
-	}
-
-	public void deny(final Application application) {
-		this.tripService.deny(application);
-	}
 
 	public void ban(final Request request) {
 		this.tripService.ban(request);

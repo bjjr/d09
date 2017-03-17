@@ -10,7 +10,7 @@ import domain.Request;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Integer> {
 
-	@Query("select count(r)*1.0/(select count(c) from Customer c) from Request r	")
+	@Query("select count(r)*1.0/(select count(c) from Customer c) from Request r")
 	Double findAvgRequestPerCustomer();
 
 }

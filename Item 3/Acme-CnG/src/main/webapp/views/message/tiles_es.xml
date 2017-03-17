@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!-- 
- * tiles.xml
+ * tiles_es.xml
  *
  * Copyright (C) 2017 Universidad de Sevilla
  * 
@@ -13,12 +13,17 @@
 <!DOCTYPE tiles-definitions PUBLIC
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
-       
+      
 <tiles-definitions>
-
-	<definition name="actor/edit" extends="master.page">	
-		<put-attribute name="title" value="Edit actor" />
-		<put-attribute name="body" value="/views/actor/edit.jsp" />
+	
+	<definition name="message/send" extends="master.page">	
+		<put-attribute name="title" value="Enviar mensaje" />
+		<put-attribute name="body" value="/views/message/send.jsp" />
 	</definition>
-
+	
+	<definition name="message/list" extends="master.page">	
+		<put-attribute name="title" value="Listar mensajes" />
+		<put-attribute name="body" value="/views/message/list.jsp" />
+	</definition>
+	
 </tiles-definitions>

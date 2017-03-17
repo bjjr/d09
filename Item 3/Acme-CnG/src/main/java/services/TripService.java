@@ -47,25 +47,19 @@ public class TripService {
 		return result;
 	}
 
+	public Trip findOne(final int tripId) {
+		Assert.notNull(tripId);
+		Assert.isTrue(tripId != 0);
+
+		Trip result;
+
+		result = this.tripRepository.findOne(tripId);
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	// Other business methods -------------------------------
-
-	public void accept(final Application application) {
-		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
-
-		Assert.notNull(application);
-		Assert.isTrue(application.getStatus() == "PENDING");
-
-		application.setStatus("ACCEPTED");
-	}
-
-	public void deny(final Application application) {
-		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
-
-		Assert.notNull(application);
-		Assert.isTrue(application.getStatus() == "PENDING");
-
-		application.setStatus("DENIED");
-	}
 
 	public void ban(final Trip trip) {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
