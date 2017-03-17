@@ -104,6 +104,24 @@ public class ApplicationService {
 
 	// Other business methods ----------------------------------------------------
 
+	public void accept(final Application application) {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
+
+		Assert.notNull(application);
+		Assert.isTrue(application.getStatus() == "PENDING");
+
+		application.setStatus("ACCEPTED");
+	}
+
+	public void deny(final Application application) {
+		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
+
+		Assert.notNull(application);
+		Assert.isTrue(application.getStatus() == "PENDING");
+
+		application.setStatus("DENIED");
+	}
+
 	public Collection<Application> findApplicationsByCustomer(final int customerId) {
 		Assert.notNull(customerId);
 		Assert.isTrue(customerId != 0);
