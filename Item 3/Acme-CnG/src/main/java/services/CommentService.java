@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import repositories.CommentRepository;
 import domain.Actor;
 import domain.Comment;
+import domain.CommentableEntity;
 
 @Service
 @Transactional
@@ -19,19 +20,23 @@ public class CommentService {
 	// Managed repository
 
 	@Autowired
-	private CommentRepository	commentRepository;
+	private CommentRepository			commentRepository;
 
 	// Supporting services
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService				actorService;
+
+	@Autowired
+	private CommentableEntityService	commentableEntityService;
 
 
 	// Simple CRUD methods
 
-	public Comment create() {
+	public Comment create(final Integer commentableEntityId) {
 		final Comment res = new Comment();
 		final Actor actor;
+		final CommentableEntity commentableEntity;
 
 		res.setTitle("");
 		res.setMoment(new Date(System.currentTimeMillis() - 1000));
@@ -41,15 +46,16 @@ public class CommentService {
 
 		actor = this.actorService.findByPrincipal();
 		Assert.notNull(actor);
+		commentableEntity = this.commentableEntityService.findOne(commentableEntityId);
+		Assert.notNull(commentableEntity);
 
-		// TODO
-		// res.setCommentableEntity()
+		res.setCommentableEntity(commentableEntity);
 		res.setActor(actor);
 
 		return res;
 	}
 
-	private Comment save(final Comment comment) {
+	public Comment save(final Comment comment) {
 		Assert.notNull(comment);
 		final Comment res;
 		final Actor actor;
@@ -64,7 +70,7 @@ public class CommentService {
 		return res;
 	}
 
-	private Comment findOne(final int commentId) {
+	public Comment findOne(final int commentId) {
 		final Comment res = this.commentRepository.findOne(commentId);
 		Assert.notNull(res);
 
