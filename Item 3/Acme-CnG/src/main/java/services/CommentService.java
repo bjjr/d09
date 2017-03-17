@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,4 +77,19 @@ public class CommentService {
 
 		return res;
 	}
+
+	// Other business methods
+
+	public Collection<Comment> findCommentsByCommentableEntity(final int commentableEntityId) {
+		Assert.notNull(commentableEntityId);
+		Assert.isTrue(commentableEntityId != 0);
+
+		Collection<Comment> result;
+
+		result = this.commentRepository.findCommentsByCommentableEntity(commentableEntityId);
+		Assert.notNull(result);
+
+		return result;
+	}
+
 }
