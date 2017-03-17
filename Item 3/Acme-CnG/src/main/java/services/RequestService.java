@@ -125,7 +125,7 @@ public class RequestService {
 	}
 
 	public Collection<Request> findByKeyword(final String keyword) {
-		final Collection<Request> result;
+		Collection<Request> result;
 		Collection<Trip> trips;
 		Customer customer;
 
@@ -133,10 +133,13 @@ public class RequestService {
 		trips = this.tripService.findByKeyword(keyword);
 		customer = this.customerService.findByPrincipal();
 
-		for (final Trip t : trips)
-			if (t instanceof Request)
-				if (!t.getCustomer().equals(customer))
-					result.add((Request) t);
+		if (keyword == "" || keyword.equals(null))
+			result = this.findAllNotBanned();
+		else
+			for (final Trip t : trips)
+				if (t instanceof Request)
+					if (!t.getCustomer().equals(customer))
+						result.add((Request) t);
 
 		return result;
 
