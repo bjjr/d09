@@ -23,7 +23,10 @@ public class BannerService {
 	}
 
 	public Banner getBanner() {
-		return this.bannerRepository.getBanner();
+		final Banner banner = this.bannerRepository.getBanner();
+		Assert.notNull(banner);
+
+		return banner;
 	}
 
 	public Banner save(final Banner banner) {
