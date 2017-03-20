@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.OfferRepository;
+import domain.Application;
 import domain.Customer;
 import domain.Offer;
 import domain.Trip;
@@ -23,23 +24,26 @@ public class OfferService {
 	// Managed repository -----------------------------------
 
 	@Autowired
-	private OfferRepository	offerRepository;
+	private OfferRepository		offerRepository;
 
 	// Supporting services ----------------------------------
 
 	@Autowired
-	private CustomerService	customerService;
+	private CustomerService		customerService;
 
 	@Autowired
-	private ActorService	actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private TripService		tripService;
+	private TripService			tripService;
+
+	@Autowired
+	private ApplicationService	applicationService;
 
 	// Validator --------------------------------------------
 
 	@Autowired
-	private Validator		validator;
+	private Validator			validator;
 
 
 	// Constructors -----------------------------------------
@@ -162,6 +166,22 @@ public class OfferService {
 		for (final Trip t : trips)
 			if (t instanceof Offer)
 				result.add((Offer) t);
+
+		return result;
+	}
+
+	public Collection<Offer> findOffersWithApplicationsMine() {
+		final Collection<Offer> result;
+		Collection<Application> allMyApplications;
+		Customer customer;
+
+		result = new ArrayList<Offer>();
+		customer = this.customerService.findByPrincipal();
+		allMyApplications = this.applicationService.findApplicationsByCustomer(customer.getId());
+
+		for (final Application a : allMyApplications)
+			if (a.getTrip() instanceof Offer)
+				result.add((Offer) a.getTrip());
 
 		return result;
 	}
