@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.validator.internal.constraintvalidators.URLValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.MessageRepository;
 import domain.Actor;
-import domain.Customer;
 import domain.Message;
 
 @Service
@@ -31,34 +32,34 @@ public class MessageService {
 	private ActorService		actorService;
 
 	@Autowired
-	private CustomerService		customerService;
+	private Validator			validator;
 
 
 	// Constructor --------------------------------------------
 
 	public MessageService() {
+
 		super();
+
 	}
 
 	// Simple CRUD methods ------------------------------------
 
-	public Message create(final int recipientId) {
+	public Message create() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 
 		Message res;
 		Collection<String> attachments;
-		Actor sender, recipient;
+		Actor sender;
 
 		attachments = new ArrayList<String>();
 		sender = this.actorService.findByPrincipal();
-		recipient = this.actorService.findOne(recipientId);
 		res = new Message();
 
 		res.setText("");
 		res.setTitle("");
 		res.setAttachments(attachments);
 		res.setSender(sender);
-		res.setRecipient(recipient);
 
 		return res;
 	}
@@ -66,19 +67,19 @@ public class MessageService {
 	public Message save(final Message message) {
 		Assert.notNull(message);
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
+
 		Message res;
 		Date now;
 
 		now = new Date(System.currentTimeMillis() - 1000);
-
 		message.setMoment(now);
-
 		res = this.messageRepository.save(message);
 
 		return res;
 	}
 
 	/*
+	 * 
 	 * Only the sender of a message can delete his/her message
 	 */
 
@@ -91,11 +92,13 @@ public class MessageService {
 	}
 
 	/*
+	 * 
 	 * Users can only access messages related to them
 	 */
 
 	public Message findOne(final int messageId) {
 		Assert.isTrue(messageId != 0);
+
 		Message res;
 
 		res = this.messageRepository.findOne(messageId);
@@ -106,76 +109,73 @@ public class MessageService {
 		return res;
 	}
 
-	public Message reconstruct(final Message property, final BindingResult bindingResult) {
+	public Message reconstruct(final Message message, final BindingResult bindingResult) {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 		Message result;
+		Actor actor;
 
-		if (property.getId() == 0) {
-			Customer customer;
+		result = message;
+		actor = this.actorService.findByPrincipal();
+		result.setSender(actor);
 
-			result = property;
-			customer = this.customerService.findByPrincipal();
-
-			result.setLessor(customer);
-			result.setAudits(audits);
-			result.setBooks(books);
-
-		} else {
-			Message aux;
-			aux = propertyRepository.findOne(property.getId());
-
-			result = property;
-
-			result.setAudits(aux.getAudits());
-			result.setBooks(aux.getBooks());
-			result.setLessor(aux.getLessor());
-
-		}
-		validator.validate(result, bindingResult);
+		this.validateURLs(result.getAttachments(), bindingResult);
+		this.validator.validate(result, bindingResult);
 
 		return result;
+	}
 
+	private void validateURLs(final Collection<String> attachments, final BindingResult binding) {
+		URLValidator validator;
+
+		validator = new URLValidator();
+
+		for (final String s : attachments)
+			if (!validator.isValid(s, null)) {
+				binding.rejectValue("attachments", "org.hibernate.validator.constraints.URL.message");
+				break;
+			}
 	}
 
 	// Other business methods ---------------------------------
 
-	public void forwardMessage(final Message message, final int recipientId) {
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
+	public Message forwardMessage(final Message message) {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 		Assert.notNull(message);
 
 		Message forwarded;
 
-		forwarded = this.create(recipientId);
-
+		forwarded = this.create();
 		forwarded.setTitle("FW: " + message.getTitle());
 		forwarded.setText(message.getText());
 		forwarded.setAttachments(message.getAttachments());
 
-		this.save(message);
+		return forwarded;
 	}
 
 	public Collection<Message> findSentMessages() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 		Collection<Message> res;
 		Actor sender;
 
 		sender = this.actorService.findByPrincipal();
-
 		res = this.messageRepository.findMessagesBySender(sender.getId());
 
 		return res;
 	}
 
 	public Collection<Message> findReceivedMessages() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 		Collection<Message> res;
 		Actor recipient;
 
 		recipient = this.actorService.findByPrincipal();
-
 		res = this.messageRepository.findMessagesByRecipient(recipient.getId());
 
 		return res;
 	}
 
 	public Integer findMinNumSntMsgPerActor() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Integer res;
 
 		res = this.messageRepository.findMinNumSntMsgPerActor().get(0);
@@ -186,6 +186,7 @@ public class MessageService {
 	// TODO: Check this method
 
 	public Double findAvgNumSntMsgPerActor() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Double res;
 
 		res = this.messageRepository.findAvgNumSntMsgPerActor();
@@ -194,6 +195,7 @@ public class MessageService {
 	}
 
 	public Integer findMaxNumSntMsgPerActor() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Integer res;
 
 		res = this.messageRepository.findMinNumSntMsgPerActor().get(0);
@@ -202,6 +204,7 @@ public class MessageService {
 	}
 
 	public Integer findMinNumRecMsgPerActor() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Integer res;
 
 		res = this.messageRepository.findMinNumRecMsgPerActor().get(0);
@@ -212,6 +215,7 @@ public class MessageService {
 	// TODO: Check this method
 
 	public Double findAvgNumRecMsgPerActor() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Double res;
 
 		res = this.messageRepository.findAvgNumRecMsgPerActor();
@@ -220,6 +224,7 @@ public class MessageService {
 	}
 
 	public Integer findMaxNumRecMsgPerActor() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Integer res;
 
 		res = this.messageRepository.findMaxNumRecMsgPerActor().get(0);
@@ -228,6 +233,7 @@ public class MessageService {
 	}
 
 	public Collection<Actor> findActorsWithMoreSentMessages() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Collection<Actor> res;
 
 		res = this.messageRepository.findActorsWithMoreSentMessages();
@@ -236,10 +242,12 @@ public class MessageService {
 	}
 
 	public Collection<Actor> findActorsWithMoreReceivedMessages() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Collection<Actor> res;
 
 		res = this.messageRepository.findActorsWithMoreReceivedMessages();
 
 		return res;
 	}
+
 }
