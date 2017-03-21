@@ -24,6 +24,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
+					<li><a href="banner/administrator/edit.do"><spring:message code="master.page.administrator.banner.edit" /></a></li>		
 					<li><a href="administrator/action-1.do"><spring:message code="master.page.administrator.action.1" /></a></li>
 					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>					
 				</ul>
@@ -34,8 +35,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.customer" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message code="master.page.customer.action.2" /></a></li>					
+					<li><a href="application/customer/list.do"><spring:message code="master.page.customer.application.list" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>

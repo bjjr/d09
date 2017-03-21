@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.RequestRepository;
-import domain.Application;
 import domain.Customer;
 import domain.Request;
 import domain.Trip;
@@ -112,20 +111,12 @@ public class RequestService {
 
 	// Other business methods ----------------------------------------------------
 
-	public void accept(final Application application) {
-		this.tripService.accept(application);
-	}
-
-	public void deny(final Application application) {
-		this.tripService.deny(application);
-	}
-
 	public void ban(final Request request) {
 		this.tripService.ban(request);
 	}
 
 	public Collection<Request> findByKeyword(final String keyword) {
-		final Collection<Request> result;
+		Collection<Request> result;
 		Collection<Trip> trips;
 		Customer customer;
 
@@ -133,10 +124,13 @@ public class RequestService {
 		trips = this.tripService.findByKeyword(keyword);
 		customer = this.customerService.findByPrincipal();
 
-		for (final Trip t : trips)
-			if (t instanceof Request)
-				if (!t.getCustomer().equals(customer))
-					result.add((Request) t);
+		if (keyword == "" || keyword.equals(null))
+			result = this.findAllNotBanned();
+		else
+			for (final Trip t : trips)
+				if (t instanceof Request)
+					if (!t.getCustomer().equals(customer))
+						result.add((Request) t);
 
 		return result;
 
