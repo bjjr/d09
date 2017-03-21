@@ -16,9 +16,9 @@
        
 <tiles-definitions>
 
-	<definition name="actor/edit" extends="master.page">	
-		<put-attribute name="title" value="Edit actor" />
-		<put-attribute name="body" value="/views/actor/edit.jsp" />
+	<definition name="comment/list" extends="master.page">	
+		<put-attribute name="title" value="List Comments" />
+		<put-attribute name="body" value="/views/comment/list.jsp" />
 	</definition>
-
+	
 </tiles-definitions>
