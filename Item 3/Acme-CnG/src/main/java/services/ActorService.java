@@ -34,6 +34,15 @@ public class ActorService {
 
 	// Simple CRUD methods -------------------------------------
 
+	public Collection<Actor> findAll() {
+		Collection<Actor> res;
+
+		res = this.actorRepository.findAll();
+		Assert.notNull(res, "The actors does not exist");
+
+		return res;
+	}
+
 	public Actor findOne(final int actorId) {
 		Actor res;
 
