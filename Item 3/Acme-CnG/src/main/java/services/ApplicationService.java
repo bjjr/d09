@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ApplicationRepository;
-import domain.Actor;
 import domain.Application;
 import domain.Customer;
 import domain.Trip;
@@ -79,14 +78,11 @@ public class ApplicationService {
 		Assert.notNull(application);
 
 		Application result;
-		Actor actor;
 		Customer principal;
 
+		principal = this.customerService.findByPrincipal();
+		application.setCustomer(principal);
 		result = this.applicationRepository.save(application);
-		actor = this.actorService.findByPrincipal();
-		principal = this.customerService.findOne(actor.getId());
-
-		result.setCustomer(principal);
 
 		return result;
 
@@ -112,8 +108,15 @@ public class ApplicationService {
 	public void accept(final Application application) {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
+		Collection<Application> apps;
+		Customer principal;
+
+		principal = this.customerService.findByPrincipal();
+		apps = this.findApplicationsByCustomer(principal.getId());
+
 		Assert.notNull(application);
 		Assert.isTrue(application.getStatus().equals("PENDING"));
+		Assert.isTrue(apps.contains(application));
 
 		application.setStatus("ACCEPTED");
 	}
@@ -121,8 +124,15 @@ public class ApplicationService {
 	public void deny(final Application application) {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
+		Collection<Application> apps;
+		Customer principal;
+
+		principal = this.customerService.findByPrincipal();
+		apps = this.findApplicationsByCustomer(principal.getId());
+
 		Assert.notNull(application);
 		Assert.isTrue(application.getStatus().equals("PENDING"));
+		Assert.isTrue(apps.contains(application));
 
 		application.setStatus("DENIED");
 	}
