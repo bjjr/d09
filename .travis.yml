@@ -12,6 +12,7 @@ before_install:
 
 script:
     - cd Item\ 3/Acme-CnG/
+    - ls -lah
     - mvn exec:java -e -Dexec.mainClass="utilities.PopulateDatabase"
     - mvn clean test
     - ls -lah
