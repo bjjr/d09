@@ -79,7 +79,6 @@ public class MessageService {
 	}
 
 	/*
-	 * 
 	 * Only the sender of a message can delete his/her message
 	 */
 
@@ -92,7 +91,6 @@ public class MessageService {
 	}
 
 	/*
-	 * 
 	 * Users can only access messages related to them
 	 */
 
