@@ -45,23 +45,21 @@ public class MessageService {
 
 	// Simple CRUD methods ------------------------------------
 
-	public Message create(final int recipientId) {
+	public Message create() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 
 		Message res;
 		Collection<String> attachments;
-		Actor sender, recipient;
+		Actor sender;
 
 		attachments = new ArrayList<String>();
 		sender = this.actorService.findByPrincipal();
-		recipient = this.actorService.findOne(recipientId);
 		res = new Message();
 
 		res.setText("");
 		res.setTitle("");
 		res.setAttachments(attachments);
 		res.setSender(sender);
-		res.setRecipient(recipient);
 
 		return res;
 	}
@@ -140,19 +138,19 @@ public class MessageService {
 
 	// Other business methods ---------------------------------
 
-	public void forwardMessage(final Message message, final int recipientId) {
+	public Message forwardMessage(final Message message) {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") && this.actorService.checkAuthority("CUSTOMER"));
 		Assert.notNull(message);
 
 		Message forwarded;
 
-		forwarded = this.create(recipientId);
+		forwarded = this.create();
 
 		forwarded.setTitle("FW: " + message.getTitle());
 		forwarded.setText(message.getText());
 		forwarded.setAttachments(message.getAttachments());
 
-		this.save(message);
+		return forwarded;
 	}
 
 	public Collection<Message> findSentMessages() {
