@@ -113,7 +113,7 @@ public class ApplicationService {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
 		Assert.notNull(application);
-		Assert.isTrue(application.getStatus() == "PENDING");
+		Assert.isTrue(application.getStatus().equals("PENDING"));
 
 		application.setStatus("ACCEPTED");
 	}
@@ -122,7 +122,7 @@ public class ApplicationService {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
 		Assert.notNull(application);
-		Assert.isTrue(application.getStatus() == "PENDING");
+		Assert.isTrue(application.getStatus().equals("PENDING"));
 
 		application.setStatus("DENIED");
 	}
