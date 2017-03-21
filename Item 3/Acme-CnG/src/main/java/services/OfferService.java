@@ -16,6 +16,7 @@ import domain.Application;
 import domain.Customer;
 import domain.Offer;
 import domain.Trip;
+import forms.OfferForm;
 
 @Service
 @Transactional
@@ -201,16 +202,22 @@ public class OfferService {
 		Offer result;
 		Customer customer;
 
-		if (offer.getId() == 0) {
-			customer = this.customerService.findByPrincipal();
-			result = offer;
-			result.setCustomer(customer);
-		} else {
-			Offer aux;
-			aux = this.findOne(offer.getId());
-			result = offer;
-			result.setCustomer(aux.getCustomer());
-		}
+		result = offer;
+		customer = this.customerService.findByPrincipal();
+		result.setCustomer(customer);
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
+
+	public Offer reconstruct(final OfferForm offerForm, final BindingResult binding) {
+		Offer result;
+		Customer customer;
+
+		result = offerForm.getOffer();
+		customer = this.customerService.findByPrincipal();
+		result.setCustomer(customer);
 
 		this.validator.validate(result, binding);
 
