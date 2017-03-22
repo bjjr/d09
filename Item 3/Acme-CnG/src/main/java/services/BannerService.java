@@ -17,6 +17,9 @@ public class BannerService {
 	@Autowired
 	private BannerRepository	bannerRepository;
 
+	@Autowired
+	private ActorService		actorService;
+
 
 	public BannerService() {
 		super();
@@ -31,10 +34,11 @@ public class BannerService {
 
 	public Banner save(final Banner banner) {
 
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"), "BannerService.save: You need to be admin in order to save a banner");
+
 		final Banner res = this.bannerRepository.save(banner);
 		Assert.notNull(res);
 
 		return res;
 	}
-
 }
