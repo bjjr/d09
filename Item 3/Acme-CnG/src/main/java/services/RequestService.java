@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import domain.Application;
 import domain.Customer;
 import domain.Request;
 import domain.Trip;
+import forms.RequestForm;
 
 @Service
 @Transactional
@@ -94,11 +96,14 @@ public class RequestService {
 		Request result;
 		Customer customer;
 		Collection<Request> requestsByCustomer;
+		Date thisMoment;
 
 		customer = this.customerService.findByPrincipal();
+		thisMoment = new Date(System.currentTimeMillis());
 
 		request.setCustomer(customer);
 		request.setBanned(false);
+		Assert.isTrue(thisMoment.compareTo(request.getMoment()) < 0, "The moment must be in the future");
 
 		requestsByCustomer = this.findRequestsByCustomer(customer.getId());
 		requestsByCustomer.add(request);
@@ -200,20 +205,13 @@ public class RequestService {
 		return result;
 	}
 
-	public Request reconstruct(final Request request, final BindingResult binding) {
+	public Request reconstruct(final RequestForm requestForm, final BindingResult binding) {
 		Request result;
 		Customer customer;
 
-		if (request.getId() == 0) {
-			customer = this.customerService.findByPrincipal();
-			result = request;
-			result.setCustomer(customer);
-		} else {
-			Request aux;
-			aux = this.findOne(request.getId());
-			result = request;
-			result.setCustomer(aux.getCustomer());
-		}
+		result = requestForm.getRequest();
+		customer = this.customerService.findByPrincipal();
+		result.setCustomer(customer);
 
 		this.validator.validate(result, binding);
 

@@ -18,7 +18,7 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
 	@Query("select t from Trip t where t.customer.id = ?1")
 	Collection<Trip> findTripsByCustomer(int customerId);
 
-	@Query("select t from Trip t where t.title like %?1% or t.description like %?1% or t.origin like %?1% or t.destination like %?1%")
+	@Query("select t from Trip t where t.title like %?1% or t.description like %?1% or t.origin.address like %?1% or t.destination.address like %?1%")
 	Collection<Trip> findByKeyword(String keyword);
 
 	@Query("select t from Trip t where t.banned=FALSE")
