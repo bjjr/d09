@@ -198,19 +198,6 @@ public class OfferService {
 		return result;
 	}
 
-	public Offer reconstruct(final Offer offer, final BindingResult binding) {
-		Offer result;
-		Customer customer;
-
-		result = offer;
-		customer = this.customerService.findByPrincipal();
-		result.setCustomer(customer);
-
-		this.validator.validate(result, binding);
-
-		return result;
-	}
-
 	public Offer reconstruct(final OfferForm offerForm, final BindingResult binding) {
 		Offer result;
 		Customer customer;

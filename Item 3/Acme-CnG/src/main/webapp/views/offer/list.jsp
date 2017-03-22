@@ -20,12 +20,14 @@
 	
 		<acme:column code="trip.moment" property="moment" sortable="true"/>
 		
-		<display:column title="trip.origin">
+		<spring:message code="trip.origin" var="originHeader" />
+		<display:column title="${originHeader}">
 			<acme:display code="place.address" property="${row.origin.address}"/>
 			<acme:display code="place.coordinates" property="${row.origin.coordinates}"/>
 		</display:column>
 	
-		<display:column title="trip.destination">
+		<spring:message code="trip.destination" var="destinationHeader" />
+		<display:column title="${destinationHeader}">
 			<acme:display code="place.address" property="${row.destination.address}"/>
 			<acme:display code="place.coordinates" property="${row.destination.coordinates}"/>
 		</display:column>
@@ -63,7 +65,7 @@
 	<!-- Search Form -->
 	
 	<security:authorize access="hasRole('CUSTOMER')">
-		<form:form action="" modelAttribute="offer">
+		<form:form action="offer/list.do" modelAttribute="">
 			<input type="text" name="offer"/>
 			<input type="submit" name="search" value="<spring:message code="offer.search"/>"/>
 		</form:form>
@@ -82,9 +84,17 @@
 	
 		<acme:column code="trip.moment" property="moment"/>
 	
-		<acme:column code="trip.origin" property="origin"/>
+		<spring:message code="trip.origin" var="originHeader" />
+		<display:column title="${originHeader}">
+			<acme:display code="place.address" property="${row.origin.address}"/>
+			<acme:display code="place.coordinates" property="${row.origin.coordinates}"/>
+		</display:column>
 	
-		<acme:column code="trip.destination" property="destination"/>
+		<spring:message code="trip.destination" var="destinationHeader" />
+		<display:column title="${destinationHeader}">
+			<acme:display code="place.address" property="${row.destination.address}"/>
+			<acme:display code="place.coordinates" property="${row.destination.coordinates}"/>
+		</display:column>
 	
 		<security:authorize access="hasRole('CUSTOMER')">
 			<display:column>

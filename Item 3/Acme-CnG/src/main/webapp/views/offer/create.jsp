@@ -19,13 +19,23 @@
 	
 	<acme:textbox code="trip.moment" path="moment"/>
 	
-	<spring:message code="trip.origin" />
-	<acme:textbox code="place.address" path="origin.address" />
-	<acme:textbox code="place.coordinates" path="origin.coordinates" />
+	<fieldset style="width: 250px">
+		<legend align="left">
+			<spring:message code="trip.origin" />
+		</legend>
+		<acme:textbox code="place.address" path="origin.address" />
+		<acme:textbox code="place.coordinates" path="origin.coordinates" />
+	</fieldset>
 	
-	<spring:message code="trip.destination" />
-	<acme:textbox code="place.address" path="destination.address" />
-	<acme:textbox code="place.coordinates" path="destination.coordinates" />
+	<fieldset style="width: 250px">
+		<legend align="left">
+			<spring:message code="trip.destination" />
+		</legend>
+		<acme:textbox code="place.address" path="destination.address" />
+		<acme:textbox code="place.coordinates" path="destination.coordinates" />
+	</fieldset>
+	
+	<br />
 	
 	<!-- Buttons -->
 	

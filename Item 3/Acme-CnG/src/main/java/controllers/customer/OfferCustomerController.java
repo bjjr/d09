@@ -75,7 +75,7 @@ public class OfferCustomerController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/list", method = RequestMethod.POST, params = "search")
+	@RequestMapping(value = "/list", method = RequestMethod.GET, params = "search")
 	public ModelAndView search(@RequestParam final String keyword) {
 		ModelAndView result;
 		Collection<Offer> offersWanted;
