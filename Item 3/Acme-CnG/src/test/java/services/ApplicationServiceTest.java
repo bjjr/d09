@@ -50,9 +50,10 @@ public class ApplicationServiceTest extends AbstractTest {
 	// Tests ------------------------------------------------------------------
 
 	/*
-	 * Use case: A registered user creates an application
+	 * Use case: A registered customer creates an application
 	 * Expected errors:
 	 * - A non registered user tries to create an application -> IllegalArgumentException
+	 * - An administrator tries to create an application -> IllegalArgumentException
 	 */
 
 	@Test
@@ -62,6 +63,8 @@ public class ApplicationServiceTest extends AbstractTest {
 				"customer2", 115, null
 			}, {
 				null, 115, IllegalArgumentException.class
+			}, {
+				"admin", 115, IllegalArgumentException.class
 			}
 		};
 
@@ -70,32 +73,13 @@ public class ApplicationServiceTest extends AbstractTest {
 	}
 
 	/*
-	 * Use case: A registered user lists his/her applications
-	 * Expected errors:
-	 * - A non registered user tries to list applications -> IllegalArgumentException
-	 */
-
-	@Test
-	public void listApplicationDriver() {
-		final Object testingData[][] = {
-			{
-				"customer2", null
-			}, {
-				null, IllegalArgumentException.class
-			}
-		};
-
-		for (int i = 0; i < testingData.length; i++)
-			this.listApplicationTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
-	}
-
-	/*
-	 * Use case: A registered user that owns an offer or a request accepts an
+	 * Use case: A registered customer that owns an offer or a request accepts an
 	 * application of that offer or request
 	 * Expected errors:
 	 * - That user tries to accept some accepted or denied application -> IllegalArgumentException
 	 * - That user tries to accept some application that not belongs to him/her -> IllegalArgumentException
 	 * - A non registered user tries to accept an application -> IllegalArgumentException
+	 * - An administrator tries to accept an application -> IllegalArgumentException
 	 */
 
 	@Test
@@ -109,6 +93,8 @@ public class ApplicationServiceTest extends AbstractTest {
 				"customer1", 136, IllegalArgumentException.class
 			}, {
 				null, 136, IllegalArgumentException.class
+			}, {
+				"admin", 136, IllegalArgumentException.class
 			}
 		};
 
@@ -117,12 +103,13 @@ public class ApplicationServiceTest extends AbstractTest {
 	}
 
 	/*
-	 * Use case: A registered user that owns an offer or a request denies an
+	 * Use case: A registered customer that owns an offer or a request denies an
 	 * application of that offer or request
 	 * Expected errors:
 	 * - That user tries to deny some accepted or denied application -> IllegalArgumentException
 	 * - That user tries to deny some application that not belongs to him/her -> IllegalArgumentException
 	 * - A non registered user tries to deny an application -> IllegalArgumentException
+	 * - An administrator tries to deny an application -> IllegalArgumentException
 	 */
 
 	@Test
@@ -136,11 +123,49 @@ public class ApplicationServiceTest extends AbstractTest {
 				"customer1", 136, IllegalArgumentException.class
 			}, {
 				null, 136, IllegalArgumentException.class
+			}, {
+				"admin", 136, IllegalArgumentException.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
 			this.denyApplicationTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
+	}
+
+	/*
+	 * Checks if the query findAvgApplicationsPerOffer works
+	 */
+
+	@Test
+	public void testFindAvgApplicationsPerOffer() {
+		Double avg;
+
+		this.authenticate("admin");
+
+		avg = this.applicationService.findAvgApplicationsPerOffer();
+
+		Assert.isTrue(avg.equals(1.0));
+
+		this.unauthenticate();
+
+	}
+
+	/*
+	 * Checks if the query findAvgApplicationsPerRequest works
+	 */
+
+	@Test
+	public void testFindAvgApplicationsPerRequest() {
+		Double avg;
+
+		this.authenticate("admin");
+
+		avg = this.applicationService.findAvgApplicationsPerRequest();
+
+		Assert.isTrue(avg.equals(1.33333));
+
+		this.unauthenticate();
+
 	}
 
 	// Ancillary methods ------------------------------------------------------
@@ -181,32 +206,6 @@ public class ApplicationServiceTest extends AbstractTest {
 			app = this.applicationService.findOne(applicationId);
 
 			this.applicationService.deny(app);
-
-			this.unauthenticate();
-
-		} catch (final Throwable th) {
-			caught = th.getClass();
-		}
-
-		this.checkExceptions(expected, caught);
-	}
-
-	protected void listApplicationTemplate(final String username, final Class<?> expected) {
-		Class<?> caught;
-
-		caught = null;
-
-		try {
-			Collection<Application> apps;
-			final Customer principal;
-			int id;
-
-			this.authenticate(username);
-
-			principal = this.customerService.findByPrincipal();
-			id = principal.getId();
-
-			apps = this.applicationService.findApplicationsByCustomer(id);
 
 			this.unauthenticate();
 
