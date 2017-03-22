@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CustomerService;
@@ -69,23 +68,6 @@ public class OfferCustomerController extends AbstractController {
 
 		result = new ModelAndView("offer/list");
 		result.addObject("offers", offers);
-		result.addObject("myOffers", myOffers);
-		result.addObject("requestURI", "offer/list.do");
-
-		return result;
-	}
-
-	@RequestMapping(value = "/list", method = RequestMethod.GET, params = "search")
-	public ModelAndView search(@RequestParam final String keyword) {
-		ModelAndView result;
-		Collection<Offer> offersWanted;
-		Boolean myOffers;
-
-		offersWanted = this.offerService.findByKeyword(keyword);
-		myOffers = false;
-
-		result = new ModelAndView("offer/list");
-		result.addObject("offersWanted", offersWanted);
 		result.addObject("myOffers", myOffers);
 		result.addObject("requestURI", "offer/list.do");
 

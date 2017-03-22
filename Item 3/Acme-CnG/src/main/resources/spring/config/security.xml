@@ -51,6 +51,7 @@
 		<security:intercept-url pattern="/banner/administrator/**" access="hasRole('ADMIN')" /> 
 		
 		<security:intercept-url pattern="/offer/list.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/offer/search.do" access="hasRole('CUSTOMER')" />
 		<security:intercept-url pattern="/offer/admin/**" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/offer/customer/**" access="hasRole('CUSTOMER')" />  
 

@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,10 +61,13 @@ public class OfferService {
 
 		Offer result;
 		Boolean banned;
+		Customer customer;
 
 		result = new Offer();
 		banned = false;
+		customer = this.customerService.findByPrincipal();
 		result.setBanned(banned);
+		result.setCustomer(customer);
 
 		return result;
 	}
@@ -94,8 +98,11 @@ public class OfferService {
 		Offer result;
 		Customer customer;
 		Collection<Offer> offersByCustomer;
+		Date thisMoment;
 
 		customer = this.customerService.findByPrincipal();
+		thisMoment = new Date(System.currentTimeMillis());
+		Assert.isTrue(thisMoment.compareTo(offer.getMoment()) < 0, "The moment must be in the future");
 
 		offer.setCustomer(customer);
 		offer.setBanned(false);

@@ -44,12 +44,6 @@
 			</a>
 		</display:column>
 	
-		<display:column>
-			<a href="offer/customer/edit.do?offerId=${row.id}">
-				<spring:message code="misc.edit"/>
-			</a>
-		</display:column>
-		
 	</display:table>
 	<br />
 
@@ -65,10 +59,11 @@
 	<!-- Search Form -->
 	
 	<security:authorize access="hasRole('CUSTOMER')">
-		<form:form action="offer/list.do" modelAttribute="">
-			<input type="text" name="offer"/>
+		<form:form>
+			<input type="text" name="keyword"/>
 			<input type="submit" name="search" value="<spring:message code="offer.search"/>"/>
 		</form:form>
+		<br />
 	</security:authorize>
 
 	<!-- Listing grid -->

@@ -14,21 +14,19 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import domain.Customer;
 import domain.Offer;
 import domain.Place;
 
 public class OfferForm {
 
-	private Integer		id;
-	private Integer		version;
-	private String		title;
-	private String		description;
-	private Date		moment;
-	private Place		origin;
-	private Place		destination;
-	private Boolean		banned;
-	private Customer	customer;
+	private Integer	id;
+	private Integer	version;
+	private String	title;
+	private String	description;
+	private Date	moment;
+	private Place	origin;
+	private Place	destination;
+	private Boolean	banned;
 
 
 	public OfferForm() {
@@ -45,7 +43,6 @@ public class OfferForm {
 		this.origin = offer.getOrigin();
 		this.destination = offer.getDestination();
 		this.banned = offer.isBanned();
-		this.customer = offer.getCustomer();
 	}
 
 	public Offer getOffer() {
@@ -60,7 +57,6 @@ public class OfferForm {
 		result.setOrigin(this.origin);
 		result.setDestination(this.destination);
 		result.setBanned(this.banned);
-		result.setCustomer(this.customer);
 
 		return result;
 	}
@@ -144,16 +140,6 @@ public class OfferForm {
 
 	public void setBanned(final Boolean banned) {
 		this.banned = banned;
-	}
-
-	@NotNull
-	@Valid
-	public Customer getCustomer() {
-		return this.customer;
-	}
-
-	public void setCustomer(final Customer customer) {
-		this.customer = customer;
 	}
 
 }
