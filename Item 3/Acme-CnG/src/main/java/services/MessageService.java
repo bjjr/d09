@@ -183,8 +183,6 @@ public class MessageService {
 		return res;
 	}
 
-	// TODO: Check this method
-
 	public Double findAvgNumSntMsgPerActor() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Double res;
@@ -212,8 +210,6 @@ public class MessageService {
 		return res;
 	}
 
-	// TODO: Check this method
-
 	public Double findAvgNumRecMsgPerActor() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Double res;
@@ -228,24 +224,6 @@ public class MessageService {
 		Integer res;
 
 		res = this.messageRepository.findMaxNumRecMsgPerActor().get(0);
-
-		return res;
-	}
-
-	public Collection<Actor> findActorsWithMoreSentMessages() {
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
-		Collection<Actor> res;
-
-		res = this.messageRepository.findActorsWithMoreSentMessages();
-
-		return res;
-	}
-
-	public Collection<Actor> findActorsWithMoreReceivedMessages() {
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
-		Collection<Actor> res;
-
-		res = this.messageRepository.findActorsWithMoreReceivedMessages();
 
 		return res;
 	}

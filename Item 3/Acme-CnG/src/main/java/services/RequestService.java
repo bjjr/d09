@@ -175,7 +175,6 @@ public class RequestService {
 		Double result;
 
 		result = this.requestRepository.findAvgRequestPerCustomer();
-		Assert.notNull(result);
 
 		return result;
 	}

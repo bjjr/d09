@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,5 +89,49 @@ public class ActorService {
 		Assert.notNull(res);
 
 		return res;
+	}
+
+	public Collection<Actor> findActorPostMore10PerCentAVGCommentsPerActor() {
+		Assert.isTrue(this.checkAuthority("ADMIN"));
+
+		Collection<Actor> result;
+
+		result = this.actorRepository.findActorPostMore10PerCentAVGCommentsPerActor();
+
+		return result;
+	}
+
+	public Collection<Actor> findActorPostLess10PerCentAVGCommentsPerActor() {
+		Assert.isTrue(this.checkAuthority("ADMIN"));
+
+		Collection<Actor> result;
+
+		result = this.actorRepository.findActorPostLess10PerCentAVGCommentsPerActor();
+
+		return result;
+	}
+
+	public Actor findActorWithMoreSentMessages() {
+		Assert.isTrue(this.checkAuthority("ADMIN"));
+
+		Actor result;
+		List<Actor> actors;
+
+		actors = this.actorRepository.findActorWithMoreSentMessages();
+		result = actors.get(0);
+
+		return result;
+	}
+
+	public Actor findActorWithMoreReceivedMessages() {
+		Assert.isTrue(this.checkAuthority("ADMIN"));
+
+		Actor result;
+		List<Actor> actors;
+
+		actors = this.actorRepository.findActorWithMoreReceivedMessages();
+		result = actors.get(0);
+
+		return result;
 	}
 }

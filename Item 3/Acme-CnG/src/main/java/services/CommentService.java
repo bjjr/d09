@@ -92,4 +92,54 @@ public class CommentService {
 		return result;
 	}
 
+	public Double findAverageCommentPerActor() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerActor();
+
+		return result;
+	}
+
+	public Double findAverageCommentPerOffer() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerOffer();
+
+		return result;
+	}
+
+	public Double findAverageCommentPerRequest() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerRequest();
+
+		return result;
+	}
+
+	public Double findAverageCommentPerCustomer() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerCustomer();
+
+		return result;
+	}
+
+	public Double findAverageCommentPerAdministrator() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerAdministrator();
+
+		return result;
+	}
+
 }

@@ -167,7 +167,6 @@ public class ApplicationService {
 		Double result;
 
 		result = this.applicationRepository.findAvgApplicationsPerOffer();
-		Assert.notNull(result);
 
 		return result;
 	}
@@ -178,7 +177,6 @@ public class ApplicationService {
 		Double result;
 
 		result = this.applicationRepository.findAvgApplicationsPerRequest();
-		Assert.notNull(result);
 
 		return result;
 	}
