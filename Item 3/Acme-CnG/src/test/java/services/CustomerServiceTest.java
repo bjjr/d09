@@ -58,6 +58,10 @@ public class CustomerServiceTest extends AbstractTest {
 			this.registrationTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
 	}
 
+	/*
+	 * Checks if the returned customer is who has more applications accepted
+	 */
+
 	@Test
 	public void testFindCustomerWhoHasMoreApplicationsAccepted() {
 		Customer customer;
@@ -66,6 +70,10 @@ public class CustomerServiceTest extends AbstractTest {
 
 		Assert.isTrue(customer.equals(this.customerService.findOne(101)));
 	}
+
+	/*
+	 * Checks if the returned customer is who has more applications denied
+	 */
 
 	@Test
 	public void testFindCustomerWhoHasMoreApplicationsDenied() {
