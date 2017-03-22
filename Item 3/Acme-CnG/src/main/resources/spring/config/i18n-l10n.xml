@@ -30,6 +30,8 @@
 		<value>/views/banner/messages</value>
 		<value>/views/trip/messages</value>
 		<value>/views/place/messages</value>
+		<value>/views/offer/messages</value>
+		<value>/views/request/messages</value>
 		
 	</util:list>
 
