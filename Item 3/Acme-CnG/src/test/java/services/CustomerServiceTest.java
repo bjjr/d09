@@ -67,6 +67,15 @@ public class CustomerServiceTest extends AbstractTest {
 		Assert.isTrue(customer.equals(this.customerService.findOne(101)));
 	}
 
+	@Test
+	public void testFindCustomerWhoHasMoreApplicationsDenied() {
+		Customer customer;
+
+		customer = this.customerService.findCustomerWhoHasMoreApplicationsDenied();
+
+		Assert.isTrue(customer.equals(this.customerService.findOne(101)));
+	}
+
 	// Ancillary methods ------------------------------------------------------
 
 	protected void registrationTemplate(final String username, final Class<?> expected) {

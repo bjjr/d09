@@ -92,7 +92,6 @@ public class CustomerService {
 		result = customerForm.getCustomer();
 
 		result.getUserAccount().addAuthority(auth);
-		result.setFinder(null);
 
 		this.validator.validate(result, binding);
 
@@ -136,7 +135,7 @@ public class CustomerService {
 	public Customer findCustomerWhoHasMoreApplicationsAccepted() {
 		Customer res;
 
-		res = this.customerRepository.findCustomerWhoHasMoreApplicationsAccepted();
+		res = this.customerRepository.findCustomerWhoHasMoreApplicationsAccepted().get(0);
 
 		Assert.notNull(res);
 
@@ -146,7 +145,7 @@ public class CustomerService {
 	public Customer findCustomerWhoHasMoreApplicationsDenied() {
 		Customer res;
 
-		res = this.customerRepository.findCustomerWhoHasMoreApplicationsDenied();
+		res = this.customerRepository.findCustomerWhoHasMoreApplicationsDenied().get(0);
 
 		Assert.notNull(res);
 
