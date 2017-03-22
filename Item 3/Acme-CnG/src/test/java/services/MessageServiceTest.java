@@ -10,6 +10,8 @@
 
 package services;
 
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -17,8 +19,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
+import domain.Actor;
+import domain.Message;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -30,33 +35,76 @@ public class MessageServiceTest extends AbstractTest {
 	// System under test ------------------------------------------------------
 
 	@Autowired
+	private MessageService	messageService;
+
+	// Services
+
+	@Autowired
 	private ActorService	actorService;
 
 
 	// Tests ------------------------------------------------------------------
 
 	/*
-	 * Checks if a non registered user can register.
-	 * Checks if a registered user cannot register.
+	 * Use case: A registered user creates and sends a message to another user
+	 * Expected errors:
+	 * - A non registered user tries to send a message -> IllegalArgumentException
 	 */
 
 	@Test
-	public void registrationDriver() {
+	public void sendMessageDriver() {
 		final Object testingData[][] = {
 			{
-				null, null
+				"customer1", 97, null
 			}, {
-				"customer1", IllegalArgumentException.class
+				null, 97, IllegalArgumentException.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.registrationTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
+			this.sendMessageTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
 	// Ancillary methods ------------------------------------------------------
 
-	protected void registrationTemplate(final String username, final Class<?> expected) {
-	}
+	protected void sendMessageTemplate(final String username, final int recipientId, final Class<?> expected) {
+		Class<?> caught;
 
+		caught = null;
+
+		try {
+			Message message, saved;
+			Collection<Message> recipientMessages, senderMessages;
+			Actor recipient;
+
+			this.authenticate(username);
+
+			recipient = this.actorService.findOne(recipientId);
+
+			message = this.messageService.create();
+			message.setTitle("test");
+			message.setText("test");
+			message.setRecipient(recipient);
+
+			saved = this.messageService.save(message);
+
+			senderMessages = this.messageService.findSentMessages();
+
+			Assert.isTrue(senderMessages.contains(saved));
+
+			this.unauthenticate();
+
+			this.authenticate("admin");
+
+			recipientMessages = this.messageService.findReceivedMessages();
+
+			Assert.isTrue(recipientMessages.contains(saved));
+
+			this.unauthenticate();
+		} catch (final Throwable th) {
+			caught = th.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+	}
 }

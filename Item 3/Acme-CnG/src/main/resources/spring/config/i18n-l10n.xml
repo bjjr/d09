@@ -24,9 +24,10 @@
 		<value>/views/welcome/messages</value>
 		
 		<value>/views/administrator/messages</value>
+		<value>/views/comment/messages</value>
 		<value>/views/customer/messages</value>
-		<value>/views/offer/messages</value>
-		<value>/views/request/messages</value>
+		<value>/views/application/messages</value>
+		<value>/views/banner/messages</value>
 		<value>/views/trip/messages</value>
 		<value>/views/place/messages</value>
 		
