@@ -47,6 +47,18 @@ public class TripService {
 		return result;
 	}
 
+	public Trip findOne(final int tripId) {
+		Assert.notNull(tripId);
+		Assert.isTrue(tripId != 0);
+
+		Trip result;
+
+		result = this.tripRepository.findOne(tripId);
+		Assert.notNull(result);
+
+		return result;
+	}
+
 	// Other business methods -------------------------------
 
 	public void ban(final Trip trip) {
