@@ -17,8 +17,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
+import domain.Customer;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -54,6 +56,15 @@ public class CustomerServiceTest extends AbstractTest {
 
 		for (int i = 0; i < testingData.length; i++)
 			this.registrationTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
+	}
+
+	@Test
+	public void testFindCustomerWhoHasMoreApplicationsAccepted() {
+		Customer customer;
+
+		customer = this.customerService.findCustomerWhoHasMoreApplicationsAccepted();
+
+		Assert.isTrue(customer.equals(this.customerService.findOne(101)));
 	}
 
 	// Ancillary methods ------------------------------------------------------

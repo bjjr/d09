@@ -133,4 +133,24 @@ public class CustomerService {
 		return res;
 	}
 
+	public Customer findCustomerWhoHasMoreApplicationsAccepted() {
+		Customer res;
+
+		res = this.customerRepository.findCustomerWhoHasMoreApplicationsAccepted();
+
+		Assert.notNull(res);
+
+		return res;
+	}
+
+	public Customer findCustomerWhoHasMoreApplicationsDenied() {
+		Customer res;
+
+		res = this.customerRepository.findCustomerWhoHasMoreApplicationsDenied();
+
+		Assert.notNull(res);
+
+		return res;
+	}
+
 }
