@@ -7,7 +7,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="actor/send.do" modelAttribute="actor" >
+<form:form action="customer/create.do" modelAttribute="customerForm" >
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
@@ -17,7 +17,13 @@
 	<acme:textbox code="actor.email" path="email" />
 	<acme:textbox code="actor.phone" path="phone" />
 	
-	<acme:submit name="save" code="misc.save"/>
+	<br />
+	<acme:textbox code="customer.userAccount.username" path="userAccount.username" />
+	<acme:password code="customer.userAccount.password" path="userAccount.password" />
+	<acme:password code="customer.userAccount.confirmPassword" path="confirmPassword" />
+
+	<acme:submit name="save" code="misc.save"/>		
 	<acme:cancel url="/" code="misc.cancel"/>
 		
 </form:form>
+<spring:message code="customer.advice" />
