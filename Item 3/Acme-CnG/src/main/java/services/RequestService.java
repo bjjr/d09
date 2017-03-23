@@ -98,16 +98,18 @@ public class RequestService {
 		Collection<Request> requestsByCustomer;
 		Date thisMoment;
 
-		customer = this.customerService.findByPrincipal();
-		thisMoment = new Date(System.currentTimeMillis());
+		if (request.getId() == 0) {
+			customer = this.customerService.findByPrincipal();
+			thisMoment = new Date(System.currentTimeMillis());
 
-		request.setCustomer(customer);
-		request.setBanned(false);
-		Assert.isTrue(thisMoment.compareTo(request.getMoment()) < 0, "The moment must be in the future");
+			request.setCustomer(customer);
+			request.setBanned(false);
+			Assert.isTrue(thisMoment.compareTo(request.getMoment()) < 0, "The moment must be in the future");
 
-		requestsByCustomer = this.findRequestsByCustomer(customer.getId());
-		requestsByCustomer.add(request);
-		this.customerService.save(customer);
+			requestsByCustomer = this.findRequestsByCustomer(customer.getId());
+			requestsByCustomer.add(request);
+			this.customerService.save(customer);
+		}
 
 		result = this.requestRepository.save(request);
 
@@ -121,7 +123,9 @@ public class RequestService {
 	// Other business methods ----------------------------------------------------
 
 	public void ban(final Request request) {
-		this.tripService.ban(request);
+		Request result;
+		result = (Request) this.tripService.ban(request);
+		this.save(result);
 	}
 
 	public Collection<Request> findByKeyword(final String keyword) {
