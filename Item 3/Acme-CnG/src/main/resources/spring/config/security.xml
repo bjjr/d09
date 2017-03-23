@@ -49,14 +49,15 @@
 		
 		<security:intercept-url pattern="/banner/administrator/**" access="hasRole('ADMIN')" />
 		
-		<security:intercept-url pattern="/comment/list.do" access="hasRole('CUSTOMER')" />
-		
 		<security:intercept-url pattern="/request/list.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/request/admin/**" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/request/customer/**" access="hasRole('CUSTOMER')" />
 		
 		<security:intercept-url pattern="/message/**" access="isAuthenticated()" />
-		<security:intercept-url pattern="/customer/**" access="isAnonymous()" /> 
+
+		<security:intercept-url pattern="/customer/**" access="isAnonymous()" />
+		
+		<security:intercept-url pattern="/comment/**" access="isAuthenticated()" />
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
