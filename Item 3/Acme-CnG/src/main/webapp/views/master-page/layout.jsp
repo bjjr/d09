@@ -40,6 +40,9 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#jMenu").jMenu();
+		$("#hide").click(function() {
+			$("#legal").fadeOut("slow");
+		});
 	});
 
 	function askSubmission(msg, form) {

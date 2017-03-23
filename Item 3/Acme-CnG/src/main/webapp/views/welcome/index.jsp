@@ -18,4 +18,8 @@
 
 <p><spring:message code="welcome.greeting.prefix" /> ${name}<spring:message code="welcome.greeting.suffix" /></p>
 
-<p><spring:message code="welcome.greeting.current.time" /> ${moment}</p> 
+<p><spring:message code="welcome.greeting.current.time" /> ${moment}</p>
+
+<div id="legal" style="background-color:#bababa;">
+	<spring:message code="welcome.legal" /> <button id="hide">OK</button>
+</div> 
