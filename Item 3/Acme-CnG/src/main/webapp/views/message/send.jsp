@@ -12,26 +12,33 @@
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	
-	<jstl:if test="${forward == true }">
+	<jstl:if test="${forward == true}">
 		<acme:textbox code="message.title" path="title" readonly="true" />
 		<acme:textbox code="message.text" path="text" readonly="true"/>
+		<acme:textbox code="message.attachments" path="attachments" readonly="true"/>
 	</jstl:if>
 	
-	<jstl:if test="${forward == false }">
+	<jstl:if test="${forward == false}">
 		<acme:textbox code="message.title" path="title" />
 		<acme:textbox code="message.text" path="text" />
+		<acme:textarea code="message.attachments" path="attachments" />
 	</jstl:if>
 	
-	<acme:textarea code="message.attachments" path="attachments" />
+	<acme:select items="${actors}" itemLabel="userAccount.username" code="message.recipient" path="recipient" />
 	
-	<jstl:if test="${reply == true }">
-		<acme:select items="${actors}" itemLabel="name" code="message.recipient" path="recipient" disabled="true" />
+	<jstl:if test="${reply eq false and forward eq false}">
+			<acme:submit name="send" code="message.send"/>
 	</jstl:if>
-	<jstl:if test="${reply == false }">
-		<acme:select items="${actors}" itemLabel="name" code="message.recipient" path="recipient" />
+
+	<jstl:if test="${forward eq true}">
+			<acme:submit name="forward" code="message.send"/>
 	</jstl:if>
 	
-	<acme:submit name="send" code="message.send"/>
-	<acme:cancel url="message/list.do" code="misc.cancel"/>
-		
+	<jstl:if test="${reply eq true}">
+			<acme:submit name="reply" code="message.send"/>
+	</jstl:if>
+	
+	<acme:delete confirmationCode="misc.confirm.delete" buttonCode="misc.delete" id="${actorMessage.id}"/>
+	<acme:cancel url="/" code="misc.cancel"/>
+
 </form:form>
