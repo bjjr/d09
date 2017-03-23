@@ -3,8 +3,6 @@ package controllers.customer;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -77,7 +75,7 @@ public class RequestCustomerController extends AbstractController {
 	// Saving ------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final RequestForm requestForm, final BindingResult binding) {
+	public ModelAndView save(final RequestForm requestForm, final BindingResult binding) {
 		ModelAndView result;
 		Request request;
 

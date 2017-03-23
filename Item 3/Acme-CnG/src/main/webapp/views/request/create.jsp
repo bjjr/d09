@@ -19,7 +19,7 @@
 	
 	<acme:textbox code="trip.moment" path="moment"/>
 	
-	<fieldset style="width: 250px">
+	<fieldset style="width: 400px">
 		<legend align="left">
 			<spring:message code="trip.origin" />
 		</legend>
@@ -27,7 +27,7 @@
 		<acme:textbox code="place.coordinates" path="origin.coordinates" />
 	</fieldset>
 	
-	<fieldset style="width: 250px">
+	<fieldset style="width: 400px">
 		<legend align="left">
 			<spring:message code="trip.destination" />
 		</legend>

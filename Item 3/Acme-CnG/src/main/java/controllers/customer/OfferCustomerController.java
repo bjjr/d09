@@ -3,8 +3,6 @@ package controllers.customer;
 
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -77,7 +75,7 @@ public class OfferCustomerController extends AbstractController {
 	// Saving ------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final OfferForm offerForm, final BindingResult binding) {
+	public ModelAndView save(final OfferForm offerForm, final BindingResult binding) {
 		ModelAndView result;
 		Offer offer;
 
