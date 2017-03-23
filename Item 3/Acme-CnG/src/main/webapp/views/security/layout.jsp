@@ -37,36 +37,14 @@
 
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#jMenu").jMenu();
-	});
-
-	function askSubmission(msg, form) {
-		if (confirm(msg))
-			form.submit();
-	}
-</script>
-
-<script type="text/javascript">
-	function relativeRedir(loc) {	
-		var b = document.getElementsByTagName('base');
-		if (b && b[0] && b[0].href) {
-  			if (b[0].href.substr(b[0].href.length - 1) == '/' && loc.charAt(0) == '/')
-    		loc = loc.substr(1);
-  			loc = b[0].href + loc;
-		}
-		window.location.replace(loc);
-	}
-</script>
-
 </head>
 
 <body>
 
 	<div>
-		<tiles:insertAttribute name="header" />
+		<a href="?language=en">en</a> | <a href="?language=es">es</a>
 	</div>
+
 	<div>
 		<h1>
 			<tiles:insertAttribute name="title" />
@@ -76,9 +54,6 @@
 			<br />
 			<span class="message"><spring:message code="${message}" /></span>
 		</jstl:if>	
-	</div>
-	<div>
-		<tiles:insertAttribute name="footer" />
 	</div>
 
 </body>
