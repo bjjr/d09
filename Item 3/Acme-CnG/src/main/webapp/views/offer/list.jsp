@@ -39,7 +39,7 @@
 		</display:column>
 		
 		<display:column>
-			<a href="application/customer/list.do?offerId=${row.id}">
+			<a href="application/customer/listByTrip.do?tripId=${row.id}">
 				<spring:message code="trip.applications"/>
 			</a>
 		</display:column>
@@ -114,9 +114,7 @@
 		<security:authorize access="hasRole('ADMIN')">
 			<display:column>
 				<jstl:if test="${row.banned == false}">
-					<a href="offer/admin/ban.do?offerId=${row.id}">
-						<spring:message code="trip.ban"/>
-					</a>
+					<acme:link href="offer/administrator/ban.do?offerId=${row.id}" code="trip.ban"/>
 				</jstl:if>
 				<jstl:if test="${row.banned == true}">
 					<spring:message code="trip.banned" />

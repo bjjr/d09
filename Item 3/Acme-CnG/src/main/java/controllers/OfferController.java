@@ -45,25 +45,24 @@ public class OfferController extends AbstractController {
 		Collection<Offer> offers;
 		final Actor actor;
 		final Boolean myOffers;
-		final Collection<Offer> myOffersWithApplicationsMine;
+		Collection<Offer> myOffersWithApplicationsMine;
 
 		actor = this.actorService.findByPrincipal();
 		offers = new ArrayList<Offer>();
 		myOffers = false;
-		myOffersWithApplicationsMine = this.offerService.findOffersWithApplicationsMine();
+		myOffersWithApplicationsMine = new ArrayList<Offer>();
 
 		if (actor instanceof Administrator)
 			offers = this.offerService.findAll();
-		else if (actor instanceof Customer)
+		else if (actor instanceof Customer) {
+			myOffersWithApplicationsMine = this.offerService.findOffersWithApplicationsMine();
 			offers = this.offerService.findAllNotBanned();
-
-		// TODO vista list offer, cambiar origin y destination
+		}
 
 		result = new ModelAndView("offer/list");
 		result.addObject("offers", offers);
 		result.addObject("myOffers", myOffers);
 		result.addObject("myOffersWithApplicationsMine", myOffersWithApplicationsMine);
-		result.addObject("actor", actor);
 		result.addObject("requestURI", "offer/list.do");
 
 		return result;
@@ -74,13 +73,16 @@ public class OfferController extends AbstractController {
 		ModelAndView result;
 		Collection<Offer> offers;
 		Boolean myOffers;
+		final Collection<Offer> myOffersWithApplicationsMine;
 
 		offers = this.offerService.findByKeyword(keyword);
 		myOffers = false;
+		myOffersWithApplicationsMine = this.offerService.findOffersWithApplicationsMine();
 
 		result = new ModelAndView("offer/list");
 		result.addObject("offers", offers);
 		result.addObject("myOffers", myOffers);
+		result.addObject("myOffersWithApplicationsMine", myOffersWithApplicationsMine);
 		result.addObject("keyword", keyword);
 		result.addObject("requestURI", "offer/list.do");
 

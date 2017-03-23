@@ -100,16 +100,18 @@ public class OfferService {
 		Collection<Offer> offersByCustomer;
 		Date thisMoment;
 
-		customer = this.customerService.findByPrincipal();
-		thisMoment = new Date(System.currentTimeMillis());
-		Assert.isTrue(thisMoment.compareTo(offer.getMoment()) < 0, "The moment must be in the future");
+		if (offer.getId() == 0) {
+			customer = this.customerService.findByPrincipal();
+			thisMoment = new Date(System.currentTimeMillis());
+			Assert.isTrue(thisMoment.compareTo(offer.getMoment()) < 0, "The moment must be in the future");
 
-		offer.setCustomer(customer);
-		offer.setBanned(false);
+			offer.setCustomer(customer);
+			offer.setBanned(false);
 
-		offersByCustomer = this.findOffersByCustomer(customer.getId());
-		offersByCustomer.add(offer);
-		this.customerService.save(customer);
+			offersByCustomer = this.findOffersByCustomer(customer.getId());
+			offersByCustomer.add(offer);
+			this.customerService.save(customer);
+		}
 
 		result = this.offerRepository.save(offer);
 
@@ -123,7 +125,9 @@ public class OfferService {
 	// Other business methods -------------------------------
 
 	public void ban(final Offer offer) {
-		this.tripService.ban(offer);
+		Offer result;
+		result = (Offer) this.tripService.ban(offer);
+		this.save(result);
 	}
 
 	public Collection<Offer> findByKeyword(final String keyword) {
