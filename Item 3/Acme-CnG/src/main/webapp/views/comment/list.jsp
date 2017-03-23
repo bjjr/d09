@@ -31,6 +31,6 @@
 </display:table>
 
 <!-- Action links -->
-<security:authorize access="hasAnyRole('CUSTOMER')">
+<security:authorize access="hasRole('CUSTOMER')">
 		<acme:link href="comment/create.do" code="misc.create"/>
 </security:authorize>
