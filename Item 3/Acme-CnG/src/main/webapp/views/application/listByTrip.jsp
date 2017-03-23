@@ -18,7 +18,7 @@
 
 	<acme:column code="actor.name" property="customer.name" />
 
-	<acme:column code="trip.title" property="trip.title" />
+	<acme:column code="application.trip" property="trip.title" />
 
 	<acme:column code="application.status" property="status" />
 

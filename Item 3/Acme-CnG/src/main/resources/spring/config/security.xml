@@ -52,7 +52,7 @@
 		
 		<security:intercept-url pattern="/offer/list.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/offer/search.do" access="hasRole('CUSTOMER')" />
-		<security:intercept-url pattern="/offer/admin/**" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/offer/administrator/**" access="hasRole('ADMIN')" /> 
 		<security:intercept-url pattern="/offer/customer/**" access="hasRole('CUSTOMER')" />  
 
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
@@ -62,7 +62,8 @@
 		<security:intercept-url pattern="/comment/list.do" access="hasRole('CUSTOMER')" /> 
 		
 		<security:intercept-url pattern="/request/list.do" access="isAuthenticated()" />
-		<security:intercept-url pattern="/request/admin/**" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/request/search.do" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/request/administrator/**" access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/request/customer/**" access="hasRole('CUSTOMER')" /> 
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
