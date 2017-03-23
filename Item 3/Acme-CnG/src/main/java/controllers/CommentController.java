@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
@@ -56,9 +57,9 @@ public class CommentController extends AbstractController {
 		principal = this.actorService.findByPrincipal();
 		comment = this.commentService.create();
 		result = new ModelAndView("comment/create");
-		result.addObject("comment", comment);
 		commentableEntities = this.commentService.commentableEntities(principal);
 
+		result.addObject("comment", comment);
 		result.addObject("commentableEntities", commentableEntities);
 
 		return result;
@@ -88,6 +89,22 @@ public class CommentController extends AbstractController {
 				result.addObject("messageStatus", "comment.commit.error");
 			}
 
+		return result;
+	}
+
+	@RequestMapping(value = "/banComment", method = RequestMethod.GET)
+	public ModelAndView banComment(@RequestParam final int commentId) {
+		ModelAndView result;
+
+		try {
+			final Comment comment = this.commentService.findOne(commentId);
+			comment.setBanned(true);
+			this.commentService.save(comment);
+			result = new ModelAndView("redirect:list.do");
+		} catch (final IllegalArgumentException oops) {
+			result = this.list();
+			result.addObject("message", "comment.commit.error");
+		}
 		return result;
 	}
 
