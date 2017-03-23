@@ -24,6 +24,9 @@
 	<acme:textbox code="comment.stars" path="stars" />
 	<br />
 	
+	<acme:textbox code="comment.moment" path="moment" readonly="true"/>
+	<br />
+	
 	<acme:select items="${commentableEntities}" itemLabel="name" code="comment.commentableEntity" path="commentableEntity"/>
 	<br />
 	
