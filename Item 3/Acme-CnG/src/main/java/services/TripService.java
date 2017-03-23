@@ -61,20 +61,23 @@ public class TripService {
 
 	// Other business methods -------------------------------
 
-	public void ban(final Trip trip) {
+	public Trip ban(final Trip trip) {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 
 		Assert.notNull(trip);
 
+		Trip result;
 		Collection<Application> applications;
 
 		applications = this.applicationService.findApplicationsByTrip(trip.getId());
 
-		trip.setBanned(true);
+		result = trip;
+		result.setBanned(true);
 
 		for (final Application ap : applications)
 			this.applicationService.delete(ap);
 
+		return result;
 	}
 
 	public Collection<Trip> findByKeyword(final String keyword) {
