@@ -15,7 +15,7 @@
 	name="applications" requestURI="${requestURI}" id="row">
 	<!-- Attributes -->
 	
-	<acme:column code="trip.title" property="trip.title"/>
+	<acme:column code="application.trip" property="trip.title"/>
 	
 	<acme:column code="application.status" property="status"/>
 	
