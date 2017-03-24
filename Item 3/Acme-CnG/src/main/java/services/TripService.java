@@ -122,7 +122,6 @@ public class TripService {
 		Double result;
 
 		result = this.tripRepository.findRatioOfferVersusRequest();
-		Assert.notNull(result);
 
 		return result;
 	}

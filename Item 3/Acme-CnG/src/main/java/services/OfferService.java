@@ -204,7 +204,6 @@ public class OfferService {
 		Double result;
 
 		result = this.offerRepository.findAvgOfferPerCostumer();
-		Assert.notNull(result);
 
 		return result;
 	}
