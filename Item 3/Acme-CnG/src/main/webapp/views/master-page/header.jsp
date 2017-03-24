@@ -37,6 +37,7 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="application/customer/list.do"><spring:message code="master.page.customer.application.list" /></a></li>
+					<li><a href="application/customer/listByTrip.do"><spring:message code="master.page.customer.application.listByTrip" /></a></li>
 					<li><a href="message/listSent.do"><spring:message code="master.page.message.list.sent" /></a></li>
 					<li><a href="message/listReceived.do"><spring:message code="master.page.message.list.received" /></a></li>
 					<li><a href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>
