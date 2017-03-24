@@ -19,7 +19,7 @@ public class StringToActorConverter implements Converter<String, Actor> {
 
 
 	@Override
-	public Actor convert(String text) {
+	public Actor convert(final String text) {
 		Actor res;
 		int id;
 
@@ -28,9 +28,9 @@ public class StringToActorConverter implements Converter<String, Actor> {
 				res = null;
 			else {
 				id = Integer.valueOf(text);
-				res = actorRepository.findOne(id);
+				res = this.actorRepository.findById(id);
 			}
-		} catch (Throwable th) {
+		} catch (final Throwable th) {
 			throw new IllegalArgumentException(th);
 		}
 

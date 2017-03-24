@@ -232,7 +232,7 @@
 	
 	<!-- MESSAGES -->
 	
-	<bean id="message1" class="domain.Message">
+	<bean id="message1" class="domain.MessageEntity">
 		<property name="moment" value="01/01/2015 00:00" />
 		<property name="title" value="Title message 1" />
 		<property name="text" value="Text message 1" />
@@ -243,7 +243,7 @@
 		<property name="recipient" ref="customer3" />
 	</bean>
 	
-	<bean id="message2" class="domain.Message">
+	<bean id="message2" class="domain.MessageEntity">
 		<property name="moment" value="03/04/2015 00:00" />
 		<property name="title" value="Title message 2" />
 		<property name="text" value="Text message 2" />
@@ -256,7 +256,7 @@
 		<property name="recipient" ref="customer4" />
 	</bean>
 	
-	<bean id="message3" class="domain.Message">
+	<bean id="message3" class="domain.MessageEntity">
 		<property name="moment" value="05/06/2015 00:00" />
 		<property name="title" value="Title message 3" />
 		<property name="text" value="Text message 3" />
@@ -270,7 +270,7 @@
 		<property name="recipient" ref="customer4" />
 	</bean>
 	
-	<bean id="message4" class="domain.Message">
+	<bean id="message4" class="domain.MessageEntity">
 		<property name="moment" value="09/08/2015 00:00" />
 		<property name="title" value="Title message 4" />
 		<property name="text" value="Text message 4" />
@@ -286,7 +286,7 @@
 		<property name="recipient" ref="customer4" />
 	</bean>
 	
-	<bean id="message5" class="domain.Message">
+	<bean id="message5" class="domain.MessageEntity">
 		<property name="moment" value="12/21/2015 15:45" />
 		<property name="title" value="Title message 5" />
 		<property name="text" value="Text message 5" />
@@ -297,7 +297,7 @@
 		<property name="recipient" ref="customer4" />
 	</bean>
 	
-	<bean id="message6" class="domain.Message">
+	<bean id="message6" class="domain.MessageEntity">
 		<property name="moment" value="06/12/2015 17:25" />
 		<property name="title" value="Title message 6" />
 		<property name="text" value="Text message 6" />
@@ -308,7 +308,7 @@
 		<property name="recipient" ref="customer4" />
 	</bean>
 	
-	<bean id="message7" class="domain.Message">
+	<bean id="message7" class="domain.MessageEntity">
 		<property name="moment" value="03/27/2015 16:57" />
 		<property name="title" value="Title message 7" />
 		<property name="text" value="Text message 7" />

@@ -7,7 +7,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="message/send.do" modelAttribute="actorMessage" >
+<form:form action="message/send.do" modelAttribute="messageEntity" >
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
@@ -38,7 +38,7 @@
 			<acme:submit name="reply" code="message.send"/>
 	</jstl:if>
 	
-	<acme:delete confirmationCode="misc.confirm.delete" buttonCode="misc.delete" id="${actorMessage.id}"/>
+	<acme:delete confirmationCode="misc.confirm.delete" buttonCode="misc.delete" id="${messageEntity.id}"/>
 	<acme:cancel url="/" code="misc.cancel"/>
 
 </form:form>

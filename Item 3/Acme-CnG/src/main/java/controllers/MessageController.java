@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.MessageService;
 import domain.Actor;
-import domain.Message;
+import domain.MessageEntity;
 
 @Controller
 @RequestMapping("/message")
@@ -42,11 +42,11 @@ public class MessageController {
 	@RequestMapping(value = "/send", method = RequestMethod.GET)
 	public ModelAndView edit() {
 		ModelAndView result;
-		Message message;
+		MessageEntity messageEntity;
 
-		message = this.messageService.create();
-		Assert.notNull(message);
-		result = this.createEditModelAndView(message);
+		messageEntity = this.messageService.create();
+		Assert.notNull(messageEntity);
+		result = this.createEditModelAndView(messageEntity);
 
 		return result;
 	}
@@ -56,10 +56,10 @@ public class MessageController {
 	@RequestMapping(value = "/forward", method = RequestMethod.GET)
 	public ModelAndView forward(@RequestParam final int messageId) {
 		ModelAndView res;
-		Message forward, message;
+		MessageEntity forward, messageEntity;
 
-		message = this.messageService.findOne(messageId);
-		forward = this.messageService.forwardMessage(message);
+		messageEntity = this.messageService.findOne(messageId);
+		forward = this.messageService.forwardMessage(messageEntity);
 		this.forward = true;
 		this.reply = false;
 
@@ -73,10 +73,10 @@ public class MessageController {
 	@RequestMapping(value = "/reply", method = RequestMethod.GET)
 	public ModelAndView reply(@RequestParam final int messageId) {
 		ModelAndView res;
-		Message reply, message;
+		MessageEntity reply, messageEntity;
 
-		message = this.messageService.findOne(messageId);
-		reply = this.messageService.replyMessage(message);
+		messageEntity = this.messageService.findOne(messageId);
+		reply = this.messageService.replyMessage(messageEntity);
 		this.reply = true;
 		this.forward = false;
 
@@ -86,69 +86,69 @@ public class MessageController {
 	}
 
 	@RequestMapping(value = "/send", method = RequestMethod.POST, params = "send")
-	public ModelAndView save(final Message message, final BindingResult binding) {
+	public ModelAndView save(final MessageEntity messageEntity, final BindingResult binding) {
 		ModelAndView result;
-		Message reconstructed;
+		MessageEntity reconstructed;
 
-		reconstructed = this.messageService.reconstruct(message, binding);
+		reconstructed = this.messageService.reconstruct(messageEntity, binding);
 		this.forward = false;
 		this.reply = false;
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(message);
+			result = this.createEditModelAndView(messageEntity);
 		else
 			try {
 				this.messageService.save(reconstructed);
 				result = new ModelAndView("redirect:/message/listSent.do");
 				result.addObject("message", "message.commit.ok");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(message, "message.commit.error");
+				result = this.createEditModelAndView(messageEntity, "message.commit.error");
 			}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/send", method = RequestMethod.POST, params = "forward")
-	public ModelAndView forward(final Message message, final BindingResult binding) {
+	public ModelAndView forward(final MessageEntity messageEntity, final BindingResult binding) {
 		ModelAndView result;
-		Message reconstructed;
+		MessageEntity reconstructed;
 
-		reconstructed = this.messageService.reconstruct(message, binding);
+		reconstructed = this.messageService.reconstruct(messageEntity, binding);
 		this.forward = true;
 		this.reply = false;
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(message);
+			result = this.createEditModelAndView(messageEntity);
 		else
 			try {
 				this.messageService.save(reconstructed);
 				result = new ModelAndView("redirect:/message/listSent.do");
 				result.addObject("message", "message.commit.ok");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(message, "message.commit.error");
+				result = this.createEditModelAndView(messageEntity, "message.commit.error");
 			}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/send", method = RequestMethod.POST, params = "reply")
-	public ModelAndView reply(final Message message, final BindingResult binding) {
+	public ModelAndView reply(final MessageEntity messageEntity, final BindingResult binding) {
 		ModelAndView result;
-		Message reconstructed;
+		MessageEntity reconstructed;
 
-		reconstructed = this.messageService.reconstruct(message, binding);
+		reconstructed = this.messageService.reconstruct(messageEntity, binding);
 		this.reply = true;
 		this.forward = false;
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(message);
+			result = this.createEditModelAndView(messageEntity);
 		else
 			try {
 				this.messageService.save(reconstructed);
 				result = new ModelAndView("redirect:/message/listSent.do");
 				result.addObject("message", "message.commit.ok");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(message, "message.commit.error");
+				result = this.createEditModelAndView(messageEntity, "message.commit.error");
 			}
 
 		return result;
@@ -159,16 +159,16 @@ public class MessageController {
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int messageId) {
 		ModelAndView result;
-		Message message;
+		MessageEntity messageEntity;
 
-		message = this.messageService.findOne(messageId);
+		messageEntity = this.messageService.findOne(messageId);
 
 		try {
-			this.messageService.delete(message);
+			this.messageService.delete(messageEntity);
 			result = new ModelAndView("redirect:/message/listSent.do");
 			result.addObject("message", "message.commit.ok");
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(message, "message.commit.error");
+			result = this.createEditModelAndView(messageEntity, "message.commit.error");
 		}
 
 		return result;
@@ -179,15 +179,15 @@ public class MessageController {
 	@RequestMapping(value = "/listSent", method = RequestMethod.GET)
 	public ModelAndView listSent() {
 		final ModelAndView res;
-		Collection<Message> messages;
+		Collection<MessageEntity> messageEntities;
 		Boolean isReceivedView;
 
-		messages = this.messageService.findSentMessages();
+		messageEntities = this.messageService.findSentMessages();
 		res = new ModelAndView("message/list");
 		isReceivedView = false;
 
 		res.addObject("requestURI", "message/listSent.do");
-		res.addObject("messages", messages);
+		res.addObject("messages", messageEntities);
 		res.addObject("isReceivedView", isReceivedView);
 
 		return res;
@@ -196,15 +196,15 @@ public class MessageController {
 	@RequestMapping(value = "/listReceived", method = RequestMethod.GET)
 	public ModelAndView listReceived() {
 		final ModelAndView res;
-		Collection<Message> messages;
+		Collection<MessageEntity> messageEntities;
 		Boolean isReceivedView;
 
-		messages = this.messageService.findReceivedMessages();
+		messageEntities = this.messageService.findReceivedMessages();
 		res = new ModelAndView("message/list");
 		isReceivedView = true;
 
 		res.addObject("requestURI", "message/listReceived.do");
-		res.addObject("messages", messages);
+		res.addObject("messages", messageEntities);
 		res.addObject("isReceivedView", isReceivedView);
 
 		return res;
@@ -212,22 +212,22 @@ public class MessageController {
 
 	// Ancillary methods
 
-	protected ModelAndView createEditModelAndView(final Message actorMessage) {
+	protected ModelAndView createEditModelAndView(final MessageEntity messageEntity) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(actorMessage, null);
+		result = this.createEditModelAndView(messageEntity, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Message actorMessage, final String message) {
+	protected ModelAndView createEditModelAndView(final MessageEntity messageEntity, final String message) {
 		ModelAndView result;
 		List<Actor> actors;
 
 		actors = (List<Actor>) this.actorService.findAll();
 
 		result = new ModelAndView("message/send");
-		result.addObject("actorMessage", actorMessage);
+		result.addObject("messageEntity", messageEntity);
 		result.addObject("message", message);
 		result.addObject("forward", this.forward);
 		result.addObject("reply", this.reply);
