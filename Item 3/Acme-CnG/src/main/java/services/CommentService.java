@@ -49,6 +49,18 @@ public class CommentService {
 
 	// Simple CRUD methods
 
+	public Comment create() {
+		final Comment res = new Comment();
+
+		res.setTitle("");
+		res.setMoment(new Date(System.currentTimeMillis() - 1000));
+		res.setText("");
+		res.setStars(0);
+		res.setBanned(false);
+
+		return res;
+	}
+
 	public Comment create(final Integer commentableEntityId) {
 		final Comment res = new Comment();
 		final Actor actor;
@@ -120,11 +132,15 @@ public class CommentService {
 		Comment result;
 		Actor principal;
 
-		result = comment;
-		principal = this.actorService.findByPrincipal();
-		result.setActor(principal);
-		result.setMoment(new Date(System.currentTimeMillis() - 1000));
-		result.setBanned(false);
+		result = null;
+
+		if (comment.getId() == 0) {
+			result = comment;
+			principal = this.actorService.findByPrincipal();
+			result.setActor(principal);
+			result.setMoment(new Date(System.currentTimeMillis() - 1000));
+			result.setBanned(false);
+		}
 
 		this.validator.validate(result, binding);
 

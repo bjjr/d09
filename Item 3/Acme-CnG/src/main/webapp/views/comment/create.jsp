@@ -14,7 +14,6 @@
 
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
-	<form:hidden path="commentableEntity"/>
 	
 	<acme:textbox code="comment.title" path="title" />
 	<br />
@@ -25,6 +24,11 @@
 	<acme:textbox code="comment.stars" path="stars" />
 	<br />
 	
+	<acme:textbox code="comment.moment" path="moment" readonly="true"/>
+	<br />
+	
+	<acme:select items="${commentableEntities}" itemLabel="name" code="comment.commentableEntity" path="commentableEntity"/>
+	<br />
 	
 	<div>
 		<acme:submit name="save" code="misc.save"/>
