@@ -19,7 +19,7 @@ public class StringToCommentableEntityConverter implements Converter<String, Com
 
 
 	@Override
-	public CommentableEntity convert(final String text) {
+	public CommentableEntity convert(String text) {
 		CommentableEntity res;
 		int id;
 
@@ -28,9 +28,9 @@ public class StringToCommentableEntityConverter implements Converter<String, Com
 				res = null;
 			else {
 				id = Integer.valueOf(text);
-				res = this.commentableEntityRepository.findById(id);
+				res = commentableEntityRepository.findOne(id);
 			}
-		} catch (final Throwable th) {
+		} catch (Throwable th) {
 			throw new IllegalArgumentException(th);
 		}
 

@@ -15,6 +15,7 @@ import services.ActorService;
 import services.CommentService;
 import domain.Actor;
 import domain.Comment;
+import domain.CommentableEntity;
 
 @Controller
 @RequestMapping("/comment")
@@ -47,14 +48,19 @@ public class CommentController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int commentableEntityId) {
+	public ModelAndView create() {
 		ModelAndView result;
 		Comment comment;
+		Actor principal;
+		Collection<CommentableEntity> commentableEntities;
 
-		comment = this.commentService.create(commentableEntityId);
+		principal = this.actorService.findByPrincipal();
+		comment = this.commentService.create();
 		result = new ModelAndView("comment/create");
+		commentableEntities = this.commentService.commentableEntities(principal);
 
 		result.addObject("comment", comment);
+		result.addObject("commentableEntities", commentableEntities);
 
 		return result;
 	}
@@ -62,12 +68,16 @@ public class CommentController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(Comment comment, final BindingResult binding) {
 		ModelAndView result;
+		Collection<CommentableEntity> commentableEntities;
 
 		comment = this.commentService.reconstruct(comment, binding);
+
+		commentableEntities = this.commentService.commentableEntities(comment.getActor());
 
 		if (binding.hasErrors()) {
 			result = new ModelAndView();
 			result.addObject("comment", comment);
+			result.addObject("commentableEntities", commentableEntities);
 		} else
 			try {
 				this.commentService.save(comment);
