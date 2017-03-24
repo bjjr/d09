@@ -100,6 +100,24 @@ public class CommentService {
 		return result;
 	}
 
+	public Comment banComment(final int commentId) {
+		Assert.notNull(commentId);
+
+		final Comment comment, result;
+		Actor actor;
+
+		actor = this.actorService.findByPrincipal();
+		Assert.isTrue(actor.getUserAccount().getAuthorities().contains(Authority.ADMIN));
+
+		comment = this.commentRepository.findOne(commentId);
+		Assert.notNull(comment);
+
+		comment.setBanned(true);
+		result = this.commentRepository.save(comment);
+
+		return result;
+	}
+
 	public Comment findOne(final int commentId) {
 		final Comment res = this.commentRepository.findOne(commentId);
 		Assert.notNull(res);

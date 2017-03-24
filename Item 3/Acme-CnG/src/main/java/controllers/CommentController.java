@@ -97,9 +97,7 @@ public class CommentController extends AbstractController {
 		ModelAndView result;
 
 		try {
-			final Comment comment = this.commentService.findOne(commentId);
-			comment.setBanned(true);
-			this.commentService.save(comment);
+			this.commentService.banComment(commentId);
 			result = new ModelAndView("redirect:list.do");
 		} catch (final IllegalArgumentException oops) {
 			result = this.list();
