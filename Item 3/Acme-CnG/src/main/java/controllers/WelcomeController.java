@@ -13,10 +13,13 @@ package controllers;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import services.BannerService;
 
 @Controller
 @RequestMapping("/welcome")
@@ -28,7 +31,12 @@ public class WelcomeController extends AbstractController {
 		super();
 	}
 
+
 	// Index ------------------------------------------------------------------		
+
+	@Autowired
+	private BannerService	bannerService;
+
 
 	@RequestMapping(value = "/index")
 	public ModelAndView index(@RequestParam(required = false, defaultValue = "John Doe") final String name) {
@@ -38,10 +46,12 @@ public class WelcomeController extends AbstractController {
 
 		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		moment = formatter.format(new Date());
+		final String urlBanner = this.bannerService.getBanner().getPath();
 
 		result = new ModelAndView("welcome/index");
 		result.addObject("name", name);
 		result.addObject("moment", moment);
+		result.addObject("banner_url", urlBanner);
 
 		return result;
 	}

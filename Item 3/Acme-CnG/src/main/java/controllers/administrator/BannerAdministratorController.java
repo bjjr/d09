@@ -38,7 +38,7 @@ public class BannerAdministratorController extends AbstractController {
 		else
 			try {
 				this.bannerService.save(banner);
-				result = this.createEditModelAndView(banner);
+				result = new ModelAndView("redirect:/");
 			} catch (final IllegalArgumentException oops) {
 				result = this.createEditModelAndView(banner, "misc.commit.error");
 			}

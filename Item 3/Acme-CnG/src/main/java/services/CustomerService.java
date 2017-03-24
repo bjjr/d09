@@ -2,14 +2,20 @@
 package services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.CustomerRepository;
+import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import security.UserAccountService;
 import domain.Customer;
+import forms.CustomerForm;
 
 @Service
 @Transactional
@@ -24,6 +30,12 @@ public class CustomerService {
 
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private UserAccountService	userAccountService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	// Constructor -----------------------------------------
@@ -44,7 +56,7 @@ public class CustomerService {
 		res.setSurname("");
 		res.setPhone("");
 		res.setEmail("");
-
+		res.setUserAccount(this.userAccountService.create("LESSOR"));
 		return res;
 	}
 
@@ -52,6 +64,8 @@ public class CustomerService {
 		Assert.notNull(customer);
 
 		Customer res;
+
+		customer.getUserAccount().setPassword(this.hashCodePassword(customer.getUserAccount().getPassword()));
 
 		res = this.customerRepository.save(customer);
 
@@ -69,7 +83,32 @@ public class CustomerService {
 		return res;
 	}
 
+	public Customer reconstruct(final CustomerForm customerForm, final BindingResult binding) {
+		Customer result;
+		Authority auth;
+		auth = new Authority();
+		auth.setAuthority("CUSTOMER");
+
+		result = customerForm.getCustomer();
+
+		result.getUserAccount().addAuthority(auth);
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
+
 	// Other business methods ------------------------------
+
+	public String hashCodePassword(final String password) {
+		String result;
+		Md5PasswordEncoder encoder;
+
+		encoder = new Md5PasswordEncoder();
+		result = encoder.encodePassword(password, null);
+
+		return result;
+	}
 
 	public Customer findByPrincipal() {
 		Customer result = null;

@@ -52,6 +52,7 @@ public class ApplicationCustomerController extends AbstractController {
 		applications = this.applicationService.findApplicationsByCustomer(principal.getId());
 
 		result = new ModelAndView("application/list");
+		result.addObject("requestURI", "application/customer/list.do");
 		result.addObject("applications", applications);
 
 		return result;
@@ -66,7 +67,8 @@ public class ApplicationCustomerController extends AbstractController {
 		principal = this.customerService.findByPrincipal();
 		applications = this.applicationService.findApplicationsAllTripsOfCustomer(principal);
 
-		result = new ModelAndView("application/list");
+		result = new ModelAndView("application/listByTrip");
+		result.addObject("requestURI", "application/customer/listByTrip.do");
 		result.addObject("applications", applications);
 
 		return result;
