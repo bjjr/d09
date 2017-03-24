@@ -108,15 +108,8 @@ public class ApplicationService {
 	public void accept(final Application application) {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
-		Collection<Application> apps;
-		Customer principal;
-
-		principal = this.customerService.findByPrincipal();
-		apps = this.findApplicationsByCustomer(principal.getId());
-
 		Assert.notNull(application);
 		Assert.isTrue(application.getStatus().equals("PENDING"));
-		Assert.isTrue(apps.contains(application));
 
 		application.setStatus("ACCEPTED");
 	}
@@ -124,15 +117,8 @@ public class ApplicationService {
 	public void deny(final Application application) {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
-		Collection<Application> apps;
-		Customer principal;
-
-		principal = this.customerService.findByPrincipal();
-		apps = this.findApplicationsByCustomer(principal.getId());
-
 		Assert.notNull(application);
 		Assert.isTrue(application.getStatus().equals("PENDING"));
-		Assert.isTrue(apps.contains(application));
 
 		application.setStatus("DENIED");
 	}

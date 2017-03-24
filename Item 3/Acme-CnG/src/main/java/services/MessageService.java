@@ -174,11 +174,14 @@ public class MessageService {
 		return res;
 	}
 
-	public Integer findMinNumSntMsgPerActor() {
+	public Long findMinNumSntMsgPerActor() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
-		Integer res;
+		Long res;
 
-		res = this.messageRepository.findMinNumSntMsgPerActor().get(0);
+		res = 0L;
+
+		if (!this.messageRepository.findMinNumSntMsgPerActor().isEmpty())
+			res = this.messageRepository.findMinNumSntMsgPerActor().get(0);
 
 		return res;
 	}
@@ -192,20 +195,26 @@ public class MessageService {
 		return res;
 	}
 
-	public Integer findMaxNumSntMsgPerActor() {
+	public Long findMaxNumSntMsgPerActor() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
-		Integer res;
+		Long res;
 
-		res = this.messageRepository.findMinNumSntMsgPerActor().get(0);
+		res = 0L;
+
+		if (!this.messageRepository.findMaxNumSntMsgPerActor().isEmpty())
+			res = this.messageRepository.findMaxNumSntMsgPerActor().get(0);
 
 		return res;
 	}
 
-	public Integer findMinNumRecMsgPerActor() {
+	public Long findMinNumRecMsgPerActor() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
-		Integer res;
+		Long res;
 
-		res = this.messageRepository.findMinNumRecMsgPerActor().get(0);
+		res = 0L;
+
+		if (!this.messageRepository.findMinNumRecMsgPerActor().isEmpty())
+			res = this.messageRepository.findMinNumRecMsgPerActor().get(0);
 
 		return res;
 	}
@@ -219,11 +228,14 @@ public class MessageService {
 		return res;
 	}
 
-	public Integer findMaxNumRecMsgPerActor() {
+	public Long findMaxNumRecMsgPerActor() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
-		Integer res;
+		Long res;
 
-		res = this.messageRepository.findMaxNumRecMsgPerActor().get(0);
+		res = 0L;
+
+		if (!this.messageRepository.findMaxNumRecMsgPerActor().isEmpty())
+			res = this.messageRepository.findMaxNumRecMsgPerActor().get(0);
 
 		return res;
 	}

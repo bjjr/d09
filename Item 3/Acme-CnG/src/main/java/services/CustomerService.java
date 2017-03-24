@@ -93,4 +93,26 @@ public class CustomerService {
 		return res;
 	}
 
+	public Customer findCustomerWhoHasMoreApplicationsAccepted() {
+		Customer res;
+
+		res = null;
+
+		if (!this.customerRepository.findCustomerWhoHasMoreApplicationsAccepted().isEmpty())
+			res = this.customerRepository.findCustomerWhoHasMoreApplicationsAccepted().get(0);
+
+		return res;
+	}
+
+	public Customer findCustomerWhoHasMoreApplicationsDenied() {
+		Customer res;
+
+		res = null;
+
+		if (!this.customerRepository.findCustomerWhoHasMoreApplicationsDenied().isEmpty())
+			res = this.customerRepository.findCustomerWhoHasMoreApplicationsDenied().get(0);
+
+		return res;
+	}
+
 }
