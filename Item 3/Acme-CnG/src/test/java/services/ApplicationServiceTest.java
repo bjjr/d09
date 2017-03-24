@@ -177,12 +177,18 @@ public class ApplicationServiceTest extends AbstractTest {
 
 		try {
 			Application app;
+			Collection<Application> apps;
+			Customer principal;
 
 			this.authenticate(username);
 
 			app = this.applicationService.findOne(applicationId);
+			principal = this.customerService.findByPrincipal();
+			apps = this.applicationService.findApplicationsByCustomer(principal.getId());
 
 			this.applicationService.accept(app);
+
+			Assert.isTrue(apps.contains(app));
 
 			this.unauthenticate();
 
@@ -200,12 +206,18 @@ public class ApplicationServiceTest extends AbstractTest {
 
 		try {
 			Application app;
+			Collection<Application> apps;
+			Customer principal;
 
 			this.authenticate(username);
 
 			app = this.applicationService.findOne(applicationId);
+			principal = this.customerService.findByPrincipal();
+			apps = this.applicationService.findApplicationsByCustomer(principal.getId());
 
 			this.applicationService.deny(app);
+
+			Assert.isTrue(apps.contains(app));
 
 			this.unauthenticate();
 
