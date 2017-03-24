@@ -117,6 +117,7 @@ public class CommentService {
 			result = comment;
 			principal = this.actorService.findByPrincipal();
 			result.setActor(principal);
+			result.setMoment(new Date(System.currentTimeMillis() - 1000));
 			result.setBanned(false);
 		}
 
