@@ -137,8 +137,6 @@ public class CustomerService {
 
 		res = this.customerRepository.findCustomerWhoHasMoreApplicationsAccepted().get(0);
 
-		Assert.notNull(res);
-
 		return res;
 	}
 
@@ -146,8 +144,6 @@ public class CustomerService {
 		Customer res;
 
 		res = this.customerRepository.findCustomerWhoHasMoreApplicationsDenied().get(0);
-
-		Assert.notNull(res);
 
 		return res;
 	}
