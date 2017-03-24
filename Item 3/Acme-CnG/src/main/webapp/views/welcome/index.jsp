@@ -16,10 +16,14 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p><spring:message code="welcome.greeting.prefix" /> ${name}<spring:message code="welcome.greeting.suffix" /></p>
-
-<p><spring:message code="welcome.greeting.current.time" /> ${moment}</p> 
-
 <security:authorize access="isAnonymous()">
 	<img src="${banner_url}">
 </security:authorize>
+
+<p><spring:message code="welcome.greeting.prefix" /> ${name}<spring:message code="welcome.greeting.suffix" /></p>
+
+<p><spring:message code="welcome.greeting.current.time" /> ${moment}</p>
+
+<div id="legal" style="background-color:#bababa;">
+	<spring:message code="welcome.legal" /> <button id="hide">OK</button>
+</div>

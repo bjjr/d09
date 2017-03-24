@@ -12,10 +12,10 @@ import domain.Application;
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Integer> {
 
-	@Query("select count(a)/(select count(o) from Offer o) from Application a where TYPE(a.trip)=domain.Offer")
+	@Query("select count(a)*1.0/(select count(o) from Offer o) from Application a join a.trip t where TYPE(t) = domain.Offer")
 	Double findAvgApplicationsPerOffer();
 
-	@Query("select count(a)/(select count(r) from Request r) from Application a where TYPE(a.trip)=domain.Request")
+	@Query("select count(a)*1.0/(select count(r) from Request r) from Application a join a.trip t where TYPE(t) = domain.Request")
 	Double findAvgApplicationsPerRequest();
 
 	@Query("select a from Application a where a.customer.id = ?1")

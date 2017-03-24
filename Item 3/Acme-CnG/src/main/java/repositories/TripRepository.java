@@ -12,7 +12,7 @@ import domain.Trip;
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Integer> {
 
-	@Query("select count(o)/(select count(r) from Request r) from Offer o")
+	@Query("select count(o)*1.0/(select count(r) from Request r) from Offer o")
 	Double findRatioOfferVersusRequest();
 
 	@Query("select t from Trip t where t.customer.id = ?1")

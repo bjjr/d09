@@ -12,7 +12,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <!-- Listing grid -->
-<display:table pagesize="5" class="displaytag" keepStatus="true"
+<display:table pagesize="5" class="displaytag"
 	name="messages" requestURI="${requestURI}" id="row">
 	<!-- Attributes -->
 	<acme:column code="message.moment" property="moment"/>
@@ -20,22 +20,36 @@
 	<acme:column code="message.title" property="title"/>
 	
 	<acme:column code="message.text" property="text"/>
-		
-	<acme:column code="message.attachments" property="attachments"/>
+	
+	<spring:message code="message.attachments" var="att" />
+	<display:column title="${att}">
+		<jstl:forEach items="${row.attachments}" var="attachment">
+			<a href="${attachment}"><jstl:out value="${attachment}" /></a>
+			<br/>
+		</jstl:forEach>
+	</display:column>
 
-	<acme:column code="message.recipient" property="recipient"/>
+	<acme:column code="message.recipient" property="recipient.userAccount.username"/>
 
 	<display:column>
 		<a href="message/forward.do?messageId=${row.id }"><spring:message code="message.forward" /></a>
 	</display:column>
 	
-	<display:column>
-		<a href="message/reply.do?messageId=${row.id }"><spring:message code="message.reply" /></a>
-	</display:column>
+	<jstl:if test="${isReceivedView}" >
+		<display:column>
+			<a href="message/reply.do?messageId=${row.id }"><spring:message code="message.reply" /></a>
+		</display:column>
+	</jstl:if>
+	
+	<jstl:if test="${!isReceivedView}" >
+		<display:column>
+			<spring:message code="misc.confirm.delete" var="confirm"></spring:message>
+			<a href="message/delete.do?messageId=${row.id}" onclick="return confirm('${confirm}')"><spring:message code="misc.delete" /></a>
+		</display:column>
+	</jstl:if>
 	
 </display:table>
 
-<!-- Action links -->
-	<security:authorize access="isAuthenticated()">
-			<acme:link href="message/send.do" code="message.send"/>
+<security:authorize access="isAuthenticated()">
+	<acme:link href="message/send.do" code="message.send"/>
 </security:authorize>
