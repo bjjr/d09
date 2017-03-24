@@ -12,9 +12,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.OfferRepository;
+import domain.Application;
 import domain.Customer;
 import domain.Offer;
 import domain.Trip;
+import forms.OfferForm;
 
 @Service
 @Transactional
@@ -23,23 +25,26 @@ public class OfferService {
 	// Managed repository -----------------------------------
 
 	@Autowired
-	private OfferRepository	offerRepository;
+	private OfferRepository		offerRepository;
 
 	// Supporting services ----------------------------------
 
 	@Autowired
-	private CustomerService	customerService;
+	private CustomerService		customerService;
 
 	@Autowired
-	private ActorService	actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private TripService		tripService;
+	private TripService			tripService;
+
+	@Autowired
+	private ApplicationService	applicationService;
 
 	// Validator --------------------------------------------
 
 	@Autowired
-	private Validator		validator;
+	private Validator			validator;
 
 
 	// Constructors -----------------------------------------
@@ -166,13 +171,28 @@ public class OfferService {
 		return result;
 	}
 
+	public Collection<Offer> findOffersWithApplicationsMine() {
+		final Collection<Offer> result;
+		Collection<Application> allMyApplications;
+		Customer customer;
+
+		result = new ArrayList<Offer>();
+		customer = this.customerService.findByPrincipal();
+		allMyApplications = this.applicationService.findApplicationsByCustomer(customer.getId());
+
+		for (final Application a : allMyApplications)
+			if (a.getTrip() instanceof Offer)
+				result.add((Offer) a.getTrip());
+
+		return result;
+	}
+
 	public Double findAvgOfferPerCostumer() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 
 		Double result;
 
 		result = this.offerRepository.findAvgOfferPerCostumer();
-		Assert.notNull(result);
 
 		return result;
 	}
@@ -181,16 +201,22 @@ public class OfferService {
 		Offer result;
 		Customer customer;
 
-		if (offer.getId() == 0) {
-			customer = this.customerService.findByPrincipal();
-			result = offer;
-			result.setCustomer(customer);
-		} else {
-			Offer aux;
-			aux = this.findOne(offer.getId());
-			result = offer;
-			result.setCustomer(aux.getCustomer());
-		}
+		result = offer;
+		customer = this.customerService.findByPrincipal();
+		result.setCustomer(customer);
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
+
+	public Offer reconstruct(final OfferForm offerForm, final BindingResult binding) {
+		Offer result;
+		Customer customer;
+
+		result = offerForm.getOffer();
+		customer = this.customerService.findByPrincipal();
+		result.setCustomer(customer);
 
 		this.validator.validate(result, binding);
 

@@ -100,6 +100,27 @@ public class CommentService {
 		return result;
 	}
 
+	public Comment banComment(final int commentId) {
+		Assert.notNull(commentId);
+
+		final Comment comment, result;
+		Actor actor;
+		final Authority auth;
+
+		actor = this.actorService.findByPrincipal();
+		auth = new Authority();
+		auth.setAuthority(Authority.ADMIN);
+		Assert.isTrue(actor.getUserAccount().getAuthorities().contains(auth));
+
+		comment = this.commentRepository.findOne(commentId);
+		Assert.notNull(comment);
+
+		comment.setBanned(true);
+		result = this.commentRepository.save(comment);
+
+		return result;
+	}
+
 	public Comment findOne(final int commentId) {
 		final Comment res = this.commentRepository.findOne(commentId);
 		Assert.notNull(res);
@@ -142,14 +163,14 @@ public class CommentService {
 
 	public Collection<CommentableEntity> commentableEntities(final Actor actor) {
 		Collection<CommentableEntity> result;
-		Authority authC;
+		Authority auth;
 		final Customer customer;
 
 		result = new ArrayList<CommentableEntity>();
-		authC = new Authority();
-		authC.setAuthority(Authority.CUSTOMER);
+		auth = new Authority();
+		auth.setAuthority(Authority.CUSTOMER);
 
-		if (actor.getUserAccount().getAuthorities().contains(authC)) {
+		if (actor.getUserAccount().getAuthorities().contains(auth)) {
 			customer = this.customerService.findOne(actor.getId());
 			result.add(customer);
 			for (final Trip t : this.tripService.findAll())
@@ -159,6 +180,56 @@ public class CommentService {
 
 		return result;
 
+	}
+
+	public Double findAverageCommentPerActor() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerActor();
+
+		return result;
+	}
+
+	public Double findAverageCommentPerOffer() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerOffer();
+
+		return result;
+	}
+
+	public Double findAverageCommentPerRequest() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerRequest();
+
+		return result;
+	}
+
+	public Double findAverageCommentPerCustomer() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerCustomer();
+
+		return result;
+	}
+
+	public Double findAverageCommentPerAdministrator() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Double result;
+
+		result = this.commentRepository.findAverageCommentPerAdministrator();
+
+		return result;
 	}
 
 }

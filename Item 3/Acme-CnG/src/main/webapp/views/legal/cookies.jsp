@@ -1,5 +1,5 @@
 <%--
- * action-1.jsp
+ * index.jsp
  *
  * Copyright (C) 2017 Universidad de Sevilla
  * 
@@ -10,10 +10,13 @@
 
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
-<%@taglib prefix="jstl"	uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
-<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p><spring:message code="administrator.action.1" /></p>
+<h3><spring:message code="legal.cookies.title1" /></h3>
+<p><spring:message code="legal.cookies.text1" /></p>
+
+<h3><spring:message code="legal.cookies.title2" /></h3>
+<ul>
+	<li><spring:message code="legal.cookies.text2" /></li>
+	<li><spring:message code="legal.cookies.text3" /></li>
+</ul>

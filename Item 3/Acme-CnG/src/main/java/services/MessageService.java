@@ -1,10 +1,15 @@
 
 package services;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.validation.Payload;
+import javax.validation.constraints.Pattern.Flag;
+
+import org.hibernate.validator.constraints.URL;
 import org.hibernate.validator.internal.constraintvalidators.URLValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,20 +84,22 @@ public class MessageService {
 	}
 
 	/*
-	 * 
 	 * Only the sender of a message can delete his/her message
 	 */
 
 	public void delete(final Message message) {
+		Actor actor;
 		Assert.notNull(message);
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
-		Assert.isTrue(message.getSender().equals(this.actorService.findByPrincipal()));
 
-		this.messageRepository.delete(message);
+		actor = this.actorService.findByPrincipal();
+
+		Assert.isTrue(message.getSender().equals(actor));
+
+		this.messageRepository.delete(message.getId());
 	}
 
 	/*
-	 * 
 	 * Users can only access messages related to them
 	 */
 
@@ -117,6 +124,7 @@ public class MessageService {
 		result = message;
 		actor = this.actorService.findByPrincipal();
 		result.setSender(actor);
+		result.setMoment(new Date(System.currentTimeMillis()));
 
 		this.validateURLs(result.getAttachments(), bindingResult);
 		this.validator.validate(result, bindingResult);
@@ -128,6 +136,54 @@ public class MessageService {
 		URLValidator validator;
 
 		validator = new URLValidator();
+
+		validator.initialize(new URL() {
+
+			@Override
+			public Class<? extends Annotation> annotationType() {
+				return null;
+			}
+
+			@Override
+			public String regexp() {
+				return ".*";
+			}
+
+			@Override
+			public String protocol() {
+				return "";
+			}
+
+			@Override
+			public int port() {
+				return -1;
+			}
+
+			@Override
+			public Class<? extends Payload>[] payload() {
+				return null;
+			}
+
+			@Override
+			public String message() {
+				return "org.hibernate.validator.constraints.URL.message";
+			}
+
+			@Override
+			public String host() {
+				return "";
+			}
+
+			@Override
+			public Class<?>[] groups() {
+				return null;
+			}
+
+			@Override
+			public Flag[] flags() {
+				return null;
+			}
+		});
 
 		for (final String s : attachments)
 			if (!validator.isValid(s, null)) {
@@ -150,6 +206,19 @@ public class MessageService {
 		forwarded.setAttachments(message.getAttachments());
 
 		return forwarded;
+	}
+
+	public Message replyMessage(final Message message) {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
+		Assert.notNull(message);
+
+		Message reply;
+
+		reply = this.create();
+		reply.setTitle("RE: " + message.getTitle());
+		reply.setRecipient(message.getSender());
+
+		return reply;
 	}
 
 	public Collection<Message> findSentMessages() {
@@ -183,8 +252,6 @@ public class MessageService {
 		return res;
 	}
 
-	// TODO: Check this method
-
 	public Double findAvgNumSntMsgPerActor() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Double res;
@@ -212,8 +279,6 @@ public class MessageService {
 		return res;
 	}
 
-	// TODO: Check this method
-
 	public Double findAvgNumRecMsgPerActor() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 		Double res;
@@ -228,24 +293,6 @@ public class MessageService {
 		Integer res;
 
 		res = this.messageRepository.findMaxNumRecMsgPerActor().get(0);
-
-		return res;
-	}
-
-	public Collection<Actor> findActorsWithMoreSentMessages() {
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
-		Collection<Actor> res;
-
-		res = this.messageRepository.findActorsWithMoreSentMessages();
-
-		return res;
-	}
-
-	public Collection<Actor> findActorsWithMoreReceivedMessages() {
-		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
-		Collection<Actor> res;
-
-		res = this.messageRepository.findActorsWithMoreReceivedMessages();
 
 		return res;
 	}

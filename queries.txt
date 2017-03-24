@@ -1,51 +1,51 @@
 Ratio of offers versus requests.-----------------------------------
-select count(o)/(select count(r) from Request r) from Offer o     |
+select count(o)*1.0/(select count(r) from Request r) from Offer o     |
 -------------------------------------------------------------------
 
 Average number of offers and request per customer.--------------------------------------------------
-select count(o)/(selec count(c) from Customer c) from Offer o					   |
-select count(r)/(selec count(c) from Customer c) from Request r					   |
+select count(o)*1.0/(select count(c) from Customer c) from Offer o					   |
+select count(r)*1.0/(select count(c) from Customer c) from Request r					   |
 select count(o)+(select count(r) from Request r)/(selec count(c) from Customer c) from Offer o	   |
 ----------------------------------------------------------------------------------------------------
 
 Average number of applications per offer or request.-------------------------------------------------------
-select count(a)/(select count(o) from Offer o) from Application a where TYPE(a.trip)=domain.Offer	  |
-select count(a)/(select count(r) from Request r) from Application a where TYPE(a.trip)=domain.Request	  |
+select count(a)*1.0/(select count(o) from Offer o) from Application a join a.trip t where TYPE(t) = domain.Offer|
+select count(a)*1.0/(select count(r) from Request r) from Application a join a.trip t where TYPE(t) = domain.Request  |
 -----------------------------------------------------------------------------------------------------------
 
 The customer who has more applications accepted.------------------------
-select count(a) from Application a group by a.customer order by desc   |
+select a.customer from Application a where a.status like 'ACCEPTED' group by a.customer order by count(a) desc   |
 ------------------------------------------------------------------------
 
 The customer who has more applications denied.--------------------------
-select count(a) from Application a group by a.customer order by asc    |
+select a.customer from Application a where a.status like 'DENIED' group by a.customer order by count(a) desc    |
 ------------------------------------------------------------------------
 
 Average number of comments per actor, offer, or request.---------------------------------------------------------------
-select count(c)/(select count(a) from Actor a) from Comment c where TYPE(c.commentableEntity)=domain.Actor	      |
-select count(c)/(select count(o) from Offer o) from Comment c where TYPE(c.commentableEntity)=domain.Offer	      |
-select count(c)/(select count(r) from Request r) from Comments c where TYPE(c.commentableEntity)=domain.Request	      |
+select count(c)*1.0/(select count(a) from Actor a) from Comment c join c.commentableEntity ca where type(ca)=domain.Administrator or type(ca)=domain.Customer|
+select count(c)*1.0/(select count(o) from Offer o) from Comment c join c.commentableEntity ca where type(ca)=domain.Offer|
+select count(c)*1.0/(select count(r) from Request r) from Comment c join c.commentableEntity ca where type(ca)=domain.Request|
 -----------------------------------------------------------------------------------------------------------------------
 
 Average number of comments posted by administrators and customers.----------------------------------------------------
-select count(c)/(select count(a) from Customer c) from Comment c where TYPE(c.actor)=domain.Customer	     	     |
-select count(c)/(select count(o) from Administrator a) from Comment c where TYPE(c.actor)=domain.Administrator	     |
+select count(c)*1.0/(select count(c) from Customer c) from Comment c join c.commentableEntity ca where type(ca)=domain.Customer|
+select count(c)*1.0/(select count(a) from Administrator a) from Comment c join c.commentableEntity ca where type(ca)=domain.Administrator|
 ----------------------------------------------------------------------------------------------------------------------
 
-The actors who have posted Â±10% the average number of comments per actor.
-select a from from Comment c join c.actor a where 
-select count(c) from Comment c group by c.actor
+The actors who have posted ±10% the average number of comments per actor.
+select c.actor from Comment c group by c.actor having count(c) > 0.1*(select count(co)/(select count(a) from Actor a) from Comment co)
+select c.actor from Comment c group by c.actor having count(c) < 0.1*(select count(co)/(select count(a) from Actor a) from Comment co)
 
 The minimum, the average, and the maximum number of messages sent per actor.----------
-select count(m)/(select count(a) from Actor a) from Message m REVISAR		     |
-select count(m) from Message m group by m.sender order by desc			     |
-select count(m) from Message m group by m.sender order by asc			     |
+select count(m)*1.0/(select count(a) from Actor a) from Message m		     |
+select count(m) from Message m group by m.sender order by count(m) desc			     |
+select count(m) from Message m group by m.sender order by count(m) asc		     |
 --------------------------------------------------------------------------------------
 
 The minimum, the average, and the maximum number of messages received per actor.------
-select count(m)/(select count(a) from Actor a) from Message m REVISAR		     |
-select count(m) from Message m group by m.recipient order by desc		     |
-select count(m) from Message m group by m.recipient order by asc		     |
+select count(m)*1.0/(select count(a) from Actor a) from Message m		     |
+select count(m) from Message m group by m.recipient order by count(m) desc		     |
+select count(m) from Message m group by m.recipient order by count(m) asc		     |
 --------------------------------------------------------------------------------------
 
 The actors who have sent more messages.---------------------------------------
