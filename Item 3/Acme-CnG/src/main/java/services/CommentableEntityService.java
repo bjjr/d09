@@ -20,8 +20,8 @@ public class CommentableEntityService {
 
 
 	public CommentableEntity findOne(final int id) {
-		final CommentableEntity res = this.commentableEntityRepository.findOne(id);
-		Assert.notNull(res);
+		final CommentableEntity res = this.commentableEntityRepository.findById(id);
+		Assert.notNull(res, "CommentableEntityService.findOne: CommentableEntity cannot be null");
 		return res;
 	}
 
