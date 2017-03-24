@@ -22,7 +22,15 @@
 	
 	<acme:column code="comment.stars" property="stars"/>
 	
-	<acme:column code="comment.banned" property="banned"/>
+	<security:authorize access="hasRole('ADMIN')">
+		<acme:column code="comment.banned" property="row.banned"/>
+		
+		<jstl:if test="${row.banned == false}" >
+			<display:column>
+				<acme:link href="comment/banComment.do?commentId=${id}" code="comment.ban"/>
+			</display:column>
+		</jstl:if>
+	</security:authorize>
 	
 	<acme:column code="comment.actor" property="actor.name"/>
 	
@@ -31,6 +39,6 @@
 </display:table>
 
 <!-- Action links -->
-<security:authorize access="hasAnyRole('CUSTOMER')">
-		<acme:link href="comment/create.do" code="misc.create"/>
+<security:authorize access="hasRole('CUSTOMER')">
+	<acme:link href="comment/create.do" code="misc.create"/>
 </security:authorize>
