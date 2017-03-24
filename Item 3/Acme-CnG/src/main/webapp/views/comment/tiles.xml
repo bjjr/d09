@@ -17,8 +17,13 @@
 <tiles-definitions>
 
 	<definition name="comment/list" extends="master.page">	
-		<put-attribute name="title" value="List Comments" />
+		<put-attribute name="title" value="Comments" />
 		<put-attribute name="body" value="/views/comment/list.jsp" />
+	</definition>
+	
+	<definition name="comment/create" extends="master.page">	
+		<put-attribute name="title" value="Write a comment" />
+		<put-attribute name="body" value="/views/comment/create.jsp" />
 	</definition>
 	
 </tiles-definitions>
