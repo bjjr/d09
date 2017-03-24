@@ -61,6 +61,8 @@
 		
 		<security:intercept-url pattern="/comment/list.do" access="hasRole('CUSTOMER')" /> 
 	
+		<security:intercept-url pattern="/legal/**" access="isAuthenticated()" /> 
+	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
 		<security:form-login 
