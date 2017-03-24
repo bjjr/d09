@@ -105,9 +105,12 @@ public class CommentService {
 
 		final Comment comment, result;
 		Actor actor;
+		final Authority auth;
 
 		actor = this.actorService.findByPrincipal();
-		Assert.isTrue(actor.getUserAccount().getAuthorities().contains(Authority.ADMIN));
+		auth = new Authority();
+		auth.setAuthority(Authority.ADMIN);
+		Assert.isTrue(actor.getUserAccount().getAuthorities().contains(auth));
 
 		comment = this.commentRepository.findOne(commentId);
 		Assert.notNull(comment);
@@ -160,14 +163,14 @@ public class CommentService {
 
 	public Collection<CommentableEntity> commentableEntities(final Actor actor) {
 		Collection<CommentableEntity> result;
-		Authority authC;
+		Authority auth;
 		final Customer customer;
 
 		result = new ArrayList<CommentableEntity>();
-		authC = new Authority();
-		authC.setAuthority(Authority.CUSTOMER);
+		auth = new Authority();
+		auth.setAuthority(Authority.CUSTOMER);
 
-		if (actor.getUserAccount().getAuthorities().contains(authC)) {
+		if (actor.getUserAccount().getAuthorities().contains(auth)) {
 			customer = this.customerService.findOne(actor.getId());
 			result.add(customer);
 			for (final Trip t : this.tripService.findAll())
