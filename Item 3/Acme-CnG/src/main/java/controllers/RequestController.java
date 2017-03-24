@@ -37,9 +37,6 @@ public class RequestController extends AbstractController {
 		super();
 	}
 
-	// TODO comprobar al crear una application que no haya ya una creada igual
-	// TODO accept y deny, corregir (apps.contains(app) erroneo)
-
 	// Listing ------------------------------------------------
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
