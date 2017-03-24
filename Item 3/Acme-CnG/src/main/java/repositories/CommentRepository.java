@@ -12,6 +12,21 @@ import domain.Comment;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
+	@Query("select count(c)*1.0/(select count(a) from Actor a) from Comment c join c.commentableEntity ca where type(ca)=domain.Administrator or type(ca)=domain.Customer")
+	Double findAverageCommentPerActor();
+
+	@Query("select count(c)*1.0/(select count(o) from Offer o) from Comment c join c.commentableEntity ca where type(ca)=domain.Offer")
+	Double findAverageCommentPerOffer();
+
+	@Query("select count(c)*1.0/(select count(r) from Request r) from Comment c join c.commentableEntity ca where type(ca)=domain.Request")
+	Double findAverageCommentPerRequest();
+
+	@Query("select count(c)*1.0/(select count(c) from Customer c) from Comment c join c.commentableEntity ca where type(ca)=domain.Customer")
+	Double findAverageCommentPerCustomer();
+
+	@Query("select count(c)*1.0/(select count(a) from Administrator a) from Comment c join c.commentableEntity ca where type(ca)=domain.Administrator")
+	Double findAverageCommentPerAdministrator();
+
 	@Query("select c from Comment c where c.commentableEntity.id = ?1")
 	Collection<Comment> findCommentsByCommentableEntity(int commentableEntityId);
 

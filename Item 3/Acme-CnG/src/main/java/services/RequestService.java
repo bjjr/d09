@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.RequestRepository;
+import domain.Application;
 import domain.Customer;
 import domain.Request;
 import domain.Trip;
@@ -35,6 +36,9 @@ public class RequestService {
 
 	@Autowired
 	private CustomerService		customerService;
+
+	@Autowired
+	private ApplicationService	applicationService;
 
 	// Validator --------------------------------------------
 
@@ -169,13 +173,28 @@ public class RequestService {
 		return result;
 	}
 
+	public Collection<Request> findRequestsWithApplicationsMine() {
+		final Collection<Request> result;
+		Collection<Application> allMyApplications;
+		Customer customer;
+
+		result = new ArrayList<Request>();
+		customer = this.customerService.findByPrincipal();
+		allMyApplications = this.applicationService.findApplicationsByCustomer(customer.getId());
+
+		for (final Application a : allMyApplications)
+			if (a.getTrip() instanceof Request)
+				result.add((Request) a.getTrip());
+
+		return result;
+	}
+
 	public Double findAvgRequestPerCustomer() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
 
 		Double result;
 
 		result = this.requestRepository.findAvgRequestPerCustomer();
-		Assert.notNull(result);
 
 		return result;
 	}

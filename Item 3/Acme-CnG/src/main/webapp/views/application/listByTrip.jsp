@@ -23,12 +23,18 @@
 	<acme:column code="application.status" property="status" />
 
 	<jstl:if test="${row.status=='PENDING'}">
+	<display:column>
 		<acme:link
 			href="application/customer/accept.do?applicationId=${row.id }"
 			code="application.accept" />
+	</display:column>
+	
+	<display:column>
 		<acme:link
 			href="application/customer/deny.do?applicationId=${row.id }"
 			code="application.deny" />
+	</display:column>
+		
 	</jstl:if>
 
 </display:table>

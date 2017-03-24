@@ -17,7 +17,7 @@
 
 <hr />
 
-<b>Copyright &copy; <fmt:formatDate value="${date}" pattern="yyyy" /> Sample Co., Inc.</b>
+<b>Copyright &copy; <fmt:formatDate value="${date}" pattern="yyyy" /> Acme Car'n Go</b>
 
 <a href="legal/terms.do"><spring:message code="legal.terms" /></a>
 <a href="legal/cookies.do"><spring:message code="legal.cookies" /></a>
