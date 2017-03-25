@@ -1,6 +1,8 @@
 
 package services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,7 +58,7 @@ public class CustomerService {
 		res.setSurname("");
 		res.setPhone("");
 		res.setEmail("");
-		res.setUserAccount(this.userAccountService.create("LESSOR"));
+		res.setUserAccount(this.userAccountService.create("CUSTOMER"));
 		return res;
 	}
 
@@ -81,6 +83,20 @@ public class CustomerService {
 		Assert.notNull(res, "The customer was not found");
 
 		return res;
+	}
+
+	public List<Customer> findAll() {
+		List<Customer> res;
+
+		res = this.customerRepository.findAll();
+
+		return res;
+	}
+
+	public void flush() {
+
+		this.customerRepository.flush();
+
 	}
 
 	public Customer reconstruct(final CustomerForm customerForm, final BindingResult binding) {
