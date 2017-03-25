@@ -105,6 +105,12 @@
 				</jstl:if>
 			</display:column>
 		</security:authorize>
+		
+		<display:column>
+			<a href="comment/createTrip.do?tripId=${row.id}">
+				<spring:message code="trip.writeComment"/>
+			</a>
+		</display:column>
 	
 		<security:authorize access="hasRole('ADMIN')">
 			<display:column>

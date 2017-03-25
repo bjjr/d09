@@ -147,6 +147,29 @@ public class CommentService {
 		return result;
 	}
 
+	public Comment reconstruct(final Comment comment, final int tripId, final BindingResult binding) {
+		Comment result;
+		Actor principal;
+		final Trip trip;
+
+		result = null;
+
+		if (comment.getId() == 0) {
+			result = comment;
+			principal = this.actorService.findByPrincipal();
+			result.setActor(principal);
+			trip = this.tripService.findOne(tripId);
+			Assert.notNull(trip);
+			result.setCommentableEntity(trip);
+			result.setMoment(new Date(System.currentTimeMillis() - 1000));
+			result.setBanned(false);
+		}
+
+		this.validator.validate(result, binding);
+
+		return result;
+	}
+
 	// Other business methods
 
 	public Collection<Comment> findCommentsByCommentableEntity(final int commentableEntityId) {

@@ -10,7 +10,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="comment/create.do" modelAttribute="comment">
+<form:form action="${formAction}" modelAttribute="comment">
 
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
@@ -27,11 +27,18 @@
 	<acme:textbox code="comment.moment" path="moment" readonly="true"/>
 	<br />
 	
-	<acme:select items="${commentableEntities}" itemLabel="name" code="comment.commentableEntity" path="commentableEntity"/>
-	<br />
+	<jstl:if test="${isTrip == false}">
+		<acme:select items="${commentableEntities}" itemLabel="name" code="comment.commentableEntity" path="commentableEntity"/>
+		<br />
+	</jstl:if>
 	
 	<div>
-		<acme:submit name="save" code="misc.save"/>
+		<jstl:if test="${isTrip == true}">
+			<acme:submit name="saveAsTrip" code="misc.save"/>
+		</jstl:if>
+		<jstl:if test="${isTrip == false}">
+			<acme:submit name="save" code="misc.save"/>
+		</jstl:if>
 		<acme:cancel url="comment/list.do" code="misc.cancel"/>
 	</div>
 
