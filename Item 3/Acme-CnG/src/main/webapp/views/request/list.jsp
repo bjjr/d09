@@ -7,54 +7,120 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<!-- Search Form -->
+<jstl:if test="${myRequests == true}">
 
-<form:form action="" modelAttribute="offer">
-	<input type="text" name="offer"/>
-	<input type="submit" name="search" value="<spring:message code="offer.search"/>"/>
-</form:form>
+	<display:table pagesize="5" class="displaytag" keepStatus="true"
+		name="requests" requestURI="${requestURI}" id="row">
+	
+		<!-- Attributes -->
+		
+		<acme:column code="trip.title" property="title" sortable="true"/>
+	
+		<acme:column code="trip.description" property="description"/>
+	
+		<acme:column code="trip.moment" property="moment" sortable="true"/>
+		
+		<spring:message code="trip.origin" var="originHeader" />
+		<display:column title="${originHeader}">
+			<acme:display code="place.address" property="${row.origin.address}"/>
+			<acme:display code="place.coordinates" property="${row.origin.coordinates}"/>
+		</display:column>
+	
+		<spring:message code="trip.destination" var="destinationHeader" />
+		<display:column title="${destinationHeader}">
+			<acme:display code="place.address" property="${row.destination.address}"/>
+			<acme:display code="place.coordinates" property="${row.destination.coordinates}"/>
+		</display:column>
+		
+		<display:column>
+			<jstl:if test="${row.banned == true}">
+				<spring:message code="trip.banned"/>
+			</jstl:if>
+		</display:column>
+		
+		<display:column>
+			<a href="application/customer/listByTrip.do?tripId=${row.id}">
+				<spring:message code="trip.applications"/>
+			</a>
+		</display:column>
+	
+	</display:table>
+	<br />
 
-<!-- Listing grid -->
+	<input type="button" name="create"
+		value="<spring:message code="request.create" />"
+		onclick="window.location='request/customer/create.do'" />
+	<br />
 
-<display:table pagesize="5" class="displaytag" keepStatus="true"
-	name="offers" requestURI="${requestURI}" id="row">
-	
-	<!-- Attributes -->
-	
-	<acme:column code="trip.title" property="title"/>
-	
-	<acme:column code="trip.description" property="description"/>
-	
-	<acme:column code="trip.moment" property="moment"/>
-	
-	<acme:column code="trip.origin" property="origin"/>
-	
-	<acme:column code="trip.destination" property="destination"/>
+</jstl:if>
+
+<jstl:if test="${myRequests == false}">
+
+	<!-- Search Form -->
 	
 	<security:authorize access="hasRole('CUSTOMER')">
-		<display:column>
-			<jstl:if test="${isApplied == false}">
-				<a href="application/customer/create.do?offerId=${row.id}">
-					<spring:message code="trip.makeAnApplication"/>
-				</a>
-			</jstl:if>
-			<jstl:if test="${isApplied == true}">
-				<spring:message code="trip.applicationDone"/>
-			</jstl:if>
-		</display:column>
-	</security:authorize>
-	
-	<security:authorize access="hasRole('ADMIN')">
-		<display:column>
-			<jstl:if test="${row.banned == false}">
-				<a href="offer/administrator/ban.do?offerId=${row.id}">
-					<spring:message code="trip.ban"/>
-				</a>
-			</jstl:if>
-			<jstl:if test="${row.banned == true}">
-				<spring:message code="trip.banned" />
-			</jstl:if>
-		</display:column>
+		<form:form>
+			<input type="text" name="keyword"/>
+			<input type="submit" name="search" value="<spring:message code="request.search"/>"/>
+		</form:form>
+		<br />
 	</security:authorize>
 
-</display:table>
+	<!-- Listing grid -->
+
+	<display:table pagesize="5" class="displaytag" keepStatus="true"
+		name="requests" requestURI="${requestURI}" id="row">
+	
+		<!-- Attributes -->
+	
+		<acme:column code="trip.title" property="title"/>
+	
+		<acme:column code="trip.description" property="description"/>
+	
+		<acme:column code="trip.moment" property="moment"/>
+	
+		<spring:message code="trip.origin" var="originHeader" />
+		<display:column title="${originHeader}">
+			<acme:display code="place.address" property="${row.origin.address}"/>
+			<acme:display code="place.coordinates" property="${row.origin.coordinates}"/>
+		</display:column>
+	
+		<spring:message code="trip.destination" var="destinationHeader" />
+		<display:column title="${destinationHeader}">
+			<acme:display code="place.address" property="${row.destination.address}"/>
+			<acme:display code="place.coordinates" property="${row.destination.coordinates}"/>
+		</display:column>
+	
+		<security:authorize access="hasRole('CUSTOMER')">
+			<display:column>
+				<jstl:if test="${myRequestsWithApplicationsMine.size() == 0}">
+					<a href="application/customer/create.do?tripId=${row.id}">
+						<spring:message code="trip.makeAnApplication"/>
+					</a>
+				</jstl:if>
+				<jstl:if test="${myRequestsWithApplicationsMine.size() != 0}">
+					<jstl:if test="${myRequestsWithApplicationsMine.contains(row)}">
+						<spring:message code="trip.applicationDone"/>
+					</jstl:if>
+					<jstl:if test="${!myRequestsWithApplicationsMine.contains(row)}">
+						<a href="application/customer/create.do?tripId=${row.id}">
+							<spring:message code="trip.makeAnApplication"/>
+						</a>
+					</jstl:if>
+				</jstl:if>
+			</display:column>
+		</security:authorize>
+	
+		<security:authorize access="hasRole('ADMIN')">
+			<display:column>
+				<jstl:if test="${row.banned == false}">
+					<acme:link href="request/administrator/ban.do?requestId=${row.id}" code="trip.ban"/>
+				</jstl:if>
+				<jstl:if test="${row.banned == true}">
+					<spring:message code="trip.banned" />
+				</jstl:if>
+			</display:column>
+		</security:authorize>
+
+	</display:table>
+</jstl:if>

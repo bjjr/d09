@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CustomerService;
-import services.OfferService;
+import services.RequestService;
 import controllers.AbstractController;
 import domain.Customer;
-import domain.Offer;
-import forms.OfferForm;
+import domain.Request;
+import forms.RequestForm;
 
 @Controller
-@RequestMapping("/offer/customer")
-public class OfferCustomerController extends AbstractController {
+@RequestMapping("/request/customer")
+public class RequestCustomerController extends AbstractController {
 
 	// Services -----------------------------------------------
 
 	@Autowired
-	private OfferService	offerService;
+	private RequestService	requestService;
 
 	@Autowired
 	private CustomerService	customerService;
@@ -32,7 +32,7 @@ public class OfferCustomerController extends AbstractController {
 
 	// Constructors -------------------------------------------
 
-	public OfferCustomerController() {
+	public RequestCustomerController() {
 		super();
 	}
 
@@ -41,12 +41,12 @@ public class OfferCustomerController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		Offer offer;
-		OfferForm offerForm;
+		Request request;
+		RequestForm requestForm;
 
-		offer = this.offerService.create();
-		offerForm = new OfferForm(offer);
-		result = this.createEditModelAndView(offerForm);
+		request = this.requestService.create();
+		requestForm = new RequestForm(request);
+		result = this.createEditModelAndView(requestForm);
 
 		return result;
 	}
@@ -56,18 +56,18 @@ public class OfferCustomerController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		final ModelAndView result;
-		Collection<Offer> offers;
+		Collection<Request> requests;
 		Customer customer;
-		Boolean myOffers;
+		Boolean myRequests;
 
 		customer = this.customerService.findByPrincipal();
-		offers = this.offerService.findOffersByCustomer(customer.getId());
-		myOffers = true;
+		requests = this.requestService.findRequestsByCustomer(customer.getId());
+		myRequests = true;
 
-		result = new ModelAndView("offer/list");
-		result.addObject("offers", offers);
-		result.addObject("myOffers", myOffers);
-		result.addObject("requestURI", "offer/list.do");
+		result = new ModelAndView("request/list");
+		result.addObject("requests", requests);
+		result.addObject("myRequests", myRequests);
+		result.addObject("requestURI", "request/list.do");
 
 		return result;
 	}
@@ -75,39 +75,39 @@ public class OfferCustomerController extends AbstractController {
 	// Saving ------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(final OfferForm offerForm, final BindingResult binding) {
+	public ModelAndView save(final RequestForm requestForm, final BindingResult binding) {
 		ModelAndView result;
-		Offer offer;
+		Request request;
 
-		offer = this.offerService.reconstruct(offerForm, binding);
+		request = this.requestService.reconstruct(requestForm, binding);
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(offerForm);
+			result = this.createEditModelAndView(requestForm);
 		else
 			try {
-				this.offerService.save(offer);
+				this.requestService.save(request);
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(offerForm, "misc.commit.error");
+				result = this.createEditModelAndView(requestForm, "misc.commit.error");
 			}
 
 		return result;
 	}
 	// Ancillary methods -------------------------------------
 
-	protected ModelAndView createEditModelAndView(final OfferForm offerForm) {
+	protected ModelAndView createEditModelAndView(final RequestForm requestForm) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(offerForm, null);
+		result = this.createEditModelAndView(requestForm, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final OfferForm offerForm, final String message) {
+	protected ModelAndView createEditModelAndView(final RequestForm requestForm, final String message) {
 		ModelAndView result;
 
-		result = new ModelAndView("offer/create");
-		result.addObject("offerForm", offerForm);
+		result = new ModelAndView("request/create");
+		result.addObject("requestForm", requestForm);
 		result.addObject("message", message);
 
 		return result;

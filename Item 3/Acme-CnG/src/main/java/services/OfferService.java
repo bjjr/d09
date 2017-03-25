@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,10 +61,13 @@ public class OfferService {
 
 		Offer result;
 		Boolean banned;
+		Customer customer;
 
 		result = new Offer();
 		banned = false;
+		customer = this.customerService.findByPrincipal();
 		result.setBanned(banned);
+		result.setCustomer(customer);
 
 		return result;
 	}
@@ -94,15 +98,20 @@ public class OfferService {
 		Offer result;
 		Customer customer;
 		Collection<Offer> offersByCustomer;
+		Date thisMoment;
 
-		customer = this.customerService.findByPrincipal();
+		if (offer.getId() == 0) {
+			customer = this.customerService.findByPrincipal();
+			thisMoment = new Date(System.currentTimeMillis());
+			Assert.isTrue(thisMoment.compareTo(offer.getMoment()) < 0, "The moment must be in the future");
 
-		offer.setCustomer(customer);
-		offer.setBanned(false);
+			offer.setCustomer(customer);
+			offer.setBanned(false);
 
-		offersByCustomer = this.findOffersByCustomer(customer.getId());
-		offersByCustomer.add(offer);
-		this.customerService.save(customer);
+			offersByCustomer = this.findOffersByCustomer(customer.getId());
+			offersByCustomer.add(offer);
+			this.customerService.save(customer);
+		}
 
 		result = this.offerRepository.save(offer);
 
@@ -116,7 +125,9 @@ public class OfferService {
 	// Other business methods -------------------------------
 
 	public void ban(final Offer offer) {
-		this.tripService.ban(offer);
+		Offer result;
+		result = (Offer) this.tripService.ban(offer);
+		this.save(result);
 	}
 
 	public Collection<Offer> findByKeyword(final String keyword) {
@@ -193,19 +204,6 @@ public class OfferService {
 		Double result;
 
 		result = this.offerRepository.findAvgOfferPerCostumer();
-
-		return result;
-	}
-
-	public Offer reconstruct(final Offer offer, final BindingResult binding) {
-		Offer result;
-		Customer customer;
-
-		result = offer;
-		customer = this.customerService.findByPrincipal();
-		result.setCustomer(customer);
-
-		this.validator.validate(result, binding);
 
 		return result;
 	}
