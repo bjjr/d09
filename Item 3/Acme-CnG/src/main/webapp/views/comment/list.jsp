@@ -34,11 +34,21 @@
 	
 	<acme:column code="comment.actor" property="actor.name"/>
 	
-	<acme:column code="comment.commentableEntity" property="commentableEntity.name"/>
+	<jstl:if test="${tripId == null}">
+		<acme:column code="comment.commentableEntity" property="commentableEntity.name"/>
+	</jstl:if>
+	<jstl:if test="${tripId != null}">
+		<acme:column code="comment.commentableEntity" property="commentableEntity.title"/>
+	</jstl:if>
 	
 </display:table>
 
 <!-- Action links -->
 <security:authorize access="hasRole('CUSTOMER')">
-	<acme:link href="comment/create.do" code="misc.create"/>
+	<jstl:if test="${tripId == null}">
+		<acme:link href="comment/create.do" code="misc.create"/>
+	</jstl:if>
+	<jstl:if test="${tripId != null}">
+		<acme:link href="comment/createTrip.do?tripId=${tripId}" code="misc.create"/>
+	</jstl:if>
 </security:authorize>

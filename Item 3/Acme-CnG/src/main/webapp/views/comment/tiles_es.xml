@@ -21,6 +21,11 @@
 		<put-attribute name="body" value="/views/comment/list.jsp" />
 	</definition>
 	
+	<definition name="comment/listTrip" extends="master.page">	
+		<put-attribute name="title" value="Comentarios de la oferta / solicitud" />
+		<put-attribute name="body" value="/views/comment/list.jsp" />
+	</definition>
+	
 	<definition name="comment/create" extends="master.page">	
 		<put-attribute name="title" value="Escribir un comentario" />
 		<put-attribute name="body" value="/views/comment/create.jsp" />

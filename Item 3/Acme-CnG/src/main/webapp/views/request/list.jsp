@@ -50,6 +50,12 @@
 		</a>
 	</display:column>
 	
+	<display:column>
+		<a href="comment/listTrip.do?tripId=${row.id}">
+			<spring:message code="trip.listComments"/>
+		</a>
+	</display:column>
+	
 	<security:authorize access="hasRole('ADMIN')">
 		<display:column>
 			<jstl:if test="${row.banned == false}">

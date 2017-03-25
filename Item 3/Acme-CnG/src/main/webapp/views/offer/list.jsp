@@ -41,6 +41,12 @@
 				<spring:message code="trip.applications"/>
 			</a>
 		</display:column>
+		
+		<display:column>
+			<a href="comment/listTrip.do?tripId=${row.id}">
+				<spring:message code="trip.listComments"/>
+			</a>
+		</display:column>
 	
 		<display:column>
 			<a href="offer/customer/edit.do?offerId=${row.id}">
@@ -109,6 +115,12 @@
 		<display:column>
 			<a href="comment/createTrip.do?tripId=${row.id}">
 				<spring:message code="trip.writeComment"/>
+			</a>
+		</display:column>
+		
+		<display:column>
+			<a href="comment/listTrip.do?tripId=${row.id}">
+				<spring:message code="trip.listComments"/>
 			</a>
 		</display:column>
 	

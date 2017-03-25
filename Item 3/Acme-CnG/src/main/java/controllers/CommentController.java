@@ -49,6 +49,7 @@ public class CommentController extends AbstractController {
 
 		result = new ModelAndView("comment/list");
 		result.addObject("comments", comments);
+		result.addObject("tripId", null);
 		result.addObject("requestURI", "comment/list.do");
 
 		return result;
@@ -64,8 +65,9 @@ public class CommentController extends AbstractController {
 		Assert.notNull(trip);
 		comments = this.commentService.findCommentsByCommentableEntity(trip.getId());
 
-		result = new ModelAndView("comment/list");
+		result = new ModelAndView("comment/listTrip");
 		result.addObject("comments", comments);
+		result.addObject("tripId", tripId);
 		result.addObject("requestURI", "comment/list.do");
 
 		return result;
@@ -153,7 +155,7 @@ public class CommentController extends AbstractController {
 		} else
 			try {
 				this.commentService.save(comment);
-				result = new ModelAndView("redirect:../comment/list.do");
+				result = new ModelAndView("redirect:../comment/listTrip.do?tripId=" + this.getTripId());
 				result.addObject("messageStatus", "comment.commit.ok");
 			} catch (final Throwable oops) {
 				result = new ModelAndView();
