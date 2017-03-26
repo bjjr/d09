@@ -7,7 +7,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<form:form action="message/send.do" modelAttribute="actorMessage" >
+<form:form action="message/send.do" modelAttribute="messageEntity" >
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
@@ -26,19 +26,18 @@
 	
 	<acme:select items="${actors}" itemLabel="userAccount.username" code="message.recipient" path="recipient" />
 	
-	<jstl:if test="${reply eq false and forward eq false}">
+	<jstl:if test="${reply == false and forward == false}">
 			<acme:submit name="send" code="message.send"/>
 	</jstl:if>
 
-	<jstl:if test="${forward eq true}">
+	<jstl:if test="${forward == true}">
 			<acme:submit name="forward" code="message.send"/>
 	</jstl:if>
 	
-	<jstl:if test="${reply eq true}">
+	<jstl:if test="${reply == true}">
 			<acme:submit name="reply" code="message.send"/>
 	</jstl:if>
 	
-	<acme:delete confirmationCode="misc.confirm.delete" buttonCode="misc.delete" id="${actorMessage.id}"/>
 	<acme:cancel url="/" code="misc.cancel"/>
 
 </form:form>

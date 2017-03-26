@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Actor;
-import domain.Message;
+import domain.MessageEntity;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -73,20 +73,20 @@ public class MessageServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
-			Message message, saved;
-			Collection<Message> recipientMessages, senderMessages;
+			MessageEntity messageEntity, saved;
+			Collection<MessageEntity> recipientMessages, senderMessages;
 			Actor recipient;
 
 			this.authenticate(username);
 
 			recipient = this.actorService.findOne(recipientId);
 
-			message = this.messageService.create();
-			message.setTitle("test");
-			message.setText("test");
-			message.setRecipient(recipient);
+			messageEntity = this.messageService.create();
+			messageEntity.setTitle("test");
+			messageEntity.setText("test");
+			messageEntity.setRecipient(recipient);
 
-			saved = this.messageService.save(message);
+			saved = this.messageService.save(messageEntity);
 
 			senderMessages = this.messageService.findSentMessages();
 

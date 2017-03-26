@@ -108,15 +108,8 @@ public class ApplicationService {
 	public void accept(final Application application) {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
-		Collection<Application> apps;
-		Customer principal;
-
-		principal = this.customerService.findByPrincipal();
-		apps = this.findApplicationsByCustomer(principal.getId());
-
 		Assert.notNull(application);
 		Assert.isTrue(application.getStatus().equals("PENDING"));
-		Assert.isTrue(apps.contains(application));
 
 		application.setStatus("ACCEPTED");
 	}
@@ -124,15 +117,8 @@ public class ApplicationService {
 	public void deny(final Application application) {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
-		Collection<Application> apps;
-		Customer principal;
-
-		principal = this.customerService.findByPrincipal();
-		apps = this.findApplicationsByCustomer(principal.getId());
-
 		Assert.notNull(application);
 		Assert.isTrue(application.getStatus().equals("PENDING"));
-		Assert.isTrue(apps.contains(application));
 
 		application.setStatus("DENIED");
 	}
@@ -193,6 +179,25 @@ public class ApplicationService {
 		for (final Trip t : trips)
 			result.addAll(this.findApplicationsByTrip(t.getId()));
 
+		return result;
+	}
+
+	public Boolean checkApplicationExists(final int tripId) {
+		Boolean result;
+		Customer customer;
+		Collection<Application> myApplications;
+		Trip trip;
+
+		result = false;
+		trip = this.tripService.findOne(tripId);
+		customer = this.customerService.findByPrincipal();
+		myApplications = this.findApplicationsByCustomer(customer.getId());
+
+		for (final Application app : myApplications)
+			if (app.getTrip().equals(trip)) {
+				result = true;
+				break;
+			}
 		return result;
 	}
 

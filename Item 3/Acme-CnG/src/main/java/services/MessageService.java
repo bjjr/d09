@@ -20,7 +20,7 @@ import org.springframework.validation.Validator;
 
 import repositories.MessageRepository;
 import domain.Actor;
-import domain.Message;
+import domain.MessageEntity;
 
 @Service
 @Transactional
@@ -50,16 +50,16 @@ public class MessageService {
 
 	// Simple CRUD methods ------------------------------------
 
-	public Message create() {
+	public MessageEntity create() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 
-		Message res;
+		MessageEntity res;
 		Collection<String> attachments;
 		Actor sender;
 
 		attachments = new ArrayList<String>();
 		sender = this.actorService.findByPrincipal();
-		res = new Message();
+		res = new MessageEntity();
 
 		res.setText("");
 		res.setTitle("");
@@ -69,16 +69,16 @@ public class MessageService {
 		return res;
 	}
 
-	public Message save(final Message message) {
-		Assert.notNull(message);
+	public MessageEntity save(final MessageEntity messageEntity) {
+		Assert.notNull(messageEntity);
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 
-		Message res;
+		MessageEntity res;
 		Date now;
 
 		now = new Date(System.currentTimeMillis() - 1000);
-		message.setMoment(now);
-		res = this.messageRepository.save(message);
+		messageEntity.setMoment(now);
+		res = this.messageRepository.save(messageEntity);
 
 		return res;
 	}
@@ -87,26 +87,26 @@ public class MessageService {
 	 * Only the sender of a message can delete his/her message
 	 */
 
-	public void delete(final Message message) {
+	public void delete(final MessageEntity messageEntity) {
 		Actor actor;
-		Assert.notNull(message);
+		Assert.notNull(messageEntity);
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 
 		actor = this.actorService.findByPrincipal();
 
-		Assert.isTrue(message.getSender().equals(actor));
+		Assert.isTrue(messageEntity.getSender().equals(actor));
 
-		this.messageRepository.delete(message.getId());
+		this.messageRepository.delete(messageEntity.getId());
 	}
 
 	/*
 	 * Users can only access messages related to them
 	 */
 
-	public Message findOne(final int messageId) {
+	public MessageEntity findOne(final int messageId) {
 		Assert.isTrue(messageId != 0);
 
-		Message res;
+		MessageEntity res;
 
 		res = this.messageRepository.findOne(messageId);
 
@@ -116,12 +116,12 @@ public class MessageService {
 		return res;
 	}
 
-	public Message reconstruct(final Message message, final BindingResult bindingResult) {
+	public MessageEntity reconstruct(final MessageEntity messageEntity, final BindingResult bindingResult) {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
-		Message result;
+		MessageEntity result;
 		Actor actor;
 
-		result = message;
+		result = messageEntity;
 		actor = this.actorService.findByPrincipal();
 		result.setSender(actor);
 		result.setMoment(new Date(System.currentTimeMillis()));
@@ -194,36 +194,36 @@ public class MessageService {
 
 	// Other business methods ---------------------------------
 
-	public Message forwardMessage(final Message message) {
+	public MessageEntity forwardMessage(final MessageEntity messageEntity) {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
-		Assert.notNull(message);
+		Assert.notNull(messageEntity);
 
-		Message forwarded;
+		MessageEntity forwarded;
 
 		forwarded = this.create();
-		forwarded.setTitle("FW: " + message.getTitle());
-		forwarded.setText(message.getText());
-		forwarded.setAttachments(message.getAttachments());
+		forwarded.setTitle("FW: " + messageEntity.getTitle());
+		forwarded.setText(messageEntity.getText());
+		forwarded.setAttachments(messageEntity.getAttachments());
 
 		return forwarded;
 	}
 
-	public Message replyMessage(final Message message) {
+	public MessageEntity replyMessage(final MessageEntity messageEntity) {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
-		Assert.notNull(message);
+		Assert.notNull(messageEntity);
 
-		Message reply;
+		MessageEntity reply;
 
 		reply = this.create();
-		reply.setTitle("RE: " + message.getTitle());
-		reply.setRecipient(message.getSender());
+		reply.setTitle("RE: " + messageEntity.getTitle());
+		reply.setRecipient(messageEntity.getSender());
 
 		return reply;
 	}
 
-	public Collection<Message> findSentMessages() {
+	public Collection<MessageEntity> findSentMessages() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
-		Collection<Message> res;
+		Collection<MessageEntity> res;
 		Actor sender;
 
 		sender = this.actorService.findByPrincipal();
@@ -232,9 +232,9 @@ public class MessageService {
 		return res;
 	}
 
-	public Collection<Message> findReceivedMessages() {
+	public Collection<MessageEntity> findReceivedMessages() {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
-		Collection<Message> res;
+		Collection<MessageEntity> res;
 		Actor recipient;
 
 		recipient = this.actorService.findByPrincipal();

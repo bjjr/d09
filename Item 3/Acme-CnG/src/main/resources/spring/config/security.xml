@@ -39,19 +39,13 @@
 		<security:intercept-url pattern="/security/login.do" access="permitAll" />
 		<security:intercept-url pattern="/security/loginFailure.do" access="permitAll" />
 
-		<security:intercept-url pattern="/welcome/index.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/welcome/index.do" access="permitAll" />
+		
+		<security:intercept-url pattern="/legal/**" access="permitAll" />
 
 		<security:intercept-url pattern="/application/customer/**" access="hasRole('CUSTOMER')" />
 
-		<security:intercept-url pattern="/offer/list.do" access="isAuthenticated()" />
-		<security:intercept-url pattern="/offer/admin/**" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/offer/customer/**" access="hasRole('CUSTOMER')" />
-		
 		<security:intercept-url pattern="/banner/administrator/**" access="hasRole('ADMIN')" />
-		
-		<security:intercept-url pattern="/request/list.do" access="isAuthenticated()" />
-		<security:intercept-url pattern="/request/admin/**" access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/request/customer/**" access="hasRole('CUSTOMER')" />
 		
 		<security:intercept-url pattern="/message/**" access="isAuthenticated()" />
 
@@ -59,9 +53,17 @@
 		
 		<security:intercept-url pattern="/comment/**" access="isAuthenticated()" />
 		
-		<security:intercept-url pattern="/legal/**" access="isAuthenticated()" />
-		
 		<security:intercept-url pattern="/administrator/**" access="hasRole('ADMIN')" />
+		
+		<security:intercept-url pattern="/offer/list.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/offer/search.do" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/offer/administrator/**" access="hasRole('ADMIN')" /> 
+		<security:intercept-url pattern="/offer/customer/**" access="hasRole('CUSTOMER')" />
+		
+		<security:intercept-url pattern="/request/list.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/request/search.do" access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/request/administrator/**" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/request/customer/**" access="hasRole('CUSTOMER')" /> 
 	
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 

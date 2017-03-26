@@ -4,21 +4,21 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Message;
+import domain.MessageEntity;
 
 @Component
 @Transactional
-public class MessageToStringConverter implements Converter<Message, String>{
+public class MessageToStringConverter implements Converter<MessageEntity, String>{
 
 	@Override
-	public String convert(Message message) {
+	public String convert(MessageEntity messageEntity) {
 		String result;
 		
-		if(message == null){
+		if(messageEntity == null){
 			result = null;
 		}
 		else{
-			result = String.valueOf(message.getId());
+			result = String.valueOf(messageEntity.getId());
 		}
 		
 		return result;

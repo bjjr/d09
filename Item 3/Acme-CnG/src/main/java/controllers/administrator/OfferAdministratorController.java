@@ -1,5 +1,5 @@
 
-package controllers.admin;
+package controllers.administrator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +13,8 @@ import controllers.AbstractController;
 import domain.Offer;
 
 @Controller
-@RequestMapping("/offer/admin")
-public class OfferAdminController extends AbstractController {
+@RequestMapping("/offer/administrator")
+public class OfferAdministratorController extends AbstractController {
 
 	// Services -----------------------------------------------
 
@@ -24,7 +24,7 @@ public class OfferAdminController extends AbstractController {
 
 	// Constructors -------------------------------------------
 
-	public OfferAdminController() {
+	public OfferAdministratorController() {
 		super();
 	}
 
@@ -38,7 +38,6 @@ public class OfferAdminController extends AbstractController {
 		offer = this.offerService.findOne(offerId);
 
 		this.offerService.ban(offer);
-		this.offerService.save(offer);
 		result = new ModelAndView("redirect:/offer/list.do");
 
 		return result;

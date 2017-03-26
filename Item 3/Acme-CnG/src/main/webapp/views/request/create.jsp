@@ -7,7 +7,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="offer/customer/create.do" modelAttribute="offerForm">
+<form:form action="request/customer/create.do" modelAttribute="requestForm">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -43,6 +43,6 @@
 	
 	<input type="button" name="cancel"
 		value="<spring:message code="misc.cancel" />"
-		onclick="window.location='offer/customer/list.do'" />
+		onclick="window.location='request/customer/list.do'" />
 
 </form:form>

@@ -21,14 +21,9 @@
 		<put-attribute name="body" value="/views/request/list.jsp" />
 	</definition>
 	
-	<definition name="request/listByCustomer" extends="master.page">	
-		<put-attribute name="title" value="Mis solicitudes" />
-		<put-attribute name="body" value="/views/request/listByCustomer.jsp" />
-	</definition>
-	
-	<definition name="request/edit" extends="master.page">	
-		<put-attribute name="title" value="Editar solicitud" />
-		<put-attribute name="body" value="/views/request/edit.jsp" />
+	<definition name="request/create" extends="master.page">	
+		<put-attribute name="title" value="Crear solicitud" />
+		<put-attribute name="body" value="/views/request/create.jsp" />
 	</definition>
 	
 </tiles-definitions>

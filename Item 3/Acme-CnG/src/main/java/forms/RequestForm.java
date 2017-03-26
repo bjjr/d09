@@ -14,10 +14,10 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import domain.Offer;
 import domain.Place;
+import domain.Request;
 
-public class OfferForm {
+public class RequestForm {
 
 	private Integer	id;
 	private Integer	version;
@@ -29,26 +29,26 @@ public class OfferForm {
 	private Boolean	banned;
 
 
-	public OfferForm() {
+	public RequestForm() {
 		super();
 	}
 
-	public OfferForm(final Offer offer) {
+	public RequestForm(final Request request) {
 		this();
-		this.id = offer.getId();
-		this.version = offer.getVersion();
-		this.title = offer.getTitle();
-		this.description = offer.getDescription();
-		this.moment = offer.getMoment();
-		this.origin = offer.getOrigin();
-		this.destination = offer.getDestination();
-		this.banned = offer.isBanned();
+		this.id = request.getId();
+		this.version = request.getVersion();
+		this.title = request.getTitle();
+		this.description = request.getDescription();
+		this.moment = request.getMoment();
+		this.origin = request.getOrigin();
+		this.destination = request.getDestination();
+		this.banned = request.isBanned();
 	}
 
-	public Offer getOffer() {
-		Offer result;
+	public Request getRequest() {
+		Request result;
 
-		result = new Offer();
+		result = new Request();
 		result.setId(this.id);
 		result.setVersion(this.version);
 		result.setTitle(this.title);

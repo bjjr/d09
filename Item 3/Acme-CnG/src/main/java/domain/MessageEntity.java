@@ -19,7 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Message extends DomainEntity {
+public class MessageEntity extends DomainEntity {
 
 	private Date				moment;
 	private String				title;

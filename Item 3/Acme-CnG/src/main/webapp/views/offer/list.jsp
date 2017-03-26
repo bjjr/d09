@@ -20,12 +20,14 @@
 	
 		<acme:column code="trip.moment" property="moment" sortable="true"/>
 		
-		<display:column title="trip.origin">
+		<spring:message code="trip.origin" var="originHeader" />
+		<display:column title="${originHeader}">
 			<acme:display code="place.address" property="${row.origin.address}"/>
 			<acme:display code="place.coordinates" property="${row.origin.coordinates}"/>
 		</display:column>
 	
-		<display:column title="trip.destination">
+		<spring:message code="trip.destination" var="destinationHeader" />
+		<display:column title="${destinationHeader}">
 			<acme:display code="place.address" property="${row.destination.address}"/>
 			<acme:display code="place.coordinates" property="${row.destination.coordinates}"/>
 		</display:column>
@@ -37,7 +39,7 @@
 		</display:column>
 		
 		<display:column>
-			<a href="application/customer/list.do?offerId=${row.id}">
+			<a href="application/customer/listByTrip.do?tripId=${row.id}">
 				<spring:message code="trip.applications"/>
 			</a>
 		</display:column>
@@ -48,12 +50,6 @@
 			</a>
 		</display:column>
 	
-		<display:column>
-			<a href="offer/customer/edit.do?offerId=${row.id}">
-				<spring:message code="misc.edit"/>
-			</a>
-		</display:column>
-		
 	</display:table>
 	<br />
 
@@ -69,10 +65,11 @@
 	<!-- Search Form -->
 	
 	<security:authorize access="hasRole('CUSTOMER')">
-		<form:form action="" modelAttribute="offer">
-			<input type="text" name="offer"/>
+		<form:form>
+			<input type="text" name="keyword"/>
 			<input type="submit" name="search" value="<spring:message code="offer.search"/>"/>
 		</form:form>
+		<br />
 	</security:authorize>
 
 	<!-- Listing grid -->
@@ -88,9 +85,17 @@
 	
 		<acme:column code="trip.moment" property="moment"/>
 	
-		<acme:column code="trip.origin" property="origin"/>
+		<spring:message code="trip.origin" var="originHeader" />
+		<display:column title="${originHeader}">
+			<acme:display code="place.address" property="${row.origin.address}"/>
+			<acme:display code="place.coordinates" property="${row.origin.coordinates}"/>
+		</display:column>
 	
-		<acme:column code="trip.destination" property="destination"/>
+		<spring:message code="trip.destination" var="destinationHeader" />
+		<display:column title="${destinationHeader}">
+			<acme:display code="place.address" property="${row.destination.address}"/>
+			<acme:display code="place.coordinates" property="${row.destination.coordinates}"/>
+		</display:column>
 	
 		<security:authorize access="hasRole('CUSTOMER')">
 			<display:column>
@@ -127,9 +132,7 @@
 		<security:authorize access="hasRole('ADMIN')">
 			<display:column>
 				<jstl:if test="${row.banned == false}">
-					<a href="offer/admin/ban.do?offerId=${row.id}">
-						<spring:message code="trip.ban"/>
-					</a>
+					<acme:link href="offer/administrator/ban.do?offerId=${row.id}" code="trip.ban"/>
 				</jstl:if>
 				<jstl:if test="${row.banned == true}">
 					<spring:message code="trip.banned" />
