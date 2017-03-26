@@ -23,13 +23,13 @@
 	<acme:column code="comment.stars" property="stars"/>
 	
 	<security:authorize access="hasRole('ADMIN')">
-		<acme:column code="comment.banned" property="row.banned"/>
+		<acme:column code="comment.banned" property="banned"/>
 		
-		<jstl:if test="${row.banned == false}" >
-			<display:column>
-				<acme:link href="comment/banComment.do?commentId=${id}" code="comment.ban"/>
-			</display:column>
-		</jstl:if>
+		<display:column title="">
+			<jstl:if test="${row.banned == false}" >
+				<acme:link href="comment/banComment.do?commentId=${row.id}" code="comment.ban"/>
+			</jstl:if>
+		</display:column>
 	</security:authorize>
 	
 	<acme:column code="comment.actor" property="actor.name"/>
