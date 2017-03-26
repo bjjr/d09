@@ -31,6 +31,7 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="banner/administrator/edit.do"><spring:message code="master.page.administrator.banner.edit" /></a></li>
+					<li><a href="dashboard/administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>
 					<li><a href="message/listSent.do"><spring:message code="master.page.message.list.sent" /></a></li>
 					<li><a href="message/listReceived.do"><spring:message code="master.page.message.list.received" /></a></li>
 					<li><a href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>

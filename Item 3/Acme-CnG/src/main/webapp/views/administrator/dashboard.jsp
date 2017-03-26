@@ -60,10 +60,20 @@ requestURI="administrator/dashboard.do" id="customerMAD">
 <h2><spring:message code="administrator.avgACPC" /></h2>
 <jstl:out value="${avgACPC}"></jstl:out>
 
-<h2><spring:message code="administrator.actor10%avgCPA" /></h2>
+<h2><spring:message code="administrator.actor10moreavgCPA" /></h2>
 
-<display:table pagesize="5" class="displaytag" name="actor10%avgCPA"
-requestURI="administrator/dashboard.do" id="actor10%avgCPA">
+<display:table pagesize="5" class="displaytag" name="actor10moreavgCPA"
+requestURI="administrator/dashboard.do" id="actor10moreavgCPA">
+
+	<acme:column code="actor.name" property="name"/>
+	<acme:column code="actor.surname" property="surname"/>
+
+</display:table>
+
+<h2><spring:message code="administrator.actor10lessavgCPA" /></h2>
+
+<display:table pagesize="5" class="displaytag" name="actor10lessavgCPA"
+requestURI="administrator/dashboard.do" id="actor10lessavgCPA">
 
 	<acme:column code="actor.name" property="name"/>
 	<acme:column code="actor.surname" property="surname"/>
