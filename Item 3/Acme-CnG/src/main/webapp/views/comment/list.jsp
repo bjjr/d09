@@ -27,7 +27,12 @@
 		
 		<display:column title="">
 			<jstl:if test="${row.banned == false}" >
-				<acme:link href="comment/banComment.do?commentId=${row.id}" code="comment.ban"/>
+				<jstl:if test="${tripId == null}">
+					<acme:link href="comment/ban.do?commentId=${row.id}" code="comment.ban"/>
+				</jstl:if>
+				<jstl:if test="${tripId != null}">
+					<acme:link href="comment/banTrip.do?tripId=${tripId}&commentId=${row.id}" code="comment.ban"/>
+				</jstl:if>
 			</jstl:if>
 		</display:column>
 	</security:authorize>

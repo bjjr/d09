@@ -167,13 +167,27 @@ public class CommentController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/banComment", method = RequestMethod.GET)
-	public ModelAndView banComment(@RequestParam final int commentId) {
+	@RequestMapping(value = "/ban", method = RequestMethod.GET)
+	public ModelAndView ban(@RequestParam final int commentId) {
 		ModelAndView result;
 
 		try {
 			this.commentService.banComment(commentId);
 			result = new ModelAndView("redirect:list.do");
+		} catch (final IllegalArgumentException oops) {
+			result = this.list();
+			result.addObject("message", "comment.commit.error");
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/banTrip", method = RequestMethod.GET)
+	public ModelAndView banTrip(@RequestParam final int tripId, @RequestParam final int commentId) {
+		ModelAndView result;
+
+		try {
+			this.commentService.banComment(commentId);
+			result = new ModelAndView("redirect:listTrip.do?tripId=" + tripId);
 		} catch (final IllegalArgumentException oops) {
 			result = this.list();
 			result.addObject("message", "comment.commit.error");
