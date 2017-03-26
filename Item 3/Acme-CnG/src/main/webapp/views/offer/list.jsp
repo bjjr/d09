@@ -43,6 +43,12 @@
 				<spring:message code="trip.applications"/>
 			</a>
 		</display:column>
+		
+		<display:column>
+			<a href="comment/listTrip.do?tripId=${row.id}">
+				<spring:message code="trip.listComments"/>
+			</a>
+		</display:column>
 	
 	</display:table>
 	<br />
@@ -110,6 +116,18 @@
 				</jstl:if>
 			</display:column>
 		</security:authorize>
+		
+		<display:column>
+			<a href="comment/createTrip.do?tripId=${row.id}">
+				<spring:message code="trip.writeComment"/>
+			</a>
+		</display:column>
+		
+		<display:column>
+			<a href="comment/listTrip.do?tripId=${row.id}">
+				<spring:message code="trip.listComments"/>
+			</a>
+		</display:column>
 	
 		<security:authorize access="hasRole('ADMIN')">
 			<display:column>
