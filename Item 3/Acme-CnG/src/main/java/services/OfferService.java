@@ -110,7 +110,6 @@ public class OfferService {
 
 			offersByCustomer = this.findOffersByCustomer(customer.getId());
 			offersByCustomer.add(offer);
-			this.customerService.save(customer);
 		}
 
 		result = this.offerRepository.save(offer);

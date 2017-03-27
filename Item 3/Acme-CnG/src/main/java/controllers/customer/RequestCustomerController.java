@@ -67,7 +67,7 @@ public class RequestCustomerController extends AbstractController {
 		result = new ModelAndView("request/list");
 		result.addObject("requests", requests);
 		result.addObject("myRequests", myRequests);
-		result.addObject("requestURI", "request/list.do");
+		result.addObject("requestURI", "request/customer/list.do");
 
 		return result;
 	}

@@ -67,7 +67,7 @@ public class OfferCustomerController extends AbstractController {
 		result = new ModelAndView("offer/list");
 		result.addObject("offers", offers);
 		result.addObject("myOffers", myOffers);
-		result.addObject("requestURI", "offer/list.do");
+		result.addObject("requestURI", "offer/customer/list.do");
 
 		return result;
 	}

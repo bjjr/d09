@@ -108,7 +108,6 @@ public class RequestService {
 
 			requestsByCustomer = this.findRequestsByCustomer(customer.getId());
 			requestsByCustomer.add(request);
-			this.customerService.save(customer);
 		}
 
 		result = this.requestRepository.save(request);
