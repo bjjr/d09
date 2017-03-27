@@ -180,9 +180,17 @@ public class CommentService {
 		Assert.notNull(commentableEntityId);
 		Assert.isTrue(commentableEntityId != 0);
 
+		final Actor actor;
+		final Authority auth;
 		Collection<Comment> result;
 
-		result = this.commentRepository.findCommentsByCommentableEntity(commentableEntityId);
+		actor = this.actorService.findByPrincipal();
+		auth = new Authority();
+		auth.setAuthority(Authority.ADMIN);
+		if (actor.getUserAccount().getAuthorities().contains(auth))
+			result = this.commentRepository.findAdminCommentsByCommentableEntity(commentableEntityId);
+		else
+			result = this.commentRepository.findCommentsByCommentableEntity(commentableEntityId, actor.getId());
 		Assert.notNull(result);
 
 		return result;
