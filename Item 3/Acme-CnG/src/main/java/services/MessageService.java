@@ -83,6 +83,10 @@ public class MessageService {
 		return res;
 	}
 
+	public void flush() {
+		this.messageRepository.flush();
+	}
+
 	/*
 	 * Only the sender of a message can delete his/her message
 	 */
@@ -197,13 +201,14 @@ public class MessageService {
 	public MessageEntity forwardMessage(final MessageEntity messageEntity) {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 		Assert.notNull(messageEntity);
+		Assert.isTrue(messageEntity.getRecipient().equals(this.actorService.findByPrincipal()) || messageEntity.getSender().equals(this.actorService.findByPrincipal()));
 
 		MessageEntity forwarded;
 
 		forwarded = this.create();
 		forwarded.setTitle("FW: " + messageEntity.getTitle());
 		forwarded.setText(messageEntity.getText());
-		forwarded.setAttachments(messageEntity.getAttachments());
+		forwarded.setAttachments(new ArrayList<>(messageEntity.getAttachments())); // Prevent hibernate to be lazy
 
 		return forwarded;
 	}
@@ -211,6 +216,7 @@ public class MessageService {
 	public MessageEntity replyMessage(final MessageEntity messageEntity) {
 		Assert.isTrue(this.actorService.checkAuthority("ADMIN") || this.actorService.checkAuthority("CUSTOMER"));
 		Assert.notNull(messageEntity);
+		Assert.isTrue(messageEntity.getRecipient().equals(this.actorService.findByPrincipal()));
 
 		MessageEntity reply;
 
