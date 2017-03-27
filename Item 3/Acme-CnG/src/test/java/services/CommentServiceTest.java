@@ -10,6 +10,8 @@
 
 package services;
 
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 
@@ -84,6 +86,7 @@ public class CommentServiceTest extends AbstractTest {
 		for (int i = 0; i < testingData.length; i++)
 			this.saveCommentTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (int) testingData[i][3], (boolean) testingData[i][4], (int) testingData[i][5], (Class<?>) testingData[i][6]);
 	}
+
 	/*
 	 * Use case: An admin user ban a posted comment
 	 * Expected errors:
@@ -105,6 +108,30 @@ public class CommentServiceTest extends AbstractTest {
 
 		for (int i = 0; i < testingData.length; i++)
 			this.banCommentTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
+	}
+
+	/*
+	 * Use case: Find comments by Actor/Trip
+	 * Expected errors:
+	 * - A non registered user list the comments -> IllegalArgumentException
+	 */
+
+	@Test
+	public void listCommentsDriver() {
+		final Object testingData[][] = {
+			{
+				"admin", 118, null
+			}, {
+				"customer1", 120, null
+			}, {
+				null, 118, IllegalArgumentException.class
+			}, {
+				null, 120, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.listCommentsTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
 	// Ancillary methods ------------------------------------------------------
@@ -150,6 +177,27 @@ public class CommentServiceTest extends AbstractTest {
 			this.authenticate(username);
 
 			saved = this.commentService.banComment(commentId);
+
+			this.unauthenticate();
+		} catch (final Throwable th) {
+			caught = th.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+	}
+
+	protected void listCommentsTemplate(final String username, final int commentableEntityId, final Class<?> expected) {
+		Class<?> caught;
+
+		caught = null;
+
+		try {
+			final Collection<Comment> res;
+
+			this.unauthenticate();
+			this.authenticate(username);
+
+			res = this.commentService.findCommentsByCommentableEntity(commentableEntityId);
 
 			this.unauthenticate();
 		} catch (final Throwable th) {
