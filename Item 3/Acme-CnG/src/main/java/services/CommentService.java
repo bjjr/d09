@@ -17,7 +17,6 @@ import security.Authority;
 import domain.Actor;
 import domain.Comment;
 import domain.CommentableEntity;
-import domain.Customer;
 import domain.Trip;
 
 @Service
@@ -199,19 +198,14 @@ public class CommentService {
 	public Collection<CommentableEntity> commentableEntities(final Actor actor) {
 		Collection<CommentableEntity> result;
 		Authority auth;
-		final Customer customer;
 
 		result = new ArrayList<CommentableEntity>();
 		auth = new Authority();
 		auth.setAuthority(Authority.CUSTOMER);
 
-		if (actor.getUserAccount().getAuthorities().contains(auth)) {
-			customer = this.customerService.findOne(actor.getId());
-			result.add(customer);
-			for (final Trip t : this.tripService.findAll())
-				if (!result.contains(t.getCustomer()))
-					result.add(t.getCustomer());
-		}
+		for (final Trip t : this.tripService.findAll())
+			if (!result.contains(t.getCustomer()))
+				result.add(t.getCustomer());
 
 		return result;
 
