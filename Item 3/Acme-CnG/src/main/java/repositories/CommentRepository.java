@@ -27,8 +27,11 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	@Query("select count(c)*1.0/(select count(a) from Administrator a) from Comment c join c.commentableEntity ca where type(ca)=domain.Administrator")
 	Double findAverageCommentPerAdministrator();
 
+	@Query("select c from Comment c where c.commentableEntity.id = ?1 and (c.banned = false or c.actor.id = ?2)")
+	Collection<Comment> findCommentsByCommentableEntity(int commentableEntityId, int actorId);
+
 	@Query("select c from Comment c where c.commentableEntity.id = ?1")
-	Collection<Comment> findCommentsByCommentableEntity(int commentableEntityId);
+	Collection<Comment> findAdminCommentsByCommentableEntity(int commentableEntityId);
 
 	@Query("select c from Comment c where c.actor.id = ?1")
 	Collection<Comment> findCommentsByActor(int actorId);
