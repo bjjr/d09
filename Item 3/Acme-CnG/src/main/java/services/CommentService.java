@@ -100,6 +100,10 @@ public class CommentService {
 		return result;
 	}
 
+	public void flush() {
+		this.commentRepository.flush();
+	}
+
 	public Comment banComment(final int commentId) {
 		Assert.notNull(commentId);
 
