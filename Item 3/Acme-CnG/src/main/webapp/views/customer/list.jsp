@@ -12,18 +12,18 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <!-- Listing grid -->
-<display:table pagesize="5" class="displaytag" keepStatus="true"
+<display:table pagesize="5" class="displaytag" 
 	name="messages" requestURI="${requestURI}" id="row">
 	<!-- Attributes -->
-	<acme:column code="message.moment" property="moment"/>
+	<acme:column code="message.moment" property="${row.moment}"/>
 	
-	<acme:column code="message.title" property="title"/>
+	<acme:column code="message.title" property="${row.title}"/>
 	
-	<acme:column code="message.text" property="text"/>
+	<acme:column code="message.text" property="${row.text}"/>
 		
-	<acme:column code="message.attachments" property="attachments"/>
+	<acme:column code="message.attachments" property="${row.attachments}"/>
 
-	<acme:column code="message.recipient" property="recipient"/>
+	<acme:column code="message.recipient" property="${row.recipient}"/>
 
 	<display:column>
 		<a href="message/forward.do?messageId=${row.id }"><spring:message code="message.forward" /></a>

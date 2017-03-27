@@ -34,4 +34,6 @@
 <%-- Definition --%>
 
 <spring:message code="${code}" var="var" />
-<display:column property="${property}" title="${var}" sortable="${sortable}" />
+<display:column  title="${var}" sortable="${sortable}" >
+	<jstl:out value="${property}" />
+</display:column>

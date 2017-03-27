@@ -15,11 +15,11 @@
 <display:table pagesize="5" class="displaytag"
 	name="messages" requestURI="${requestURI}" id="row">
 	<!-- Attributes -->
-	<acme:column code="message.moment" property="moment"/>
+	<acme:column code="message.moment" property="${row.moment}"/>
 	
-	<acme:column code="message.title" property="title"/>
+	<acme:column code="message.title" property="${row.title}"/>
 	
-	<acme:column code="message.text" property="text"/>
+	<acme:column code="message.text" property="${row.text}"/>
 	
 	<spring:message code="message.attachments" var="att" />
 	<display:column title="${att}">
@@ -29,7 +29,7 @@
 		</jstl:forEach>
 	</display:column>
 
-	<acme:column code="message.recipient" property="recipient.userAccount.username"/>
+	<acme:column code="message.recipient" property="${row.recipient.userAccount.username}"/>
 
 	<display:column>
 		<a href="message/forward.do?messageId=${row.id }"><spring:message code="message.forward" /></a>
