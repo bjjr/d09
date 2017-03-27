@@ -12,15 +12,15 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <!-- Listing grid -->
-<display:table pagesize="5" class="displaytag" keepStatus="true"
+<display:table pagesize="5" class="displaytag" 
 	name="applications" requestURI="${requestURI}" id="row">
 	<!-- Attributes -->
 
-	<acme:column code="actor.name" property="customer.name" />
+	<acme:column code="actor.name" property="${row.customer.name}" />
 
-	<acme:column code="application.trip" property="trip.title" />
+	<acme:column code="application.trip" property="${row.trip.title}" />
 
-	<acme:column code="application.status" property="status" />
+	<acme:column code="application.status" property="${row.status}" />
 
 	<jstl:if test="${row.status=='PENDING'}">
 	<display:column>

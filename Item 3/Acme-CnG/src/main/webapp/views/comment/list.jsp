@@ -11,19 +11,19 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <!-- Listing grid -->
-<display:table pagesize="5" class="displaytag" keepStatus="true"
+<display:table pagesize="5" class="displaytag" 
 	name="comments" requestURI="${requestURI}" id="row">
 	<!-- Attributes -->
-	<acme:column code="comment.title" property="title"/>
+	<acme:column code="comment.title" property="${row.title}"/>
 	
-	<acme:column code="comment.text" property="text"/>
+	<acme:column code="comment.text" property="${row.text}"/>
 	
-	<acme:column code="comment.moment" property="moment"/>
+	<acme:column code="comment.moment" property="${row.moment}"/>
 	
-	<acme:column code="comment.stars" property="stars"/>
+	<acme:column code="comment.stars" property="${row.stars}"/>
 	
 	<security:authorize access="hasRole('ADMIN')">
-		<acme:column code="comment.banned" property="banned"/>
+		<acme:column code="comment.banned" property="${row.banned}"/>
 		
 		<display:column title="">
 			<jstl:if test="${row.banned == false}" >
@@ -37,13 +37,13 @@
 		</display:column>
 	</security:authorize>
 	
-	<acme:column code="comment.actor" property="actor.name"/>
+	<acme:column code="comment.actor" property="${row.actor.name}"/>
 	
 	<jstl:if test="${tripId == null}">
-		<acme:column code="comment.commentableEntity" property="commentableEntity.name"/>
+		<acme:column code="comment.commentableEntity" property="${row.commentableEntity.name}"/>
 	</jstl:if>
 	<jstl:if test="${tripId != null}">
-		<acme:column code="comment.commentableEntity" property="commentableEntity.title"/>
+		<acme:column code="comment.commentableEntity" property="${row.commentableEntity.title}"/>
 	</jstl:if>
 	
 </display:table>

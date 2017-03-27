@@ -28,20 +28,20 @@
 <h2><spring:message code="administrator.customerMAA" /></h2>
 
 <display:table pagesize="5" class="displaytag" name="customerMAA"
-requestURI="administrator/dashboard.do" id="customerMAA">
+requestURI="administrator/dashboard.do" id="row">
 
-	<acme:column code="actor.name" property="name"/>
-	<acme:column code="actor.surname" property="surname"/>
+	<acme:column code="actor.name" property="${row.name}"/>
+	<acme:column code="actor.surname" property="${row.surname}"/>
 
 </display:table>
 
 <h2><spring:message code="administrator.customerMAD" /></h2>
 
 <display:table pagesize="5" class="displaytag" name="customerMAD"
-requestURI="administrator/dashboard.do" id="customerMAD">
+requestURI="administrator/dashboard.do" id="row">
 
-	<acme:column code="actor.name" property="name"/>
-	<acme:column code="actor.surname" property="surname"/>
+	<acme:column code="actor.name" property="${row.name}"/>
+	<acme:column code="actor.surname" property="${row.surname}"/>
 
 </display:table>
 
@@ -63,21 +63,21 @@ requestURI="administrator/dashboard.do" id="customerMAD">
 <h2><spring:message code="administrator.actor10moreavgCPA" /></h2>
 
 <display:table pagesize="5" class="displaytag" name="actor10moreavgCPA"
-requestURI="administrator/dashboard.do" id="actor10moreavgCPA">
+requestURI="administrator/dashboard.do" id="row">
 
-	<acme:column code="actor.name" property="name"/>
-	<acme:column code="actor.surname" property="surname"/>
-
+	<acme:column code="actor.name" property="${row.name}"/>
+	<acme:column code="actor.surname" property="${row.surname}"/>
+	
 </display:table>
 
 <h2><spring:message code="administrator.actor10lessavgCPA" /></h2>
 
 <display:table pagesize="5" class="displaytag" name="actor10lessavgCPA"
-requestURI="administrator/dashboard.do" id="actor10lessavgCPA">
+requestURI="administrator/dashboard.do" id="row">
 
-	<acme:column code="actor.name" property="name"/>
-	<acme:column code="actor.surname" property="surname"/>
-
+	<acme:column code="actor.name" property="${row.name}"/>
+	<acme:column code="actor.surname" property="${row.surname}"/>
+	
 </display:table>
 
 <h2><spring:message code="administrator.maxMSA" /></h2>
@@ -101,19 +101,19 @@ requestURI="administrator/dashboard.do" id="actor10lessavgCPA">
 <h2><spring:message code="administrator.actorsMMS" /></h2>
 
 <display:table pagesize="5" class="displaytag" name="actorsMMS"
-requestURI="administrator/dashboard.do" id="actorsMMS">
+requestURI="administrator/dashboard.do" id="row">
 
-	<acme:column code="actor.name" property="name"/>
-	<acme:column code="actor.surname" property="surname"/>
-
+	<acme:column code="actor.name" property="${row.name}"/>
+	<acme:column code="actor.surname" property="${row.surname}"/>
+	
 </display:table>
 
 <h2><spring:message code="administrator.actorsMMR" /></h2>
 
 <display:table pagesize="5" class="displaytag" name="actorsMMR"
-requestURI="administrator/dashboard.do" id="actorsMMR">
+requestURI="administrator/dashboard.do" id="row">
 
-	<acme:column code="actor.name" property="name"/>
-	<acme:column code="actor.surname" property="surname"/>
-
+	<acme:column code="actor.name" property="${row.name}"/>
+	<acme:column code="actor.surname" property="${row.surname}"/>
+	
 </display:table>

@@ -9,16 +9,16 @@
 
 <jstl:if test="${myRequests == true}">
 
-	<display:table pagesize="5" class="displaytag" keepStatus="true"
+	<display:table pagesize="5" class="displaytag" 
 		name="requests" requestURI="${requestURI}" id="row">
 	
 		<!-- Attributes -->
 		
-		<acme:column code="trip.title" property="title" sortable="true"/>
+		<acme:column code="trip.title" property="${row.title}" sortable="true"/>
 	
-		<acme:column code="trip.description" property="description"/>
+		<acme:column code="trip.description" property="${row.description}"/>
 	
-		<acme:column code="trip.moment" property="moment" sortable="true"/>
+		<acme:column code="trip.moment" property="${row.moment}" sortable="true"/>
 		
 		<spring:message code="trip.origin" var="originHeader" />
 		<display:column title="${originHeader}">
@@ -68,16 +68,16 @@
 
 	<!-- Listing grid -->
 
-	<display:table pagesize="5" class="displaytag" keepStatus="true"
+	<display:table pagesize="5" class="displaytag" 
 		name="requests" requestURI="${requestURI}" id="row">
 	
 		<!-- Attributes -->
 	
-		<acme:column code="trip.title" property="title"/>
+		<acme:column code="trip.title" property="${row.title}"/>
 	
-		<acme:column code="trip.description" property="description"/>
+		<acme:column code="trip.description" property="${row.description}"/>
 	
-		<acme:column code="trip.moment" property="moment"/>
+		<acme:column code="trip.moment" property="${row.moment}"/>
 	
 		<spring:message code="trip.origin" var="originHeader" />
 		<display:column title="${originHeader}">

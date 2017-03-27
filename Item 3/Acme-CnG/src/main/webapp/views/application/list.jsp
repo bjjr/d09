@@ -11,12 +11,12 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <!-- Listing grid -->
-<display:table pagesize="5" class="displaytag" keepStatus="true"
+<display:table pagesize="5" class="displaytag" 
 	name="applications" requestURI="${requestURI}" id="row">
 	<!-- Attributes -->
 	
-	<acme:column code="application.trip" property="trip.title"/>
+	<acme:column code="application.trip" property="${row.trip.title}"/>
 	
-	<acme:column code="application.status" property="status"/>
+	<acme:column code="application.status" property="${row.status}"/>
 	
 </display:table>
