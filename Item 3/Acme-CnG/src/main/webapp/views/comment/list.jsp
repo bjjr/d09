@@ -49,7 +49,7 @@
 </display:table>
 
 <!-- Action links -->
-<security:authorize access="hasRole('CUSTOMER')">
+<security:authorize access="isAuthenticated()">
 	<jstl:if test="${tripId == null}">
 		<acme:link href="comment/create.do" code="misc.create"/>
 	</jstl:if>
