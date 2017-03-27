@@ -10,16 +10,14 @@
 
 package services;
 
-import java.util.Collection;
-
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Comment;
@@ -34,16 +32,10 @@ public class CommentServiceTest extends AbstractTest {
 	// System under test ------------------------------------------------------
 
 	@Autowired
-	private CommentService				commentService;
+	private CommentService	commentService;
 
 	@Autowired
-	private ActorService				actorService;
-
-	@Autowired
-	private CommentableEntityService	commentableEntityService;
-
-	@Autowired
-	private CustomerService				customerService;
+	private CustomerService	customerService;
 
 
 	// Services
@@ -51,26 +43,70 @@ public class CommentServiceTest extends AbstractTest {
 	// Tests ------------------------------------------------------------------
 
 	/*
-	 * Use case: A registered user creates and sends a message to another user
+	 * Use case: A registered user creates a new comment to a CommentableEntity
 	 * Expected errors:
-	 * - A non registered user tries to send a message -> IllegalArgumentException
+	 * - A registered user tries to write an empty title -> ConstraintViolationException
+	 * - A registered user tries to write an empty text -> ConstraintViolationException
+	 * - A registered user tries to write a comment with invalid stars -> ConstraintViolationException
+	 * - A non registered user tries to write a new comment -> IllegalArgumentException
 	 */
 
 	@Test
-	public void saveBannerDriver() {
+	public void saveCommentDriver() {
 		final Object testingData[][] = {
 			{
 				"admin", "Sample", "Sample", 5, false, 99, null
 			}, {
+				"customer1", "Sample", "Sample", 0, false, 99, null
+			}, {
+				"customer1", "Sample", "Sample", 1, false, 99, null
+			}, {
 				null, "Sample", "Sample", 5, false, 99, IllegalArgumentException.class
 			}, {
-				"customer1", "Sample", "Sample", 7, false, 99, null
+				"customer1", "Sample", "Sample", 7, false, 99, ConstraintViolationException.class
+			}, {
+				"customer1", "", "Sample", 7, false, 99, ConstraintViolationException.class
+			}, {
+				"customer1", "Sample", "", 7, false, 99, ConstraintViolationException.class
+			}, {
+				"customer1", "", "", 7, false, 99, ConstraintViolationException.class
+			}, {
+				"customer1", "", "", -1, false, 99, ConstraintViolationException.class
+			}, {
+				"customer1", "", "", 0, false, 99, ConstraintViolationException.class
+			}, {
+				"customer1", "", "", 5, false, 99, ConstraintViolationException.class
+			}, {
+				"customer1", "", "", 6, false, 99, ConstraintViolationException.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
 			this.saveCommentTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (int) testingData[i][3], (boolean) testingData[i][4], (int) testingData[i][5], (Class<?>) testingData[i][6]);
 	}
+	/*
+	 * Use case: An admin user ban a posted comment
+	 * Expected errors:
+	 * - A Customer user tries to ban a comment -> IllegalArgumentException
+	 * - A non registered user tries to ban a comment -> IllegalArgumentException
+	 */
+
+	@Test
+	public void banCommentDriver() {
+		final Object testingData[][] = {
+			{
+				"admin", 165, null
+			}, {
+				"customer1", 165, IllegalArgumentException.class
+			}, {
+				null, 165, IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.banCommentTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
+	}
+
 	// Ancillary methods ------------------------------------------------------
 
 	protected void saveCommentTemplate(final String username, final String title, final String text, final int stars, final boolean banned, final int commentableEntityId, final Class<?> expected) {
@@ -80,7 +116,6 @@ public class CommentServiceTest extends AbstractTest {
 
 		try {
 			final Comment comment, saved;
-			final Collection<Comment> comments;
 
 			this.unauthenticate();
 			this.authenticate(username);
@@ -93,8 +128,7 @@ public class CommentServiceTest extends AbstractTest {
 			comment.setBanned(banned);
 
 			saved = this.commentService.save(comment);
-
-			Assert.isTrue(title.equals(saved.getTitle()), "The saved Title doesnt correspond with the proposed Title change");
+			this.commentService.flush();
 
 			this.unauthenticate();
 		} catch (final Throwable th) {
@@ -103,4 +137,26 @@ public class CommentServiceTest extends AbstractTest {
 
 		this.checkExceptions(expected, caught);
 	}
+
+	protected void banCommentTemplate(final String username, final int commentId, final Class<?> expected) {
+		Class<?> caught;
+
+		caught = null;
+
+		try {
+			final Comment comment, saved;
+
+			this.unauthenticate();
+			this.authenticate(username);
+
+			saved = this.commentService.banComment(commentId);
+
+			this.unauthenticate();
+		} catch (final Throwable th) {
+			caught = th.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+	}
+
 }
