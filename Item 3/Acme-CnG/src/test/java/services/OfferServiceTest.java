@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Offer;
@@ -42,11 +43,11 @@ public class OfferServiceTest extends AbstractTest {
 	@Test
 	public void postOfferDriver() {
 		final Object testingData[][] = {
-			{
+			{    //An actor unauthenticated cannot post offers
 				null, IllegalArgumentException.class
-			}, {
+			}, { //An admin cannot post offers
 				"admin", IllegalArgumentException.class
-			}, {
+			}, { // Successful test
 				"customer1", null
 			}
 		};
@@ -67,19 +68,19 @@ public class OfferServiceTest extends AbstractTest {
 	@Test
 	public void findOffersByKeywordDriver() {
 		final Object testingData[][] = {
-			{
+			{    // An actor unauthenticated cannot find offers by a keyword
 				null, "test", IllegalArgumentException.class
-			}, {
+			}, { // An admin cannot find offers by a keyword
 				"admin", "test", IllegalArgumentException.class
-			}, {
+			}, { // Successful test with all offers found
 				"customer1", "", null
-			}, {
+			}, { // Successful test without offers found
 				"customer2", "Hola", null
-			}, {
+			}, { // Successful test with offers found by a title
 				"customer3", "Title offer 10", null
-			}, {
+			}, { // Successful test with offers found by a description
 				"customer2", "Description offer 2", null
-			}, {
+			}, { // Successful test with offers found by an address of an origin or a destination
 				"customer1", "C/Place1Address", null
 			}
 		};
@@ -100,17 +101,34 @@ public class OfferServiceTest extends AbstractTest {
 	@Test
 	public void banOfferDriver() {
 		final Object testingData[][] = {
-			{
+			{    // An actor unauthenticated cannot ban offers
 				null, IllegalArgumentException.class
-			}, {
+			}, { // A customer cannot ban offers
 				"customer1", IllegalArgumentException.class
-			}, {
+			}, { // Successful test
 				"admin", null
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
 			this.banOfferTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
+
+	}
+
+	/*
+	 * Checks if the query findAvgOfferPerCustomer works
+	 */
+
+	@Test
+	public void testFindAvgOfferPerCustomer() {
+		this.authenticate("admin");
+
+		Double avg;
+
+		avg = this.offerService.findAvgOfferPerCostumer();
+		Assert.isTrue(avg.equals(1.33333));
+
+		this.unauthenticate();
 
 	}
 
@@ -135,9 +153,13 @@ public class OfferServiceTest extends AbstractTest {
 			offer.setMoment(moment);
 			offer.setOrigin(origin);
 			offer.setDestination(destination);
-			this.offerService.save(offer);
+			final Offer offerSaved = this.offerService.save(offer);
 			this.offerService.flush();
+
 			this.unauthenticate();
+
+			Assert.isTrue(this.offerService.findAll().contains(offerSaved));
+			Assert.isTrue(!offerSaved.isBanned());
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
@@ -172,6 +194,8 @@ public class OfferServiceTest extends AbstractTest {
 			this.offerService.ban(offer);
 			this.offerService.flush();
 			this.unauthenticate();
+
+			Assert.isTrue(offer.isBanned());
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}

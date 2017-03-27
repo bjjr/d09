@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Place;
@@ -42,11 +43,11 @@ public class RequestServiceTest extends AbstractTest {
 	@Test
 	public void postRequestDriver() {
 		final Object testingData[][] = {
-			{
+			{    //An actor unauthenticated cannot post requests
 				null, IllegalArgumentException.class
-			}, {
+			}, { //An admin cannot post requests
 				"admin", IllegalArgumentException.class
-			}, {
+			}, { // Successful test
 				"customer1", null
 			}
 		};
@@ -67,19 +68,19 @@ public class RequestServiceTest extends AbstractTest {
 	@Test
 	public void findRequestsByKeywordDriver() {
 		final Object testingData[][] = {
-			{
+			{    // An actor unauthenticated cannot find requests by a keyword
 				null, "test", IllegalArgumentException.class
-			}, {
+			}, { // An admin cannot find requests by a keyword
 				"admin", "test", IllegalArgumentException.class
-			}, {
+			}, { // Successful test with all requests found
 				"customer1", "", null
-			}, {
+			}, { // Successful test without requests found
 				"customer2", "Hola", null
-			}, {
+			}, { // Successful test with requests found by a title
 				"customer3", "Title request 8", null
-			}, {
+			}, { // Successful test with requests found by a description
 				"customer2", "Description request 4", null
-			}, {
+			}, { // Successful test with requests found by an address of an origin or a destination
 				"customer1", "C/Place1Address", null
 			}
 		};
@@ -100,17 +101,34 @@ public class RequestServiceTest extends AbstractTest {
 	@Test
 	public void banRequestDriver() {
 		final Object testingData[][] = {
-			{
+			{    // An actor unauthenticated cannot ban requests
 				null, IllegalArgumentException.class
-			}, {
+			}, { // A customer cannot ban requests
 				"customer1", IllegalArgumentException.class
-			}, {
+			}, { // Successful test
 				"admin", null
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
 			this.banRequestTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
+
+	}
+
+	/*
+	 * Checks if the query findAvgRequestPerCustomer works
+	 */
+
+	@Test
+	public void testFindAvgRequestPerCustomer() {
+		this.authenticate("admin");
+
+		Double avg;
+
+		avg = this.requestService.findAvgRequestPerCustomer();
+		Assert.isTrue(avg.equals(1.0));
+
+		this.unauthenticate();
 
 	}
 
@@ -135,8 +153,13 @@ public class RequestServiceTest extends AbstractTest {
 			request.setMoment(moment);
 			request.setOrigin(origin);
 			request.setDestination(destination);
-			this.requestService.save(request);
+			final Request requestSaved = this.requestService.save(request);
+			this.requestService.flush();
+
 			this.unauthenticate();
+
+			Assert.isTrue(this.requestService.findAll().contains(requestSaved));
+			Assert.isTrue(!requestSaved.isBanned());
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
@@ -171,6 +194,8 @@ public class RequestServiceTest extends AbstractTest {
 			this.requestService.ban(request);
 			this.requestService.flush();
 			this.unauthenticate();
+
+			Assert.isTrue(request.isBanned());
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
