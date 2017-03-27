@@ -4,6 +4,8 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -11,6 +13,9 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Embeddable
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@Index(columnList = "address")
+})
 public class Place {
 
 	private String	address;
