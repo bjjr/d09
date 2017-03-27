@@ -10,6 +10,8 @@
 
 package services;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -88,12 +90,30 @@ public class CustomerServiceTest extends AbstractTest {
 
 	protected void registrationTemplate(final String username, final Class<?> expected) {
 		Class<?> caught;
+		Customer customer, saved;
+		List<Customer> allCustomer;
 
 		caught = null;
 
 		try {
 			this.authenticate(username);
-			this.customerService.create();
+			customer = this.customerService.create();
+
+			customer.setName("John");
+			customer.setSurname("Doe");
+			customer.setEmail("email@email.com");
+			customer.setPhone("+34657485454");
+			customer.getUserAccount().setUsername("jonny");
+			customer.getUserAccount().setPassword("jonny");
+
+			saved = this.customerService.save(customer);
+
+			this.customerService.flush();
+
+			allCustomer = this.customerService.findAll();
+
+			Assert.isTrue(allCustomer.contains(saved));
+
 			this.unauthenticate();
 		} catch (final Throwable th) {
 			caught = th.getClass();

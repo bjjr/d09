@@ -2,7 +2,6 @@
 package services;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -124,10 +123,11 @@ public class ActorService {
 		Assert.isTrue(this.checkAuthority("ADMIN"));
 
 		Actor result;
-		List<Actor> actors;
 
-		actors = this.actorRepository.findActorWithMoreSentMessages();
-		result = actors.get(0);
+		result = null;
+
+		if (!this.actorRepository.findActorWithMoreSentMessages().isEmpty())
+			result = this.actorRepository.findActorWithMoreSentMessages().get(0);
 
 		return result;
 	}
@@ -136,10 +136,11 @@ public class ActorService {
 		Assert.isTrue(this.checkAuthority("ADMIN"));
 
 		Actor result;
-		List<Actor> actors;
 
-		actors = this.actorRepository.findActorWithMoreReceivedMessages();
-		result = actors.get(0);
+		result = null;
+
+		if (!this.actorRepository.findActorWithMoreReceivedMessages().isEmpty())
+			result = this.actorRepository.findActorWithMoreReceivedMessages().get(0);
 
 		return result;
 	}
