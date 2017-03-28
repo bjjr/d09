@@ -13,11 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ApplicationService;
 import services.CustomerService;
-import services.TripService;
 import controllers.AbstractController;
 import domain.Application;
 import domain.Customer;
-import domain.Trip;
 
 @Controller
 @RequestMapping("/application/customer")
@@ -30,9 +28,6 @@ public class ApplicationCustomerController extends AbstractController {
 
 	@Autowired
 	private CustomerService		customerService;
-
-	@Autowired
-	private TripService			tripService;
 
 
 	// Constructors -------------------------------------------
@@ -121,15 +116,13 @@ public class ApplicationCustomerController extends AbstractController {
 	public ModelAndView create(@RequestParam final int tripId) {
 		ModelAndView result;
 		Application application;
-		final Trip trip;
 
 		application = this.applicationService.create();
-		trip = this.tripService.findOne(tripId);
 
 		try {
+			Assert.isTrue(!this.applicationService.checksIsMyTrip(tripId), "application.myTrip");
 			Assert.isTrue(!this.applicationService.checkApplicationExists(tripId), "application.exists.error");
-			application.setTrip(trip);
-			this.applicationService.save(application);
+			this.applicationService.save(application, tripId);
 			result = new ModelAndView("redirect:list.do");
 			result.addObject("message", "application.commit.ok");
 		} catch (final Throwable oops) {
