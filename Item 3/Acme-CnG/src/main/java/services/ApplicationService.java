@@ -72,16 +72,21 @@ public class ApplicationService {
 		return result;
 	}
 
-	public Application save(final Application application) {
+	public Application save(final Application application, final int tripId) {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
 		Assert.notNull(application);
 
 		Application result;
 		Customer principal;
+		Trip trip;
 
+		trip = this.tripService.findOne(tripId);
 		principal = this.customerService.findByPrincipal();
 		application.setCustomer(principal);
+		Assert.isTrue(!this.checksIsMyTrip(tripId));
+		Assert.isTrue(!this.checkApplicationExists(tripId));
+		application.setTrip(trip);
 		result = this.applicationRepository.save(application);
 
 		return result;
@@ -109,6 +114,17 @@ public class ApplicationService {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
 		Assert.notNull(application);
+
+		Collection<Application> myApplications;
+		Collection<Trip> myTrips;
+		Customer customer;
+
+		customer = this.customerService.findByPrincipal();
+		myApplications = this.findApplicationsByCustomer(customer.getId());
+		myTrips = this.tripService.findTripsByCustomer(customer.getId());
+
+		Assert.isTrue(myTrips.contains(application.getTrip()));
+		Assert.isTrue(!myApplications.contains(application));
 		Assert.isTrue(application.getStatus().equals("PENDING"));
 
 		application.setStatus("ACCEPTED");
@@ -118,6 +134,17 @@ public class ApplicationService {
 		Assert.isTrue(this.actorService.checkAuthority("CUSTOMER"));
 
 		Assert.notNull(application);
+
+		Collection<Application> myApplications;
+		Collection<Trip> myTrips;
+		Customer customer;
+
+		customer = this.customerService.findByPrincipal();
+		myApplications = this.findApplicationsByCustomer(customer.getId());
+		myTrips = this.tripService.findTripsByCustomer(customer.getId());
+
+		Assert.isTrue(myTrips.contains(application.getTrip()));
+		Assert.isTrue(!myApplications.contains(application));
 		Assert.isTrue(application.getStatus().equals("PENDING"));
 
 		application.setStatus("DENIED");
@@ -198,6 +225,23 @@ public class ApplicationService {
 				result = true;
 				break;
 			}
+		return result;
+	}
+
+	public Boolean checksIsMyTrip(final int tripId) {
+		Boolean result;
+		Customer customer;
+		Collection<Trip> trips;
+		Trip trip;
+
+		result = false;
+		customer = this.customerService.findByPrincipal();
+		trips = this.tripService.findTripsByCustomer(customer.getId());
+		trip = this.tripService.findOne(tripId);
+
+		if (trips.contains(trip))
+			result = true;
+
 		return result;
 	}
 
