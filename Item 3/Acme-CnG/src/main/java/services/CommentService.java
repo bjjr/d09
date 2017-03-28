@@ -34,9 +34,6 @@ public class CommentService {
 	private ActorService				actorService;
 
 	@Autowired
-	private CustomerService				customerService;
-
-	@Autowired
 	private CommentableEntityService	commentableEntityService;
 
 	@Autowired

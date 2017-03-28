@@ -10,8 +10,6 @@
 
 package services;
 
-import java.util.Collection;
-
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 
@@ -142,7 +140,7 @@ public class CommentServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
-			final Comment comment, saved;
+			final Comment comment;
 
 			this.unauthenticate();
 			this.authenticate(username);
@@ -154,7 +152,7 @@ public class CommentServiceTest extends AbstractTest {
 			comment.setStars(stars);
 			comment.setBanned(banned);
 
-			saved = this.commentService.save(comment);
+			this.commentService.save(comment);
 			this.commentService.flush();
 
 			this.unauthenticate();
@@ -171,12 +169,10 @@ public class CommentServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
-			final Comment comment, saved;
-
 			this.unauthenticate();
 			this.authenticate(username);
 
-			saved = this.commentService.banComment(commentId);
+			this.commentService.banComment(commentId);
 
 			this.unauthenticate();
 		} catch (final Throwable th) {
@@ -192,12 +188,10 @@ public class CommentServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
-			final Collection<Comment> res;
-
 			this.unauthenticate();
 			this.authenticate(username);
 
-			res = this.commentService.findCommentsByCommentableEntity(commentableEntityId);
+			this.commentService.findCommentsByCommentableEntity(commentableEntityId);
 
 			this.unauthenticate();
 		} catch (final Throwable th) {

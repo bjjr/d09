@@ -135,6 +135,96 @@ public class MessageServiceTest extends AbstractTest {
 			this.deleteMessageTemplate((String) testingData[i][0], (int) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
+	/*
+	 * Functional Requirement: Dashboard: Display the minimum number of messages sent per actor
+	 */
+
+	@Test
+	public void findMinNumSntMsgPerActorTest() {
+		this.authenticate("admin");
+		Long res;
+
+		res = this.messageService.findMinNumSntMsgPerActor();
+
+		Assert.isTrue(res.equals(1L));
+		this.unauthenticate();
+	}
+
+	/*
+	 * Functional Requirement: Dashboard: Display the average number of messages sent per actor
+	 */
+
+	@Test
+	public void findAvgNumSntMsgPerActorTest() {
+		this.authenticate("admin");
+		Double res;
+
+		res = this.messageService.findAvgNumSntMsgPerActor();
+
+		Assert.isTrue(res.equals(0.7));
+		this.unauthenticate();
+	}
+
+	/*
+	 * Functional Requirement: Dashboard: Display the maximum number of messages sent per actor
+	 */
+
+	@Test
+	public void findMaxNumSntMsgPerActorTest() {
+		this.authenticate("admin");
+		Long res;
+
+		res = this.messageService.findMaxNumSntMsgPerActor();
+
+		Assert.isTrue(res.equals(6L));
+		this.unauthenticate();
+	}
+
+	/*
+	 * Functional Requirement: Dashboard: Display the minimum number of messages received per actor
+	 */
+
+	@Test
+	public void findMinNumRecMsgPerActorTest() {
+		this.authenticate("admin");
+		Long res;
+
+		res = this.messageService.findMinNumRecMsgPerActor();
+
+		Assert.isTrue(res.equals(1L));
+		this.unauthenticate();
+	}
+
+	/*
+	 * Functional Requirement: Dashboard: Display the average number of messages received per actor
+	 */
+
+	@Test
+	public void findAvgNumRecMsgPerActorTest() {
+		this.authenticate("admin");
+		Double res;
+
+		res = this.messageService.findAvgNumRecMsgPerActor();
+
+		Assert.isTrue(res.equals(0.7));
+		this.unauthenticate();
+	}
+
+	/*
+	 * Functional Requirement: Dashboard: Display the maximum number of messages received per actor
+	 */
+
+	@Test
+	public void findMaxNumRecMsgPerActorTest() {
+		this.authenticate("admin");
+		Long res;
+
+		res = this.messageService.findMaxNumRecMsgPerActor();
+
+		Assert.isTrue(res.equals(6L));
+		this.unauthenticate();
+	}
+
 	// Ancillary methods ------------------------------------------------------
 
 	protected void sendMessageTemplate(final String username, final int recipientId, final Class<?> expected) {
