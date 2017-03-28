@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Comment;
@@ -199,6 +200,78 @@ public class CommentServiceTest extends AbstractTest {
 		}
 
 		this.checkExceptions(expected, caught);
+	}
+
+	//Queries test
+
+	/*
+	 * Checks if the average comments per actor is correct
+	 */
+	@Test
+	public void testFindAverageCommentPerActor() {
+		this.authenticate("admin");
+		double res;
+
+		res = this.commentService.findAverageCommentPerActor();
+
+		Assert.isTrue(res == 0.6);
+		this.unauthenticate();
+	}
+
+	/*
+	 * Checks if the average comments per offer is correct
+	 */
+	@Test
+	public void testFindAverageCommentPerOffer() {
+		this.authenticate("admin");
+		double res;
+
+		res = this.commentService.findAverageCommentPerOffer();
+
+		Assert.isTrue(res == 0.08333);
+		this.unauthenticate();
+	}
+
+	/*
+	 * Checks if the average comments per request is correct
+	 */
+	@Test
+	public void testFindAverageCommentPerRequest() {
+		this.authenticate("admin");
+		double res;
+
+		res = this.commentService.findAverageCommentPerRequest();
+
+		Assert.isTrue(res == 0.66667);
+		this.unauthenticate();
+	}
+
+	/*
+	 * Checks if the average comments per customer is correct
+	 */
+	@Test
+	public void testFindAverageCommentPerCustomer() {
+		this.authenticate("admin");
+		double res;
+
+		res = this.commentService.findAverageCommentPerCustomer();
+
+		Assert.isTrue(res == 0.55556);
+		this.unauthenticate();
+	}
+
+	/*
+	 * Checks if the average comments per administrator is correct
+	 */
+	@Test
+	public void testFindAverageCommentPerAdministrator() {
+		this.authenticate("admin");
+		double res;
+
+		res = this.commentService.findAverageCommentPerAdministrator();
+
+		Assert.isTrue(res == 1.0);
+		this.unauthenticate();
 	}
 
 }
