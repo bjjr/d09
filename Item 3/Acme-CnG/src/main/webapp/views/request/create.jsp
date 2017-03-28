@@ -17,7 +17,7 @@
 	
 	<acme:textarea code="trip.description" path="description" />
 	
-	<acme:textbox code="trip.moment" path="moment"/>
+	<acme:datebox code="trip.moment" path="moment"/>
 	
 	<fieldset style="width: 400px">
 		<legend align="left">

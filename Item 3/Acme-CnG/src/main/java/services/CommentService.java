@@ -258,4 +258,14 @@ public class CommentService {
 		return result;
 	}
 
+	public Collection<Comment> findCommentsOnActors() {
+		Assert.isTrue(this.actorService.checkAuthority("ADMIN"));
+
+		Collection<Comment> res;
+
+		res = this.commentRepository.findCommentsOnActors();
+
+		return res;
+	}
+
 }

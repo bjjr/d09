@@ -32,6 +32,7 @@ public class CommentController extends AbstractController {
 
 	@Autowired
 	private TripService		tripService;
+
 	private int				tripId;
 
 
@@ -73,17 +74,29 @@ public class CommentController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/listActor", method = RequestMethod.GET)
+	public ModelAndView listTrip() {
+		ModelAndView result;
+		Collection<Comment> comments;
+
+		comments = this.commentService.findCommentsOnActors();
+
+		result = new ModelAndView("comment/listTrip");
+		result.addObject("comments", comments);
+		result.addObject("requestURI", "comment/listActor.do");
+
+		return result;
+	}
+
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
 		Comment comment;
-		Actor principal;
-		Collection<CommentableEntity> commentableEntities;
+		Collection<Actor> commentableEntities;
 
-		principal = this.actorService.findByPrincipal();
 		comment = this.commentService.create();
 		result = new ModelAndView("comment/create");
-		commentableEntities = this.commentService.commentableEntities(principal);
+		commentableEntities = this.actorService.findAll();
 
 		result.addObject("comment", comment);
 		result.addObject("isTrip", false);

@@ -32,9 +32,7 @@
 					<li class="arrow"></li>
 					<li><a href="banner/administrator/edit.do"><spring:message code="master.page.administrator.banner.edit" /></a></li>
 					<li><a href="dashboard/administrator/dashboard.do"><spring:message code="master.page.administrator.dashboard" /></a></li>
-					<li><a href="message/listSent.do"><spring:message code="master.page.message.list.sent" /></a></li>
-					<li><a href="message/listReceived.do"><spring:message code="master.page.message.list.received" /></a></li>
-					<li><a href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>
+					<li><a href="comment/listActor.do"><spring:message code="master.page.administrator.comment" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
@@ -43,16 +41,20 @@
 			<li><a class="fNiv"><spring:message	code="master.page.customer" /></a>
 				<ul>
 					<li class="arrow"></li>
+					<li><a href="offer/customer/list.do"><spring:message code="master.page.offer.customer.list" /></a></li>
+					<li><a href="request/customer/list.do"><spring:message code="master.page.request.customer.list" /></a></li>
 					<li><a href="application/customer/list.do"><spring:message code="master.page.customer.application.list" /></a></li>
 					<li><a href="application/customer/listByTrip.do"><spring:message code="master.page.customer.application.listByTrip" /></a></li>
-					<li><a href="message/listSent.do"><spring:message code="master.page.message.list.sent" /></a></li>
-					<li><a href="message/listReceived.do"><spring:message code="master.page.message.list.received" /></a></li>
-					<li><a href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>
 				</ul>
 			</li>
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
+			<li><a class="fNiv" href="message/listSent.do"><spring:message code="master.page.message.list.sent" /></a></li>
+			<li><a class="fNiv" href="message/listReceived.do"><spring:message code="master.page.message.list.received" /></a></li>
+			<li><a class="fNiv" href="comment/list.do"><spring:message code="master.page.comment.list" /></a></li>
+			<li><a class="fNiv" href="offer/list.do"><spring:message code="master.page.offer.list" /></a></li>
+			<li><a class="fNiv" href="request/list.do"><spring:message code="master.page.request.list" /></a></li>
 			<li><a class="fNiv" href="j_spring_security_logout"><spring:message code="master.page.logout" />(<security:authentication property="principal.username" />)</a></li>
 		</security:authorize>
 		
